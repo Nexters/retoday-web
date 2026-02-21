@@ -33,7 +33,9 @@ const CategoryAnalysisSection = ({ selectedDate }: { selectedDate: Date }) => {
         {data?.categoryAnalyses.map((item, idx) => (
           <>
             <CategoryAnalysisItem key={idx} count={idx + 1} {...item} />
-            <Divider className="h-0.5" />
+            {idx !== data?.categoryAnalyses.length - 1 && (
+              <Divider className="h-0.5" />
+            )}
           </>
         ))}
       </div>
