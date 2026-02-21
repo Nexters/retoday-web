@@ -34,3 +34,15 @@ export type AnalysisCategoryResponse = {
   date: string;
   categoryAnalyses: AnalysisCategoryItem[];
 };
+
+// frequency analysis
+export type AnalysisFrequencyItem = {
+  domain: string;
+  faviconUrl: string;
+  visitCount: number;
+  stayDuration: number;
+};
+export type FrequencyVisitedSitesResponse = {
+  date: string;
+  websiteAnalyses: AnalysisFrequencyItem[];
+};

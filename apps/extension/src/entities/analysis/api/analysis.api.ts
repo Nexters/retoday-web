@@ -3,6 +3,7 @@ import type { RestAPIProtocol } from "@recap/api";
 import type {
   AnalysisCategoryResponse,
   AnalysisPeriod,
+  FrequencyVisitedSitesResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 export class AnalysisAPIService {
@@ -20,6 +21,12 @@ export class AnalysisAPIService {
   getCategoryAnalysis(date: string) {
     return this.fetch.get<AnalysisCategoryResponse>({
       url: `users/me/category-analyses?date=${date}`,
+    });
+  }
+
+  getFrequencyVisitedSites(date: string, limit: number) {
+    return this.fetch.get<FrequencyVisitedSitesResponse>({
+      url: `users/me/frequently-visited-websites?date=${date}&limit=${limit}`,
     });
   }
 }

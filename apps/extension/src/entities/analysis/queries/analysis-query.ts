@@ -5,6 +5,7 @@ import type {
   AnalysisCategoryResponse,
   AnalysisPeriod,
   AnalysisScreenTimeResponse,
+  FrequencyVisitedSitesResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 import { ANALYSIS_KEYS } from "./query-key.const";
@@ -28,4 +29,21 @@ const useGetAnalysisCategoryAnalysis = (date: string) => {
     },
   });
 };
-export { useGetAnalysisCategoryAnalysis, useGetAnalysisScreenTime };
+
+const useGetFrequencyVisitedSites = (date: string, limit: number) => {
+  return useQuery<FrequencyVisitedSitesResponse>({
+    queryKey: ANALYSIS_KEYS.detail(["frequency-visited-sites", date, limit]),
+    queryFn: async () => {
+      const response = await analysisAPIService.getFrequencyVisitedSites(
+        date,
+        limit,
+      );
+      return response as FrequencyVisitedSitesResponse;
+    },
+  });
+};
+export {
+  useGetAnalysisCategoryAnalysis,
+  useGetAnalysisScreenTime,
+  useGetFrequencyVisitedSites,
+};
