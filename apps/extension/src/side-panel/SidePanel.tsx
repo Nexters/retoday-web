@@ -32,7 +32,9 @@ export function SidePanel() {
         <PageContent
           className={activeTab === NAVIGATION_TAB.SETTINGS ? "pt-12" : ""}
         >
-          {activeTab === NAVIGATION_TAB.ANALYSIS && <AnalysisView />}
+          {activeTab === NAVIGATION_TAB.ANALYSIS && (
+            <AnalysisView selectedDate={selectedDate ?? new Date()} />
+          )}
           {activeTab === NAVIGATION_TAB.AI_RECAP && <AiRecapView />}
           {activeTab === NAVIGATION_TAB.SETTINGS && <SettingView />}
         </PageContent>

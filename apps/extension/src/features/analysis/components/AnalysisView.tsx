@@ -3,10 +3,10 @@ import CategoryAnalysisSection from "@/features/analysis/components/category-ana
 import TodayTimeThiefSection from "@/features/analysis/components/TodayTimeThiefSection";
 import WeeklyScreenTimeSection from "@/features/analysis/components/WeeklyScreenTimeSection";
 
-const AnalysisView = () => {
+const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
   return (
     <>
-      <WeeklyScreenTimeSection />
+      <WeeklyScreenTimeSection selectedDate={selectedDate} />
       <Divider />
       <CategoryAnalysisSection />
       <Divider />
