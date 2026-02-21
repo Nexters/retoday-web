@@ -1,8 +1,11 @@
 import { Button, Input } from "@recap/ui";
 
+import { useGetUserProfile } from "@/entities/user/queries/user-query";
 import DomainItem from "@/features/setting/components/DomainItem";
 
 const UntrackedDomainSetting = () => {
+  const { data: userProfile } = useGetUserProfile();
+
   return (
     <div className="pt-8 pb-6 px-5">
       <h2 className="text-headline-sb text-gray-900">추적금지 도메인</h2>
@@ -11,9 +14,9 @@ const UntrackedDomainSetting = () => {
       </p>
 
       <div className="mt-4 flex flex-col gap-1">
-        <DomainItem />
-        <DomainItem />
-        <DomainItem />
+        {userProfile?.excludedDomains.map((domain) => (
+          <DomainItem key={domain} domain={domain} />
+        ))}
       </div>
       <Input
         className="mt-4"

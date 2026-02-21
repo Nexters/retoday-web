@@ -1,9 +1,9 @@
 import { Button } from "@recap/ui";
 
-const DomainItem = () => {
+const DomainItem = ({ domain }: { domain: string }) => {
   return (
     <div className="flex items-center justify-between bg-gray-75 rounded-full pr-2 pl-4 py-2">
-      <p className="text-body-3 text-gray-500">https://www.figma.com</p>
+      <p className="text-body-3 text-gray-500">{domain}</p>
       <Button
         variant="subtle"
         size={"sm"}
