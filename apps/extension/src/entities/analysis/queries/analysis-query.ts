@@ -1,4 +1,4 @@
-import { useQuery } from "@recap/react-query";
+import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
 import { analysisAPIService } from "@/entities/analysis/api";
 import type {
@@ -30,8 +30,15 @@ const useGetAnalysisCategoryAnalysis = (date: string) => {
   });
 };
 
-const useGetFrequencyVisitedSites = (date: string, limit: number) => {
-  return useQuery<FrequencyVisitedSitesResponse>({
+const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesResponse>(
+  date: string,
+  limit: number,
+  options?: Omit<
+    UseQueryOptions<FrequencyVisitedSitesResponse, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<FrequencyVisitedSitesResponse, Error, TData>({
     queryKey: ANALYSIS_KEYS.detail(["frequency-visited-sites", date, limit]),
     queryFn: async () => {
       const response = await analysisAPIService.getFrequencyVisitedSites(
@@ -40,6 +47,7 @@ const useGetFrequencyVisitedSites = (date: string, limit: number) => {
       );
       return response as FrequencyVisitedSitesResponse;
     },
+    ...options,
   });
 };
 export {
