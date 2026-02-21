@@ -7,8 +7,8 @@ import {
   ANALYSIS_PERIOD,
   type AnalysisPeriod,
 } from "@/entities/analysis/model/analysis.type";
+import { transformScreenTimeToChartData } from "@/entities/analysis/model/screen-time-chart-mapper";
 import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
-import { DUMMY_CHART_DATA } from "@/features/ai-recap/const/dummy.const";
 import { formatDate } from "@/utils/date";
 
 const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
@@ -18,7 +18,7 @@ const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
     mode,
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );
-  console.log("screenTime", screenTime);
+
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">
       <div className="flex items-center justify-between">
@@ -50,7 +50,9 @@ const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
       <div className="h-6" />
 
       <ScreenTimeWeeklyBarChart
-        data={DUMMY_CHART_DATA}
+        data={
+          screenTime ? transformScreenTimeToChartData(mode, screenTime) : []
+        }
         height={100}
         className="mt-20"
         minBarHeight={10}

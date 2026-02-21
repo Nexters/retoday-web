@@ -16,6 +16,7 @@ export function SidePanel() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date(),
   );
+
   return (
     <div className="flex h-full flex-col">
       <AuthGuard>
