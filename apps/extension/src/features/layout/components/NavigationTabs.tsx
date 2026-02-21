@@ -16,11 +16,12 @@ function NavigationTabs({
     <GnbTabs
       defaultValue={defaultValue}
       value={value}
+      className="border-b border-gray-200 w-full"
       onValueChange={onValueChange}
     >
       <GnbTabsList>
         {GNB_TABS.map(({ label, value }) => (
-          <GnbTabsTrigger key={value} value={value}>
+          <GnbTabsTrigger className="cursor-pointer" key={value} value={value}>
             {label}
           </GnbTabsTrigger>
         ))}
