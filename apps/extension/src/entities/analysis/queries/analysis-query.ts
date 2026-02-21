@@ -2,16 +2,14 @@ import { useQuery } from "@recap/react-query";
 
 import { analysisAPIService } from "@/entities/analysis/api";
 import type {
+  AnalysisCategoryResponse,
   AnalysisPeriod,
   AnalysisScreenTimeResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 import { ANALYSIS_KEYS } from "./query-key.const";
 
-export const useGetAnalysisScreenTime = (
-  period: AnalysisPeriod,
-  date: string,
-) => {
+const useGetAnalysisScreenTime = (period: AnalysisPeriod, date: string) => {
   return useQuery<AnalysisScreenTimeResponse>({
     queryKey: ANALYSIS_KEYS.detail(["screen-time", period, date]),
     queryFn: async () => {
@@ -20,3 +18,14 @@ export const useGetAnalysisScreenTime = (
     },
   });
 };
+
+const useGetAnalysisCategoryAnalysis = (date: string) => {
+  return useQuery<AnalysisCategoryResponse>({
+    queryKey: ANALYSIS_KEYS.detail(["category-analysis", date]),
+    queryFn: async () => {
+      const response = await analysisAPIService.getCategoryAnalysis(date);
+      return response as AnalysisCategoryResponse;
+    },
+  });
+};
+export { useGetAnalysisCategoryAnalysis, useGetAnalysisScreenTime };
