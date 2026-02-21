@@ -8,7 +8,7 @@ const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
     <>
       <WeeklyScreenTimeSection selectedDate={selectedDate} />
       <Divider />
-      <CategoryAnalysisSection />
+      <CategoryAnalysisSection selectedDate={selectedDate} />
       <Divider />
       <TodayTimeThiefSection />
     </>
