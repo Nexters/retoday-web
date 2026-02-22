@@ -18,10 +18,12 @@ export interface StorageData {
   sessions: Record<string, StorageSession>;
   accessToken: string | null;
   refreshToken: string | null;
+  excludedDomains: string[];
 }
 
 export const defaultStorage: StorageData = {
   sessions: {},
   accessToken: null,
   refreshToken: null,
+  excludedDomains: [],
 };
