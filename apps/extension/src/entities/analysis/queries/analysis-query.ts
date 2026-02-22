@@ -10,13 +10,21 @@ import type {
 
 import { ANALYSIS_KEYS } from "./query-key.const";
 
-const useGetAnalysisScreenTime = (period: AnalysisPeriod, date: string) => {
-  return useQuery<AnalysisScreenTimeResponse>({
+const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeResponse>(
+  period: AnalysisPeriod,
+  date: string,
+  options?: Omit<
+    UseQueryOptions<AnalysisScreenTimeResponse, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<AnalysisScreenTimeResponse, Error, TData>({
     queryKey: ANALYSIS_KEYS.detail(["screen-time", period, date]),
     queryFn: async () => {
       const response = await analysisAPIService.getScreenTime(period, date);
       return response as AnalysisScreenTimeResponse;
     },
+    ...options,
   });
 };
 

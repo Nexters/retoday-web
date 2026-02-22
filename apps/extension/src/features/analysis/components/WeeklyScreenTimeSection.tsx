@@ -9,7 +9,7 @@ import {
 } from "@/entities/analysis/model/analysis.type";
 import { transformScreenTimeToChartData } from "@/entities/analysis/model/screen-time-chart-mapper";
 import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
-import { formatDate } from "@/utils/date";
+import { formatDate, formatDuration } from "@/utils/date";
 
 const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
@@ -17,6 +17,18 @@ const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
   const { data: screenTime } = useGetAnalysisScreenTime(
     mode,
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+  );
+
+  const { data: weeklyScreenTime } = useGetAnalysisScreenTime(
+    ANALYSIS_PERIOD.WEEKLY,
+    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+    {
+      select: (data) =>
+        data.screenTimes.reduce(
+          (acc, screenTime) => acc + screenTime.stayDuration,
+          0,
+        ),
+    },
   );
 
   return (
@@ -27,7 +39,7 @@ const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
             이번주 평균 스크린타임
           </h2>
           <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
-            하루 109시간 2분
+            하루 {weeklyScreenTime ? formatDuration(weeklyScreenTime) : "-"}
           </h3>
         </div>
         <ToggleGroup
