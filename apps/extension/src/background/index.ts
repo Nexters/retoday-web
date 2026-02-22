@@ -28,6 +28,7 @@ browser.action.onClicked.addListener(async (tab) => {
 browser.tabs.onRemoved.addListener(async (tabId) => {
   removedTabIds.add(tabId);
   getBrowserSessionById(String(tabId)).then((session) => {
+    if (!session) return;
     browserHistory.createClosedHistory(session as StorageSession);
     deleteBrowserSession(String(tabId));
 
