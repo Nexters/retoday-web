@@ -6,6 +6,7 @@ import type {
   AnalysisPeriod,
   AnalysisScreenTimeResponse,
   FrequencyVisitedSitesResponse,
+  LongestWebSiteResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 import { ANALYSIS_KEYS } from "./query-key.const";
@@ -58,8 +59,20 @@ const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesResponse>(
     ...options,
   });
 };
+
+const useGetLongestWebSite = (date: string) => {
+  return useQuery<LongestWebSiteResponse>({
+    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", date]),
+    queryFn: async () => {
+      const response = await analysisAPIService.getLongestWebSite(date);
+      return response as LongestWebSiteResponse;
+    },
+  });
+};
+
 export {
   useGetAnalysisCategoryAnalysis,
   useGetAnalysisScreenTime,
   useGetFrequencyVisitedSites,
+  useGetLongestWebSite,
 };

@@ -1,15 +1,11 @@
 import TimeThiefImg from "@/assets/imgs/time-thief.png";
 import { DATE_FORMAT } from "@/const/date-format.const";
-import { useGetFrequencyVisitedSites } from "@/entities/analysis/queries/analysis-query";
+import { useGetLongestWebSite } from "@/entities/analysis/queries/analysis-query";
 import { formatDate } from "@/utils/date";
 
 const TodayTimeThiefSection = ({ selectedDate }: { selectedDate: Date }) => {
-  const { data: websiteAnalysis } = useGetFrequencyVisitedSites(
+  const { data } = useGetLongestWebSite(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-    1,
-    {
-      select: (data) => data.websiteAnalyses[0],
-    },
   );
   return (
     <div className="bg-white px-5 py-8">
@@ -19,17 +15,17 @@ const TodayTimeThiefSection = ({ selectedDate }: { selectedDate: Date }) => {
         </h2>
 
         <div className="bg-blue-75 text-label-1 flex items-center gap-2 w-fit rounded-xl px-3 py-1 text-gray-900">
-          {websiteAnalysis?.faviconUrl ? (
+          {data?.faviconUrl ? (
             <img
-              src={websiteAnalysis.faviconUrl}
-              alt={websiteAnalysis.domain}
+              src={data.faviconUrl}
+              alt={data.domain}
               className="size-[14px] rounded-full object-cover"
             />
           ) : (
             <div className="size-[14px] rounded-full bg-gray-300" />
           )}
 
-          {websiteAnalysis?.domain}
+          {data?.domain}
         </div>
       </div>
 
@@ -41,10 +37,10 @@ const TodayTimeThiefSection = ({ selectedDate }: { selectedDate: Date }) => {
             className="h-auto w-full max-w-xs object-contain"
           />
 
-          {websiteAnalysis?.faviconUrl ? (
+          {data?.faviconUrl ? (
             <img
-              src={websiteAnalysis.faviconUrl}
-              alt={websiteAnalysis.domain}
+              src={data.faviconUrl}
+              alt={data.domain}
               className="absolute top-[60%] left-[70%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full object-cover"
             />
           ) : (
