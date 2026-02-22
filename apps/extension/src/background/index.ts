@@ -3,6 +3,7 @@ import browser from "webextension-polyfill";
 import browserHistory from "@/background/browser-history";
 import { authAPIService } from "@/entities/auth/api";
 import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
+import { domainStore } from "@/lib/domain-store";
 import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
@@ -41,22 +42,34 @@ browser.tabs.onRemoved.addListener(async (tabId) => {
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
-  console.log("onActivated", closedSession);
-  if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
-    browserHistory.createClosedHistory(closedSession as StorageSession);
+  await visitBrowserSession(String(tabId));
+  console.log("closedSession", closedSession);
+  if (!closedSession) return;
+  const excludedDomains = await domainStore.getExcludedDomains();
+
+  if (
+    browserHistory.isExcludedDomain(closedSession?.url ?? "", excludedDomains)
+  ) {
+    console.log("excluded domain", closedSession?.url);
+    return;
   }
 
-  await visitBrowserSession(String(tabId));
+  if (!removedTabIds.has(Number(closedSession.tabId))) {
+    browserHistory.createHistory(closedSession as StorageSession);
+  }
 });
 
 browser.runtime.onMessage.addListener(
-  (
-    message: unknown,
-    sender: browser.Runtime.MessageSender,
-  ): Promise<unknown> | void => {
+  async (message: unknown, sender: browser.Runtime.MessageSender) => {
     const msg = message as ExtensionMessage;
 
     if (msg.type === MESSAGE_TYPE.PAGE_VISITED) {
+      const excludedDomains = await domainStore.getExcludedDomains();
+
+      if (browserHistory.isExcludedDomain(msg.data.url, excludedDomains)) {
+        return;
+      }
+
       return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
     }
 

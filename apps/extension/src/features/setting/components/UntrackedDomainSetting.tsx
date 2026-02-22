@@ -1,10 +1,18 @@
+import { useState } from "react";
 import { Button, Input } from "@recap/ui";
 
 import { useGetUserProfile } from "@/entities/user/queries/user-query";
 import DomainItem from "@/features/setting/components/DomainItem";
+import { domainStore } from "@/lib/domain-store";
 
 const UntrackedDomainSetting = () => {
   const { data: userProfile } = useGetUserProfile();
+  const [doaminValue, setDoaminValue] = useState<string>("");
+
+  const handleAddDomain = () => {
+    domainStore.addExcludedDomain(doaminValue);
+    setDoaminValue("");
+  };
 
   return (
     <div className="pt-8 pb-6 px-5">
@@ -20,9 +28,11 @@ const UntrackedDomainSetting = () => {
       </div>
       <Input
         className="mt-4"
+        value={doaminValue}
+        onChange={(e) => setDoaminValue(e.target.value)}
         placeholder="도메인 입력 ( 예 : abc.com sample.kr)"
       />
-      <Button className="mt-2" variant="secondary">
+      <Button className="mt-2" variant="secondary" onClick={handleAddDomain}>
         추가하기
       </Button>
     </div>

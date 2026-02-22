@@ -6,6 +6,11 @@ export const domainStore = {
     return result.excludedDomains ?? [];
   },
 
+  async addExcludedDomain(domain: string): Promise<void> {
+    const domains = await this.getExcludedDomains();
+    await this.setExcludedDomains([...domains, domain]);
+  },
+
   async setExcludedDomains(domains: string[]): Promise<void> {
     await setStorage({
       excludedDomains: domains,

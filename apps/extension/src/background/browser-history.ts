@@ -6,14 +6,19 @@ import { calculateTimeDiff } from "@/utils/date";
 
 const browserHistory = {
   createClosedHistory: (session: StorageSession) => {
-    if (calculateTimeDiff(session.visitedAt, session.closedAt) <= 10) {
+    // 이미 닫히 세션에 대해서 실행 X
+    if (session?.closedAt) return;
+
+    const closedAt = new Date().getTime() / 1000;
+
+    if (calculateTimeDiff(session.visitedAt, closedAt) <= 10) {
       return;
     }
-    console.log("createHistory");
+    console.log("createClosedHistory");
     historyAPIService.createHistory({
       ...session,
       url: extractDomainUrl(session.url),
-      closedAt: session?.closedAt ?? new Date().getTime() / 1000,
+      closedAt,
       isClosed: true,
     } as CreateHistoryDTO);
   },
@@ -30,6 +35,13 @@ const browserHistory = {
       url: extractDomainUrl(session.url),
       isClosed: false,
     } as CreateHistoryDTO);
+  },
+  isExcludedDomain: (url: string, excludeDomains: string[]) => {
+    const normalizedUrl = extractDomainUrl(url);
+
+    const { host } = new URL(normalizedUrl);
+
+    return excludeDomains.includes(host);
   },
 };
 
