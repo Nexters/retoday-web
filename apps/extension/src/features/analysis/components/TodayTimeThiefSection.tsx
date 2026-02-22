@@ -40,14 +40,15 @@ const TodayTimeThiefSection = ({ selectedDate }: { selectedDate: Date }) => {
             alt="시간 도둑"
             className="h-auto w-full max-w-xs object-contain"
           />
+
           {websiteAnalysis?.faviconUrl ? (
             <img
               src={websiteAnalysis.faviconUrl}
               alt={websiteAnalysis.domain}
-              className="absolute top-1/2 left-[60%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full object-cover"
+              className="absolute top-[60%] left-[70%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full object-cover"
             />
           ) : (
-            <div className="absolute top-1/2 left-[60%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full bg-gray-300" />
+            <div className="absolute top-[60%] left-[70%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full bg-gray-300" />
           )}
         </div>
       </div>
