@@ -40,8 +40,11 @@ const browserHistory = {
     const normalizedUrl = extractDomainUrl(url);
 
     const { host } = new URL(normalizedUrl);
+    const normalizedHost = host.replace(/^www\./, "");
 
-    return excludeDomains.includes(host);
+    return excludeDomains.some(
+      (domain) => domain.replace(/^www\./, "") === normalizedHost,
+    );
   },
 };
 

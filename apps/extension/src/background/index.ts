@@ -43,14 +43,13 @@ browser.tabs.onRemoved.addListener(async (tabId) => {
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
   await visitBrowserSession(String(tabId));
-  console.log("closedSession", closedSession);
+
   if (!closedSession) return;
   const excludedDomains = await domainStore.getExcludedDomains();
 
   if (
     browserHistory.isExcludedDomain(closedSession?.url ?? "", excludedDomains)
   ) {
-    console.log("excluded domain", closedSession?.url);
     return;
   }
 
