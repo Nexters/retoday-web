@@ -1,9 +1,8 @@
 import browser from "webextension-polyfill";
 
+import browserHistory from "@/background/browser-history";
 import { authAPIService } from "@/entities/auth/api";
 import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
-import { historyAPIService } from "@/entities/history/api";
-import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
 import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
@@ -12,7 +11,7 @@ import {
   getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
-import { calculateTimeDiff } from "@/utils/date";
+import type { StorageSession } from "@/types/storage";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
@@ -29,15 +28,7 @@ browser.action.onClicked.addListener(async (tab) => {
 browser.tabs.onRemoved.addListener(async (tabId) => {
   removedTabIds.add(tabId);
   getBrowserSessionById(String(tabId)).then((session) => {
-    if (calculateTimeDiff(session.visitedAt, session.closedAt) <= 10) {
-      return;
-    }
-
-    historyAPIService.createHistory({
-      ...session,
-      closedAt: session?.closedAt ?? new Date().getTime() / 1000,
-      isClosed: true,
-    } as CreateHistoryDTO);
+    browserHistory.createClosedHistory(session as StorageSession);
     deleteBrowserSession(String(tabId));
 
     // Clean up after a short delay to avoid memory leaks
@@ -51,16 +42,7 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
   console.log("onActivated", closedSession);
   if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
-    if (
-      calculateTimeDiff(closedSession.visitedAt, closedSession.closedAt) <= 10
-    ) {
-      return;
-    }
-    console.log("createHistory");
-    historyAPIService.createHistory({
-      ...closedSession,
-      isClosed: false,
-    } as CreateHistoryDTO);
+    browserHistory.createClosedHistory(closedSession as StorageSession);
   }
 
   await visitBrowserSession(String(tabId));
