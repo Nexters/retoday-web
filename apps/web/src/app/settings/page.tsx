@@ -1,87 +1,63 @@
 "use client";
 
-import { Suspense, useMemo, useState } from "react";
-import { cn, Switch, SwitchThumb } from "@recap/ui";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { catchAPIError } from "@recap/api";
+import { cn } from "@recap/ui";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { SimpleSelect } from "@/app/settings/src/components/SimpleSelect";
 import UserProfile from "@/app/settings/src/components/UserProfile";
-import TimeBlueIcon from "@/assets/icons/time-blue.svg";
+import { tokenStore } from "@/app/settings/src/lib/token-store";
+import { authAPIService, userAPIService } from "@/app/settings/src/service";
+import RightIcon from "@/assets/icons/arrow-right.svg";
+
+type BackendLoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+};
 
 export default function SettingPage() {
-  const [hour, setHour] = useState("09");
-  const [minute, setMinute] = useState("00");
   const [domain, setDomain] = useState("");
 
-  const hourOptions = useMemo(
-    () =>
-      Array.from({ length: 24 }, (_, i) => {
-        const v = String(i).padStart(2, "0");
-        return { value: v, label: v };
-      }),
-    [],
-  );
+  const queryClient = useQueryClient();
 
-  const minuteOptions = useMemo(
-    () =>
-      Array.from({ length: 60 }, (_, i) => {
-        const v = String(i).padStart(2, "0");
-        return { value: v, label: v };
-      }),
-    [],
-  );
+  const {
+    data: profileData,
+    isLoading: profileLoading,
+    isError: profileError,
+  } = useQuery({
+    queryKey: ["getUserProfile"],
+    queryFn: () => userAPIService.getUserProfile(),
+    retry: false,
+  });
+
+  const isLoggedIn = useMemo(() => {
+    if (profileLoading) return false;
+    if (profileError) return false;
+    return Boolean(profileData?.data);
+  }, [profileData, profileError, profileLoading]);
+
+  const refetchProfile = async () => {
+    await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
+    await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
+  };
 
   return (
     <>
-      <Suspense fallback={<div>로딩중..</div>}>
-        <UserProfile />
-      </Suspense>
+      {isLoggedIn ? (
+        <UserProfile
+          data={profileData?.data}
+          onLogoutSuccess={refetchProfile}
+        />
+      ) : (
+        <UnLoginUserProfile onLoginSuccess={refetchProfile} />
+      )}
 
-      <div className="rounded-[1.25rem] bg-white px-9 py-8">
-        <div className="flex items-center justify-between">
-          <h2 className="text-heading-rg text-gray-800">리캡 주기 설정</h2>
-
-          <Switch size="sm">
-            <SwitchThumb size="sm" />
-          </Switch>
-        </div>
-
-        <p className="text-body-1 mt-2 text-gray-900">
-          지정된 시간에 리캡이 생성됩니다. 설정을 끌 경우 매일 자정에 배달
-          됩니다.
-        </p>
-
-        <div className="mt-6 rounded-xl bg-blue-50 p-5">
-          <div className="flex items-center gap-2">
-            <TimeBlueIcon />
-
-            <p className="text-headline-md text-gray-900">리캡 배송 시간</p>
-          </div>
-
-          <div className="mt-4 flex items-center gap-3">
-            <SimpleSelect
-              value={hour}
-              onValueChange={setHour}
-              options={hourOptions}
-              placeholder="시간"
-              className="w-30"
-            />
-
-            <SimpleSelect
-              value={minute}
-              onValueChange={setMinute}
-              options={minuteOptions}
-              placeholder="분"
-              className="w-30"
-            />
-
-            <p className="text-body-1 text-gray-800">
-              매일 이 시간에 리캡을 받습니다
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-[1.25rem] bg-white px-9 py-8">
+      <div
+        className={cn(
+          "rounded-[1.25rem] bg-white px-9 py-8",
+          !isLoggedIn && "pointer-events-none opacity-50",
+        )}
+      >
         <h2 className="text-heading-rg text-gray-800">추적금지 도메인</h2>
 
         <p className="text-body-1 mt-2 text-gray-900">
@@ -123,3 +99,115 @@ export default function SettingPage() {
     </>
   );
 }
+
+const UnLoginUserProfile = ({
+  onLoginSuccess,
+}: {
+  onLoginSuccess: () => void | Promise<void>;
+}) => {
+  const tokenClientRef = useRef<ReturnType<
+    NonNullable<
+      NonNullable<NonNullable<Window["google"]>["accounts"]>["oauth2"]
+    >["initTokenClient"]
+  > | null>(null);
+
+  const clientId = useMemo(
+    () => process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "",
+    [],
+  );
+
+  const onClickLogin = () => {
+    if (!tokenClientRef.current) {
+      return;
+    }
+
+    tokenClientRef.current.requestAccessToken({ prompt: "consent" });
+  };
+
+  useEffect(() => {
+    if (!clientId) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+      const google = window.google;
+
+      if (!google?.accounts?.oauth2?.initTokenClient) {
+        return;
+      }
+
+      tokenClientRef.current = google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "openid email profile",
+        callback: async (resp) => {
+          try {
+            if (resp.error) {
+              throw new Error(
+                `Google error: ${resp.error} ${resp.error_description ?? ""}`.trim(),
+              );
+            }
+
+            const googleAccessToken = resp.access_token;
+            if (!googleAccessToken)
+              throw new Error("Google access_token이 없어요.");
+
+            const data = (await authAPIService.googleOauthLogin({
+              oAuthToken: googleAccessToken,
+              provider: "GOOGLE",
+            })) as BackendLoginResponse;
+
+            if (!data?.accessToken || !data?.refreshToken) {
+              return;
+            }
+
+            tokenStore.set({
+              accessToken: data.accessToken,
+              refreshToken: data.refreshToken,
+            });
+
+            await onLoginSuccess();
+          } catch (e: unknown) {
+            catchAPIError(e);
+          }
+        },
+      });
+    };
+
+    script.onerror = () => console.log("에러");
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, [clientId, onLoginSuccess]);
+
+  return (
+    <div className="rounded-[1.25rem] bg-white px-9 py-8">
+      <p className="text-body-1 text-gray-800">
+        로그인하고 내 하루 기록을 확인해 보세요
+      </p>
+
+      <div className="my-6 h-px w-full bg-gray-200" />
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="size-14 rounded-full bg-gray-200" />
+          <p className="text-headline-sb text-gray-800">로그인</p>
+        </div>
+
+        <button
+          onClick={onClickLogin}
+          className="flex items-center gap-1 rounded-xl border border-solid border-gray-300 bg-white px-6 py-4"
+        >
+          로그인
+          <RightIcon />
+        </button>
+      </div>
+    </div>
+  );
+};

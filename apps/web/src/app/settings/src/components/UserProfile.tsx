@@ -2,23 +2,32 @@
 
 import Image from "next/image";
 import { catchAPIError } from "@recap/api";
-import { useQuery } from "@tanstack/react-query";
 
-import { authWithTokenAPIService } from "@/app/(auth)/src/service";
-import { userAPIService } from "@/app/settings/src/service";
+import { tokenStore } from "@/app/settings/src/lib/token-store";
+import { authWithTokenAPIService } from "@/app/settings/src/service";
+import type { UserProfileType } from "@/app/settings/src/service/schema/get-user-profile.schema";
 import RightIcon from "@/assets/icons/arrow-right.svg";
 import MailIcon from "@/assets/icons/mail.svg";
 import DefaultImg from "@/assets/img/recap-1.png";
 
-const UserProfile = () => {
-  const { data } = useQuery({
-    queryKey: ["getUserProfile"],
-    queryFn: () => userAPIService.getUserProfile(),
-  });
-
+const UserProfile = ({
+  data,
+  onLogoutSuccess,
+}: {
+  data: UserProfileType | undefined;
+  onLogoutSuccess: () => void | Promise<void>;
+}) => {
   const handleLogout = async () => {
     try {
       await authWithTokenAPIService.logout();
+
+      if ("clear" in tokenStore && typeof tokenStore.clear === "function") {
+        tokenStore.clear();
+      } else {
+        tokenStore.set({ accessToken: "", refreshToken: "" });
+      }
+
+      await onLogoutSuccess();
     } catch (err) {
       catchAPIError(err);
     }
@@ -35,7 +44,7 @@ const UserProfile = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Image
-            src={data.data.imageUrl ?? DefaultImg}
+            src={data.imageUrl ?? DefaultImg}
             alt="profileImg"
             width={64}
             height={64}
@@ -44,13 +53,13 @@ const UserProfile = () => {
 
           <div className="space-y-1">
             <p className="text-headline-sb text-gray-800">
-              {data.data.lastName}
-              {data.data.firstName}
+              {data.lastName}
+              {data.firstName}
             </p>
 
             <div className="flex items-center gap-1">
               <MailIcon />
-              <p className="text-body-1 text-gray-800">{data.data.email}</p>
+              <p className="text-body-1 text-gray-800">{data.email}</p>
             </div>
           </div>
         </div>
