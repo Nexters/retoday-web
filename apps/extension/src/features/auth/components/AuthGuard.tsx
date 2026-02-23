@@ -2,6 +2,10 @@ import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 
 import { NAVIGATION_TAB } from "@/const/navigation.const";
+import {
+  PRIVACY_POLICY_URL,
+  TERMS_OF_SERVICE_URL,
+} from "@/const/retoday.const";
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
 import NavigationTabs from "@/features/layout/components/NavigationTabs";
 import PageContent from "@/features/layout/components/PageContent";
@@ -54,7 +58,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
             <p className="text-caption-1 text-gray-500 mx-10 mt-9 text-center">
               By clicking on sign in you agree to our{" "}
               <a
-                href="#"
+                href={TERMS_OF_SERVICE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-04 bg-clip-text text-transparent underline"
@@ -63,7 +67,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
               </a>{" "}
               and our{" "}
               <a
-                href="#"
+                href={PRIVACY_POLICY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-gradient-04 bg-clip-text text-transparent underline"
