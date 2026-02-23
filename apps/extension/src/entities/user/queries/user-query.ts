@@ -1,4 +1,8 @@
-import { useQuery } from "@recap/react-query";
+import {
+  useMutation,
+  type UseMutationOptions,
+  useQuery,
+} from "@recap/react-query";
 
 import { userAPIService } from "@/entities/user/api";
 import type { UserProfileResponse } from "@/entities/user/model/user.type";
@@ -14,4 +18,14 @@ const useGetUserProfile = () => {
   });
 };
 
-export { useGetUserProfile };
+const usePostExcludeDomain = (
+  options: UseMutationOptions<void, Error, { domain: string }>,
+) => {
+  return useMutation<void, Error, { domain: string }>({
+    mutationFn: async (data) => {
+      await userAPIService.postExcludeDomain(data);
+    },
+    ...options,
+  });
+};
+export { useGetUserProfile, usePostExcludeDomain };

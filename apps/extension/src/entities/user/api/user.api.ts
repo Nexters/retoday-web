@@ -10,4 +10,11 @@ export class UserAPIService {
       url: "users/me/profiles",
     });
   }
+
+  postExcludeDomain(data: { domain: string }) {
+    return this.fetch.post({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
 }
