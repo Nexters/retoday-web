@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import { catchAPIError } from "@recap/api";
+import { useMemo, useState } from "react";
 import { cn } from "@recap/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import UserProfile from "@/app/settings/src/components/UserProfile";
-import { tokenStore } from "@/app/settings/src/lib/token-store";
-import { authAPIService, userAPIService } from "@/app/settings/src/service";
-import RightIcon from "@/assets/icons/arrow-right.svg";
-
-type BackendLoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
+import { userAPIService } from "@/app/settings/src/service";
+import LoginButton from "@/components/LoginButton";
 
 export default function SettingPage() {
   const [domain, setDomain] = useState("");
@@ -105,87 +98,6 @@ const UnLoginUserProfile = ({
 }: {
   onLoginSuccess: () => void | Promise<void>;
 }) => {
-  const tokenClientRef = useRef<ReturnType<
-    NonNullable<
-      NonNullable<NonNullable<Window["google"]>["accounts"]>["oauth2"]
-    >["initTokenClient"]
-  > | null>(null);
-
-  const clientId = useMemo(
-    () => process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? "",
-    [],
-  );
-
-  const onClickLogin = () => {
-    if (!tokenClientRef.current) {
-      return;
-    }
-
-    tokenClientRef.current.requestAccessToken({ prompt: "consent" });
-  };
-
-  useEffect(() => {
-    if (!clientId) {
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-
-    script.onload = () => {
-      const google = window.google;
-
-      if (!google?.accounts?.oauth2?.initTokenClient) {
-        return;
-      }
-
-      tokenClientRef.current = google.accounts.oauth2.initTokenClient({
-        client_id: clientId,
-        scope: "openid email profile",
-        callback: async (resp) => {
-          try {
-            if (resp.error) {
-              throw new Error(
-                `Google error: ${resp.error} ${resp.error_description ?? ""}`.trim(),
-              );
-            }
-
-            const googleAccessToken = resp.access_token;
-            if (!googleAccessToken)
-              throw new Error("Google access_token이 없어요.");
-
-            const data = (await authAPIService.googleOauthLogin({
-              oAuthToken: googleAccessToken,
-              provider: "GOOGLE",
-            })) as BackendLoginResponse;
-
-            if (!data?.accessToken || !data?.refreshToken) {
-              return;
-            }
-
-            tokenStore.set({
-              accessToken: data.accessToken,
-              refreshToken: data.refreshToken,
-            });
-
-            await onLoginSuccess();
-          } catch (e: unknown) {
-            catchAPIError(e);
-          }
-        },
-      });
-    };
-
-    script.onerror = () => console.log("에러");
-    document.head.appendChild(script);
-
-    return () => {
-      document.head.removeChild(script);
-    };
-  }, [clientId, onLoginSuccess]);
-
   return (
     <div className="rounded-[1.25rem] bg-white px-9 py-8">
       <p className="text-body-1 text-gray-800">
@@ -200,13 +112,7 @@ const UnLoginUserProfile = ({
           <p className="text-headline-sb text-gray-800">로그인</p>
         </div>
 
-        <button
-          onClick={onClickLogin}
-          className="flex items-center gap-1 rounded-xl border border-solid border-gray-300 bg-white px-6 py-4"
-        >
-          로그인
-          <RightIcon />
-        </button>
+        <LoginButton onLoginSuccess={onLoginSuccess} />
       </div>
     </div>
   );
