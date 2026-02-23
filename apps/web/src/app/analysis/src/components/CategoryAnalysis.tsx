@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { Badge, cn } from "@recap/ui";
 import { useQuery } from "@tanstack/react-query";
 
@@ -69,7 +70,6 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
   const listRows = useMemo(() => {
     const base = activeCategory ? [activeCategory] : served.categories;
-
     return base;
   }, [activeCategory, served.categories]);
 
@@ -228,7 +228,7 @@ function SiteFaviconPill({
       title={domain}
     >
       {faviconUrl ? (
-        <img
+        <Image
           src={faviconUrl}
           alt=""
           width={20}
@@ -236,9 +236,6 @@ function SiteFaviconPill({
           loading="lazy"
           referrerPolicy="no-referrer"
           className="h-5 w-5 object-contain"
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
         />
       ) : null}
     </div>
