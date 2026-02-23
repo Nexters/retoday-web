@@ -1,6 +1,7 @@
 import type { RestAPIProtocol } from "@recap/api";
 
 import type { DateQueryType } from "@/app/analysis/src/service/schema/enum.schema";
+import { GetCategoryAnalysesResponseSchema } from "@/app/analysis/src/service/schema/get-category-analysis.schema";
 import {
   type GetWebsiteAnalysesQueryType,
   GetWebsiteAnalysesResponseSchema,
@@ -52,6 +53,16 @@ export class AnalysisAPIService {
         ...query,
       },
       validate: TopVisitedSiteResponseSchema.parse,
+    });
+  }
+
+  getCategoryAnalysis(query?: DateQueryType) {
+    return this.fetch.get({
+      url: "users/me/category-analyses",
+      query: {
+        ...query,
+      },
+      validate: GetCategoryAnalysesResponseSchema.parse,
     });
   }
 }
