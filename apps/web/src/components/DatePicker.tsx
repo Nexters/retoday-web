@@ -32,9 +32,7 @@ export type DatePickerProps = {
 
 const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
   const router = useRouter();
-
   const pathname = usePathname();
-
   const searchParams = useSearchParams();
 
   const queryString = searchParams.toString();
@@ -46,9 +44,7 @@ const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
 
   const selected = useMemo(() => {
     const next = new URLSearchParams(queryString);
-
     const fromQuery = parseQueryDate(next.get(queryKey));
-
     return fromQuery ?? stableDefaultDate;
   }, [queryString, queryKey, stableDefaultDate]);
 
@@ -89,9 +85,18 @@ const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
 
   useEffect(() => {
     const nextMonth = startOfMonth(selected);
-
     setViewMonth((prev) => (isSameMonth(prev, nextMonth) ? prev : nextMonth));
   }, [selected]);
+
+  useEffect(() => {
+    const next = new URLSearchParams(queryString);
+
+    if (next.get(queryKey)) return;
+
+    next.set(queryKey, formatQueryDate(stableDefaultDate));
+
+    router.replace(buildUrl(pathname, next), { scroll: false });
+  }, [pathname, queryKey, queryString, router, stableDefaultDate]);
 
   return (
     <div ref={wrapRef} className="relative" onKeyDown={onKeyDown}>

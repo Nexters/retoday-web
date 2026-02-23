@@ -71,3 +71,47 @@ export const CreatePageResponseSchema = <T extends z.ZodTypeAny>(
     },
   };
 };
+
+export const dateStringSchema = z
+  .string()
+  .refine((val) => !isNaN(Date.parse(val)), {
+    message: "Invalid date string",
+  })
+  .transform((val) => new Date(val));
+
+export const dateNullableStringSchema = z
+  .string()
+  .nullable()
+  .refine(
+    (val) => {
+      if (val === null) {
+        return true;
+      }
+
+      return !isNaN(Date.parse(val));
+    },
+    {
+      message: "Invalid date string",
+    },
+  )
+  .transform((val) => (val === null ? null : new Date(val)));
+
+export const dateOptionalStringSchema = z
+  .string()
+  .nullable()
+  .optional()
+  .refine(
+    (val) => {
+      if (val === null || val === undefined) {
+        return true;
+      }
+
+      return !isNaN(Date.parse(val));
+    },
+    {
+      message: "Invalid date string",
+    },
+  )
+  .transform((val) =>
+    val === null || val === undefined ? undefined : new Date(val),
+  );
