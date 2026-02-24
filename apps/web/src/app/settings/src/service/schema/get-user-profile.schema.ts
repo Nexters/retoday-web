@@ -8,4 +8,6 @@ const UserProfileSchema = z.object({
   imageUrl: z.string(),
 });
 
+export type UserProfileType = z.infer<typeof UserProfileSchema>;
+
 export const GetUserProfileSchema = CreateResponseSchema(UserProfileSchema);

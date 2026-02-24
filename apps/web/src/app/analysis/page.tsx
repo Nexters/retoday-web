@@ -1,8 +1,4 @@
-import CategoryAnalysis from "@/app/analysis/src/components/CategoryAnalysis";
-import ScreenTime from "@/app/analysis/src/components/ScreenTime";
-import TodayTimeThief from "@/app/analysis/src/components/TodayTimeThief";
-import TopVisitedSites from "@/app/analysis/src/components/TopVisitedSites";
-import WorkPattern from "@/app/analysis/src/components/WorkPattern";
+import AnalysisGate from "@/app/analysis/src/components/AnalysisGate";
 import { getSafeQueryDate } from "@/lib/date/safe-query-date";
 
 type AnalysisPageProps = {
@@ -19,15 +15,5 @@ export default async function AnalysisPage({
 
   const date = getSafeQueryDate(dateParam);
 
-  return (
-    <>
-      <ScreenTime date={date} />
-      <CategoryAnalysis date={date} />
-      <div className="grid grid-cols-2 gap-7">
-        <WorkPattern date={date} />
-        <TodayTimeThief date={date} />
-      </div>
-      <TopVisitedSites date={date} />
-    </>
-  );
+  return <AnalysisGate date={date} />;
 }

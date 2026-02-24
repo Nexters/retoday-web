@@ -71,7 +71,7 @@ const WorkPattern = ({ date }: { date: string }) => {
   }, [data]);
 
   return (
-    <div className="rounded-[1.25rem] bg-white p-10">
+    <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
       <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
         내 작업 패턴
       </h2>
@@ -80,7 +80,7 @@ const WorkPattern = ({ date }: { date: string }) => {
         {isLoading ? "-" : isError || served.isEmpty ? "-" : served.title}
       </h3>
 
-      <div className="mt-8 flex flex-col gap-5">
+      <div className="mt-6 flex flex-col gap-4 md:mt-7 md:gap-5 xl:mt-8">
         {served.items.map((it) => (
           <PatternRow key={it.key} Icon={it.Icon} value={it.value} />
         ))}
