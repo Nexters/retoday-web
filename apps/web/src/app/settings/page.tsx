@@ -47,7 +47,7 @@ export default function SettingPage() {
 
       <div
         className={cn(
-          "rounded-[1.25rem] bg-white px-9 py-8",
+          "rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8",
           !isLoggedIn && "pointer-events-none opacity-50",
         )}
       >
@@ -70,7 +70,7 @@ export default function SettingPage() {
           ))}
         </div>
 
-        <div className="mt-6 flex items-center gap-4">
+        <div className="mt-6 flex flex-col items-stretch gap-3 md:flex-row md:items-center md:gap-4">
           <input
             className="text-body-2 w-full rounded-xl border border-solid border-gray-200 px-3 py-4 text-gray-900 placeholder:text-gray-500"
             type="text"
@@ -99,14 +99,14 @@ const UnLoginUserProfile = ({
   onLoginSuccess: () => void | Promise<void>;
 }) => {
   return (
-    <div className="rounded-[1.25rem] bg-white px-9 py-8">
+    <div className="rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
       <p className="text-body-1 text-gray-800">
         로그인하고 내 하루 기록을 확인해 보세요
       </p>
 
       <div className="my-6 h-px w-full bg-gray-200" />
 
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div className="flex items-center gap-3">
           <div className="size-14 rounded-full bg-gray-200" />
           <p className="text-headline-sb text-gray-800">로그인</p>

@@ -58,12 +58,12 @@ const TopVisitedSites = ({ date }: { date: string }) => {
   const isEmpty = !isLoading && served.length === 0;
 
   return (
-    <div className="rounded-[1.25rem] bg-white p-10">
+    <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
       <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
         자주 방문한 사이트
       </h2>
 
-      <div className="mt-6 flex flex-col gap-2">
+      <div className="mt-5 flex flex-col gap-2 md:mt-6">
         {isEmpty ? (
           <div className="text-body-1 text-gray-500">
             아직 기록된 방문 사이트가 없어요

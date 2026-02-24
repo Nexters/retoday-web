@@ -68,19 +68,41 @@ const ScreenTime = ({ date }: { date: string }) => {
   }, [data]);
 
   return (
-    <div className="flex rounded-[1.25rem] bg-white">
-      <div className="min-w-71.5 p-10">
-        <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-          {mode === "WEEKLY" ? "이번주 평균 스크린타임" : "총 스크린타임"}
-        </h2>
+    <div className="flex flex-col rounded-[1.25rem] bg-white xl:flex-row">
+      <div className="p-5 md:p-6 xl:min-w-71.5 xl:p-10">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
+              {mode === "WEEKLY" ? "이번주 평균 스크린타임" : "총 스크린타임"}
+            </h2>
 
-        <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
-          {served.isEmpty ? "-" : served.summaryText}
-        </h3>
+            <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
+              {served.isEmpty ? "-" : served.summaryText}
+            </h3>
+          </div>
+
+          <div className="hidden items-center gap-2 md:flex xl:hidden">
+            <Badge
+              variant={mode === "DAILY" ? "default" : "secondary"}
+              className="cursor-pointer"
+              onClick={() => setMode("DAILY")}
+            >
+              오늘
+            </Badge>
+
+            <Badge
+              variant={mode === "WEEKLY" ? "default" : "secondary"}
+              className="cursor-pointer"
+              onClick={() => setMode("WEEKLY")}
+            >
+              주간
+            </Badge>
+          </div>
+        </div>
       </div>
 
-      <div className="w-full px-6 pt-10 pb-3">
-        <div className="flex items-center gap-2">
+      <div className="w-full px-5 pb-3 md:px-6 md:pb-4 xl:px-6 xl:pt-10 xl:pb-3">
+        <div className="flex items-center justify-end gap-2 md:hidden xl:flex xl:justify-start">
           <Badge
             variant={mode === "DAILY" ? "default" : "secondary"}
             className="cursor-pointer"
@@ -98,7 +120,7 @@ const ScreenTime = ({ date }: { date: string }) => {
           </Badge>
         </div>
 
-        <div className="relative mt-12">
+        <div className="relative mt-6 md:mt-7 xl:mt-12">
           <ScreenTimeWeeklyBarChart
             data={served.chartData}
             height={140}

@@ -48,7 +48,7 @@ export default function RootLayout({
     <html lang="ko" className={ibmPlexSansKR.variable}>
       <body className="mx-auto max-w-7xl bg-gray-100">
         <ReactQueryProviders>
-          <div className="mx-17.5 mt-20 mb-35 flex flex-col gap-7">
+          <div className="mx-4 mt-8 mb-12 flex flex-col gap-5 md:mx-8 md:mt-12 md:mb-20 md:gap-6 xl:mx-17.5 xl:mt-20 xl:mb-35 xl:gap-7">
             <Suspense>
               <GNB />
             </Suspense>

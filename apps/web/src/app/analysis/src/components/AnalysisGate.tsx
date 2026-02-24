@@ -34,15 +34,15 @@ const AnalysisGate = ({ date }: { date: string }) => {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
       <ScreenTime date={date} />
       <CategoryAnalysis date={date} />
-      <div className="grid grid-cols-2 gap-7">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
         <WorkPattern date={date} />
         <TodayTimeThief date={date} />
       </div>
       <TopVisitedSites date={date} />
-    </>
+    </div>
   );
 };
 
@@ -63,9 +63,9 @@ const UnloginAnalysisLayout = ({
   };
 
   return (
-    <>
-      <div className="bg-blue-75 rounded-[1.25rem] px-9 py-8">
-        <div className="flex items-center justify-between">
+    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+      <div className="bg-blue-75 rounded-[1.25rem] px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <h2 className="text-display-3 text-gray-800">
             로그인하고 내 하루 기록을 확인해 보세요
           </h2>
@@ -80,13 +80,13 @@ const UnloginAnalysisLayout = ({
       <AssetCardImage src={UnloginScreenTimeImg} alt="unlogin-screentime" />
       <AssetCardImage src={UnloginCategoryImg} alt="unlogin-category" />
 
-      <div className="grid grid-cols-2 gap-7">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
         <AssetCardImage src={UnloginWorkPatternImg} alt="unlogin-workpattern" />
         <AssetCardImage src={UnloginTimeThiefImg} alt="unlogin-timethief" />
       </div>
 
       <AssetCardImage src={UnloginTopVisitedImg} alt="unlogin-topvisited" />
-    </>
+    </div>
   );
 };
 
