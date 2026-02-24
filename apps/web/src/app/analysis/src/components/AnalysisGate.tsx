@@ -2,6 +2,7 @@
 
 import { useCallback } from "react";
 import Image, { type StaticImageData } from "next/image";
+import Link from "next/link";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -11,6 +12,7 @@ import TodayTimeThief from "@/app/analysis/src/components/TodayTimeThief";
 import TopVisitedSites from "@/app/analysis/src/components/TopVisitedSites";
 import WorkPattern from "@/app/analysis/src/components/WorkPattern";
 import { useAuthStatus } from "@/app/settings/src/lib/use-auth-status";
+import ArrowRightBlueIcon from "@/assets/icons/arrow-right-blue.svg";
 import UnloginCategoryImg from "@/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/assets/img/analysis-unlogin-screentime.png";
 import UnloginTimeThiefImg from "@/assets/img/analysis-unlogin-timethief.png";
@@ -34,15 +36,24 @@ const AnalysisGate = ({ date }: { date: string }) => {
   }
 
   return (
-    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-      <ScreenTime date={date} />
-      <CategoryAnalysis date={date} />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
-        <WorkPattern date={date} />
-        <TodayTimeThief date={date} />
+    <>
+      <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+        <ScreenTime date={date} />
+        <CategoryAnalysis date={date} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
+          <WorkPattern date={date} />
+          <TodayTimeThief date={date} />
+        </div>
+        <TopVisitedSites date={date} />
       </div>
-      <TopVisitedSites date={date} />
-    </div>
+      <Link
+        href="/settings"
+        className="text-subtitle-1-md mt-7 flex items-center justify-end gap-1 p-2 text-[#4378ff]"
+      >
+        추적금지 도메인 추가하기
+        <ArrowRightBlueIcon />
+      </Link>
+    </>
   );
 };
 

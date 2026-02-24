@@ -11,4 +11,11 @@ export class UserAPIService {
       validate: GetUserProfileSchema.parse,
     });
   }
+
+  addExcludedDomain(data: { domain: string }) {
+    return this.fetch.post({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
 }
