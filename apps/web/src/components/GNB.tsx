@@ -41,7 +41,7 @@ const GNB = () => {
   );
 
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4">
       <GnbTabs value={currentTab} onValueChange={onTabChange} className="w-fit">
         <GnbTabsList>
           <GnbTabsTrigger value="analysis">분석</GnbTabsTrigger>
@@ -50,7 +50,9 @@ const GNB = () => {
         </GnbTabsList>
       </GnbTabs>
 
-      <DatePicker queryKey="date" />
+      <div className="ml-auto">
+        <DatePicker queryKey="date" />
+      </div>
     </div>
   );
 };

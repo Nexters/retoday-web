@@ -55,7 +55,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
 
   return (
     <div className="overflow-hidden rounded-[1.25rem] bg-white">
-      <div className="p-10 pb-0">
+      <div className="p-5 pb-0 md:p-6 md:pb-0 xl:p-10 xl:pb-0">
         <div className="flex items-center justify-between">
           <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
             오늘의 시간 도둑
@@ -74,7 +74,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
         </div>
       </div>
 
-      <div className="relative h-54 w-full">
+      <div className="relative h-48 w-full md:h-52 xl:h-54">
         <Image
           src={TimeThiefImg}
           alt="img"

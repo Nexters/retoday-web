@@ -119,7 +119,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
   return (
     <div className="flex rounded-[1.25rem] bg-white">
-      <div className="w-full p-10">
+      <div className="w-full p-5 md:p-6 xl:p-10">
         <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
           카테고리별 분석
         </h2>
@@ -155,7 +155,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
           ))}
         </div>
 
-        <div className="mt-5 grid grid-cols-2 gap-x-8">
+        <div className="mt-5 grid grid-cols-1 gap-x-8 md:grid-cols-2">
           {isEmpty ? (
             <div className="text-body-1 text-gray-500">
               분석 데이터가 없어요
@@ -173,24 +173,24 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
                   key={`${row.categoryName}-${idx}`}
                   className={cn(
                     "flex items-center justify-between py-4",
-                    isSingle && "col-span-2",
+                    isSingle && "md:col-span-2",
                     hasItemBelow && "border-b border-gray-200",
                   )}
                 >
-                  <div className="flex items-center gap-2">
+                  <div className="flex min-w-0 items-center gap-2">
                     <div className="flex size-4.5 items-center justify-center rounded-full bg-gray-100 text-sm font-semibold text-gray-600">
                       {idx + 1}
                     </div>
 
-                    <p className="text-subtitle-1-sb text-gray-900">
+                    <p className="text-subtitle-1-sb truncate text-gray-900">
                       {row.categoryName}
                     </p>
-                    <p className="text-subtitle-2-rg text-gray-800">
+                    <p className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
                       {formatMinutesFromSeconds(row.stayDuration)}
                     </p>
                   </div>
 
-                  <div className="flex items-center">
+                  <div className="ml-2 flex shrink-0 items-center">
                     {topSites.map((site, sIdx) => (
                       <div
                         key={`${site.domain}-${sIdx}`}
