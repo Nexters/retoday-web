@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
@@ -19,20 +19,13 @@ import UnloginWorkPatternImg from "@/assets/img/analysis-unlogin-workpattern.png
 import LoginButton from "@/components/LoginButton";
 
 const AnalysisGate = ({ date }: { date: string }) => {
-  const initialLoggedIn = useMemo(() => {
-    const snapshot =
-      "get" in tokenStore && typeof tokenStore.get === "function"
-        ? tokenStore.get()
-        : null;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    return Boolean(snapshot?.accessToken);
+  useEffect(() => {
+    setIsLoggedIn(Boolean(tokenStore.getAccess()));
   }, []);
 
-  // ✅ 로그인 상태를 state로 들고 있어야 화면 전환이 됨
-  const [isLoggedIn, setIsLoggedIn] = useState(initialLoggedIn);
-
   const handleLoginSuccess = useCallback(() => {
-    // tokenStore.set(...) 이후 여기 호출되면 즉시 UI 전환
     setIsLoggedIn(true);
   }, []);
 
