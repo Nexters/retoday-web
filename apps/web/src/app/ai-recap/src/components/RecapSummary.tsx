@@ -1,5 +1,6 @@
 import Image from "next/image";
 
+import AIRecapIcon from "@/assets/icons/recap-ai.svg";
 import RecapImg from "@/assets/img/recap-1.png";
 
 const RecapSummary = () => {
@@ -31,7 +32,7 @@ const RecapSummary = () => {
 
         <div className="mt-12 flex items-center gap-4 rounded-full bg-blue-50 px-2.5 py-2">
           <div className="flex items-center gap-2">
-            <div className="size-6 rounded-full bg-white" />
+            <AIRecapIcon />
             <p className="text-subtitle-1-sb text-gray-900">하루 요약</p>
           </div>
 
