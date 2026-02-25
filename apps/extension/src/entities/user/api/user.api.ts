@@ -17,4 +17,11 @@ export class UserAPIService {
       data,
     });
   }
+
+  deleteExcludeDomain(data: { domain: string }) {
+    return this.fetch.delete({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
 }

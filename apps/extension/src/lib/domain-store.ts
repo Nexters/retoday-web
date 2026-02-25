@@ -17,6 +17,11 @@ export const domainStore = {
     });
   },
 
+  async deleteExcludedDomain(domain: string): Promise<void> {
+    const domains = await this.getExcludedDomains();
+    await this.setExcludedDomains(domains.filter((d) => d !== domain));
+  },
+
   async clear(): Promise<void> {
     await setStorage({
       excludedDomains: [],

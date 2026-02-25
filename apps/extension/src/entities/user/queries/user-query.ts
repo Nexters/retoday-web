@@ -28,4 +28,15 @@ const usePostExcludeDomain = (
     ...options,
   });
 };
-export { useGetUserProfile, usePostExcludeDomain };
+
+const useDeleteExcludeDomain = (
+  options: UseMutationOptions<void, Error, { domain: string }>,
+) => {
+  return useMutation<void, Error, { domain: string }>({
+    mutationFn: async (data) => {
+      await userAPIService.deleteExcludeDomain(data);
+    },
+    ...options,
+  });
+};
+export { useDeleteExcludeDomain, useGetUserProfile, usePostExcludeDomain };
