@@ -16,9 +16,6 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
     ],
     action: {
       default_icon: {
-        "16": "src/assets/icons/favicon-16.png",
-        "32": "src/assets/icons/favicon-32.png",
-        "48": "src/assets/icons/favicon-48.png",
         "128": "src/assets/icons/favicon-128.png",
       },
     },
@@ -42,9 +39,6 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
       },
     ],
     icons: {
-      "16": "src/assets/icons/favicon-16.png",
-      "32": "src/assets/icons/favicon-32.png",
-      "48": "src/assets/icons/favicon-48.png",
       "128": "src/assets/icons/favicon-128.png",
     },
   };
