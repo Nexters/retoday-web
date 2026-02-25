@@ -6,9 +6,9 @@ import type { DateQueryType } from "@/app/analysis/src/service/schema/enum.schem
 export class RecapAPIService {
   constructor(private fetch: RestAPIProtocol) {}
 
-  generateRecap(query?: DateQueryType) {
-    return this.fetch.post({
-      url: "recaps/generate",
+  getRecap(query?: DateQueryType) {
+    return this.fetch.get({
+      url: "recaps",
       query: {
         ...query,
       },
