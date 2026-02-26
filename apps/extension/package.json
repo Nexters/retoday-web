@@ -6,9 +6,9 @@
   "description": "Chrome Extension - Browser Recap",
   "scripts": {
     "dev": "vite build --watch --mode development",
-    "build": "vite build",
-    "build:chrome": "vite build --browser=chrome",
-    "build:firefox": "vite build --browser=firefox",
+    "build": "vite build --mode production",
+    "build:chrome": "vite build --mode production --browser=chrome",
+    "build:firefox": "vite build --mode production --browser=firefox",
     "lint": "eslint --max-warnings 0",
     "check-types": "tsc --noEmit"
   },

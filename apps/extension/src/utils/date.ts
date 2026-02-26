@@ -45,3 +45,28 @@ export const formatDuration = (seconds: number): string => {
 
   return "0분";
 };
+
+export const formatTimeRange = (
+  startedAt: string | undefined | null,
+  closedAt: string | undefined | null,
+): string => {
+  if (!startedAt || !closedAt) return "";
+
+  const start = dayjs(startedAt);
+  const end = dayjs(closedAt);
+
+  if (!start.isValid() || !end.isValid()) return "";
+
+  const formatTime = (date: dayjs.Dayjs): string => {
+    const minutes = date.minute();
+    if (minutes === 0) {
+      return date.format("ha");
+    }
+    return date.format("h:mma");
+  };
+
+  const startTime = formatTime(start);
+  const endTime = formatTime(end);
+
+  return `${startTime} - ${endTime}`;
+};

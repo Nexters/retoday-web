@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
+import LogoImg from "@/assets/icons/favicon-128.png";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
 import {
   PRIVACY_POLICY_URL,
@@ -22,7 +23,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
     setIsLoggedIn(accessToken !== null);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     checkAuth();
   }, []);
 
@@ -37,6 +38,10 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
     });
   };
 
+  if (isLoggedIn === null) {
+    return null;
+  }
+
   if (isLoggedIn) {
     return <>{children}</>;
   }
@@ -49,7 +54,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
       <PageContent className="pt-12">
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center justify-center">
-            <div className="size-40 bg-gray-100" />
+            <img src={LogoImg} alt="ReToday" className="size-40 rounded-4xl" />
             <h1 className="text-display-1 mt-6">ReToday</h1>
             <h2 className="text-subtitle-1-md text-gray-800">
               매일 밤 만나는 나의 브라우저 리캡

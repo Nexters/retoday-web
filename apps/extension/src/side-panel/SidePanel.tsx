@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import DatePicker from "@/components/DatePicker";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
+import AiRecapView from "@/features/ai-recap/components/AiRecapView";
 import AnalysisView from "@/features/analysis/components/AnalysisView";
 import AuthGuard from "@/features/auth/components/AuthGuard";
 import Footer from "@/features/layout/components/Footer";
@@ -35,7 +36,9 @@ export function SidePanel() {
           {activeTab === NAVIGATION_TAB.ANALYSIS && (
             <AnalysisView selectedDate={selectedDate ?? new Date()} />
           )}
-          {/* {activeTab === NAVIGATION_TAB.AI_RECAP && <AiRecapView />} */}
+          {activeTab === NAVIGATION_TAB.AI_RECAP && (
+            <AiRecapView selectedDate={selectedDate ?? new Date()} />
+          )}
           {activeTab === NAVIGATION_TAB.SETTINGS && <SettingView />}
         </PageContent>
       </AuthGuard>

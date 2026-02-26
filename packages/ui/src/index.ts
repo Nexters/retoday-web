@@ -4,6 +4,7 @@ export * from "./button";
 export * from "./date-picker";
 export * from "./input";
 export * from "./select";
+export * from "./skeleton";
 export * from "./switch";
 export * from "./tabs";
 export * from "./toggle-group";
