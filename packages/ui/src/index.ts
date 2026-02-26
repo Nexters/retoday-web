@@ -1,6 +1,7 @@
 export * from "./accordion";
 export * from "./badge";
 export * from "./button";
+export * from "./date-picker";
 export * from "./input";
 export * from "./select";
 export * from "./switch";
@@ -8,4 +9,5 @@ export * from "./tabs";
 export * from "./toggle-group";
 export * from "./tooltip";
 export * from "./utils/cn";
+export * from "./utils/date";
 export * from "./weekly-bar-chart";

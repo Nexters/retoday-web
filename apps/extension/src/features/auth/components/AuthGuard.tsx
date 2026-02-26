@@ -1,7 +1,11 @@
 import type { PropsWithChildren } from "react";
 import { useEffect, useState } from "react";
 
+import { NAVIGATION_TAB } from "@/const/navigation.const";
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
+import NavigationTabs from "@/features/layout/components/NavigationTabs";
+import PageContent from "@/features/layout/components/PageContent";
+import PageHeader from "@/features/layout/components/PageHeader";
 import useBrowserMessage from "@/hooks/use-browser-message";
 import { tokenStore } from "@/lib/token-store";
 import { MESSAGE_TYPE } from "@/types/messages";
@@ -34,13 +38,43 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
   }
 
   return (
-    <div className="flex h-full flex-col bg-gray-75">
-      <div className="flex flex-1 flex-col items-center justify-center">
-        <div className="size-40 bg-gray-100" />
-        <h1 className="text-display-1 mt-6">ReToday</h1>
-        <GoogleLoginButton className="mt-9" onClick={handleGoogleLogin} />
-      </div>
-    </div>
+    <>
+      <PageHeader>
+        <NavigationTabs defaultValue={NAVIGATION_TAB.ANALYSIS} />
+      </PageHeader>
+      <PageContent className="pt-12">
+        <div className="flex h-full flex-col">
+          <div className="flex flex-1 flex-col items-center justify-center">
+            <div className="size-40 bg-gray-100" />
+            <h1 className="text-display-1 mt-6">ReToday</h1>
+            <h2 className="text-subtitle-1-md text-gray-800">
+              매일 밤 만나는 나의 브라우저 리캡
+            </h2>
+            <GoogleLoginButton className="mt-9" onClick={handleGoogleLogin} />
+            <p className="text-caption-1 text-gray-500 mx-10 mt-9 text-center">
+              By clicking on sign in you agree to our{" "}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-04 bg-clip-text text-transparent underline"
+              >
+                Terms and Conditions
+              </a>{" "}
+              and our{" "}
+              <a
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-gradient-04 bg-clip-text text-transparent underline"
+              >
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </div>
+      </PageContent>
+    </>
   );
 };
 

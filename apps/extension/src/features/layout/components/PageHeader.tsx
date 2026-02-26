@@ -6,12 +6,7 @@ const PageHeader = ({
   className,
 }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <div
-      className={cn(
-        "fixed top-0 z-50 left-0 right-0 bg-white border-b border-gray-200",
-        className,
-      )}
-    >
+    <div className={cn("fixed top-0 z-50 left-0 right-0 bg-white", className)}>
       {children}
     </div>
   );

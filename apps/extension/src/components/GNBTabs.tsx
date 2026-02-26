@@ -28,8 +28,8 @@ const GnbTabsTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       className,
-      "flex-1 py-3 text-gray-500 rounded-none text-subtitle-2-sb border-0",
-      "data-[state=active]:border-b-2 data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:border-gray-900 data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-gray-900",
+      "flex-1 py-3 text-gray-500 rounded-none text-subtitle-2-rg border-0",
+      "data-[state=active]:text-subtitle-2-sb data-[state=active]:border-b-2 data-[state=active]:border-t-0 data-[state=active]:border-l-0 data-[state=active]:border-r-0 data-[state=active]:border-gray-900 data-[state=active]:shadow-none data-[state=active]:bg-transparent data-[state=active]:text-gray-900",
     )}
     {...props}
   />

@@ -2,13 +2,23 @@ import { useState } from "react";
 
 import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ToggleGroup";
+import { DATE_FORMAT } from "@/const/date-format.const";
+import {
+  ANALYSIS_PERIOD,
+  type AnalysisPeriod,
+} from "@/entities/analysis/model/analysis.type";
+import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
 import { DUMMY_CHART_DATA } from "@/features/ai-recap/const/dummy.const";
+import { formatDate } from "@/utils/date";
 
-type ViewMode = "today" | "week";
+const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
+  const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
 
-const WeeklyScreenTimeSection = () => {
-  const [mode, setMode] = useState<ViewMode>("week");
-
+  const { data: screenTime } = useGetAnalysisScreenTime(
+    mode,
+    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+  );
+  console.log("screenTime", screenTime);
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">
       <div className="flex items-center justify-between">
@@ -25,13 +35,13 @@ const WeeklyScreenTimeSection = () => {
           value={mode}
           onValueChange={(value) => {
             if (value.length === 0) return;
-            setMode(value as ViewMode);
+            setMode(value as AnalysisPeriod);
           }}
         >
-          <ToggleGroupItem value="today" position="left">
+          <ToggleGroupItem value={ANALYSIS_PERIOD.DAILY} position="left">
             오늘
           </ToggleGroupItem>
-          <ToggleGroupItem value="week" position="right">
+          <ToggleGroupItem value={ANALYSIS_PERIOD.WEEKLY} position="right">
             주간
           </ToggleGroupItem>
         </ToggleGroup>

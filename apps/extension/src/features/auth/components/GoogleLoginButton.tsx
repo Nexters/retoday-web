@@ -10,7 +10,7 @@ const GoogleLoginButton = ({ className, onClick }: GoogleLoginButtonProps) => {
   return (
     <button
       className={cn(
-        "flex items-center overflow-hidden rounded-xs border border-[#346EF1] bg-white hover:shadow-md transition-shadow",
+        "flex cursor-pointer items-center overflow-hidden rounded-xs border border-[#346EF1] bg-white hover:shadow-md transition-shadow",
         className,
       )}
       onClick={onClick}
