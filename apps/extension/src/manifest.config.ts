@@ -3,17 +3,11 @@ import type { ManifestV3Export } from "@crxjs/vite-plugin";
 export function createManifest(env: Record<string, string>): ManifestV3Export {
   return {
     manifest_version: 3,
-    name: "Retoday",
+    name: "ReToday",
     version: "1.0.0",
-    description: "Retoday Extension",
-    permissions: [
-      "tabs",
-      "storage",
-      "activeTab",
-      "sidePanel",
-      "identity",
-      "identity.email",
-    ],
+    description: "ReToday Extension",
+    ...(env.VITE_EXTENSION_KEY && { key: env.VITE_EXTENSION_KEY }),
+    permissions: ["tabs", "storage", "sidePanel", "identity"],
     action: {
       default_icon: {
         "128": "src/assets/icons/favicon-128.png",
