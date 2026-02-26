@@ -32,6 +32,7 @@ browser.tabs.onRemoved.addListener(async (tabId) => {
     if (calculateTimeDiff(session.visitedAt, session.closedAt) <= 10) {
       return;
     }
+
     historyAPIService.createHistory({
       ...session,
       closedAt: session?.closedAt ?? new Date().getTime() / 1000,
@@ -48,13 +49,14 @@ browser.tabs.onRemoved.addListener(async (tabId) => {
 
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
-
+  console.log("onActivated", closedSession);
   if (closedSession && !removedTabIds.has(Number(closedSession.tabId))) {
     if (
       calculateTimeDiff(closedSession.visitedAt, closedSession.closedAt) <= 10
     ) {
       return;
     }
+    console.log("createHistory");
     historyAPIService.createHistory({
       ...closedSession,
       isClosed: false,

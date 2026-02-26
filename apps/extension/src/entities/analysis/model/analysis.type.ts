@@ -46,3 +46,10 @@ export type FrequencyVisitedSitesResponse = {
   date: string;
   websiteAnalyses: AnalysisFrequencyItem[];
 };
+
+export type LongestWebSiteResponse = {
+  date: string;
+  domain: string;
+  faviconUrl: string;
+  stayDuration: number;
+};

@@ -10,7 +10,7 @@ const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
       <Divider />
       <CategoryAnalysisSection selectedDate={selectedDate} />
       <Divider />
-      <TodayTimeThiefSection />
+      <TodayTimeThiefSection selectedDate={selectedDate} />
     </>
   );
 };

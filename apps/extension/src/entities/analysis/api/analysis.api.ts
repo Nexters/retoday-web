@@ -4,6 +4,7 @@ import type {
   AnalysisCategoryResponse,
   AnalysisPeriod,
   FrequencyVisitedSitesResponse,
+  LongestWebSiteResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 export class AnalysisAPIService {
@@ -27,6 +28,12 @@ export class AnalysisAPIService {
   getFrequencyVisitedSites(date: string, limit: number) {
     return this.fetch.get<FrequencyVisitedSitesResponse>({
       url: `users/me/frequently-visited-websites?date=${date}&limit=${limit}`,
+    });
+  }
+
+  getLongestWebSite(date: string) {
+    return this.fetch.get<LongestWebSiteResponse>({
+      url: `users/me/longest-stayed-website?date=${date}`,
     });
   }
 }

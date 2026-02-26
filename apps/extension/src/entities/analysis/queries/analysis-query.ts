@@ -1,4 +1,4 @@
-import { useQuery } from "@recap/react-query";
+import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
 import { analysisAPIService } from "@/entities/analysis/api";
 import type {
@@ -6,17 +6,26 @@ import type {
   AnalysisPeriod,
   AnalysisScreenTimeResponse,
   FrequencyVisitedSitesResponse,
+  LongestWebSiteResponse,
 } from "@/entities/analysis/model/analysis.type";
 
 import { ANALYSIS_KEYS } from "./query-key.const";
 
-const useGetAnalysisScreenTime = (period: AnalysisPeriod, date: string) => {
-  return useQuery<AnalysisScreenTimeResponse>({
+const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeResponse>(
+  period: AnalysisPeriod,
+  date: string,
+  options?: Omit<
+    UseQueryOptions<AnalysisScreenTimeResponse, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<AnalysisScreenTimeResponse, Error, TData>({
     queryKey: ANALYSIS_KEYS.detail(["screen-time", period, date]),
     queryFn: async () => {
       const response = await analysisAPIService.getScreenTime(period, date);
       return response as AnalysisScreenTimeResponse;
     },
+    ...options,
   });
 };
 
@@ -30,8 +39,15 @@ const useGetAnalysisCategoryAnalysis = (date: string) => {
   });
 };
 
-const useGetFrequencyVisitedSites = (date: string, limit: number) => {
-  return useQuery<FrequencyVisitedSitesResponse>({
+const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesResponse>(
+  date: string,
+  limit: number,
+  options?: Omit<
+    UseQueryOptions<FrequencyVisitedSitesResponse, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<FrequencyVisitedSitesResponse, Error, TData>({
     queryKey: ANALYSIS_KEYS.detail(["frequency-visited-sites", date, limit]),
     queryFn: async () => {
       const response = await analysisAPIService.getFrequencyVisitedSites(
@@ -40,10 +56,23 @@ const useGetFrequencyVisitedSites = (date: string, limit: number) => {
       );
       return response as FrequencyVisitedSitesResponse;
     },
+    ...options,
   });
 };
+
+const useGetLongestWebSite = (date: string) => {
+  return useQuery<LongestWebSiteResponse>({
+    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", date]),
+    queryFn: async () => {
+      const response = await analysisAPIService.getLongestWebSite(date);
+      return response as LongestWebSiteResponse;
+    },
+  });
+};
+
 export {
   useGetAnalysisCategoryAnalysis,
   useGetAnalysisScreenTime,
   useGetFrequencyVisitedSites,
+  useGetLongestWebSite,
 };
