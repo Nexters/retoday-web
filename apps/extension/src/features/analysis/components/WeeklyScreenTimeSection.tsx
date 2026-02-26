@@ -9,27 +9,33 @@ import {
 } from "@/entities/analysis/model/analysis.type";
 import { transformScreenTimeToChartData } from "@/entities/analysis/model/screen-time-chart-mapper";
 import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
+import WeeklyScreenTimeSectionSkeleton from "@/features/analysis/components/WeeklyScreenTimeSectionSkeleton";
 import { formatDate, formatDuration } from "@/utils/date";
 
 const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
 
-  const { data: screenTime } = useGetAnalysisScreenTime(
+  const { data: screenTime, isLoading } = useGetAnalysisScreenTime(
     mode,
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );
 
-  const { data: weeklyScreenTime } = useGetAnalysisScreenTime(
-    ANALYSIS_PERIOD.WEEKLY,
-    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-    {
-      select: (data) =>
-        data.screenTimes.reduce(
-          (acc, screenTime) => acc + screenTime.stayDuration,
-          0,
-        ),
-    },
-  );
+  const { data: weeklyScreenTime, isLoading: isLoadingWeeklyScreenTime } =
+    useGetAnalysisScreenTime(
+      ANALYSIS_PERIOD.WEEKLY,
+      formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+      {
+        select: (data) =>
+          data.screenTimes.reduce(
+            (acc, screenTime) => acc + screenTime.stayDuration,
+            0,
+          ),
+      },
+    );
+
+  if (isLoading || isLoadingWeeklyScreenTime) {
+    return <WeeklyScreenTimeSectionSkeleton />;
+  }
 
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">

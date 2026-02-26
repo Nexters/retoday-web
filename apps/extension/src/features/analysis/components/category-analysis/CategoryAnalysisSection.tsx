@@ -6,10 +6,11 @@ import { useGetAnalysisCategoryAnalysis } from "@/entities/analysis/queries/anal
 import BubbleRanking from "@/features/analysis/components/category-analysis/BubbleRanking";
 import CategoryAnalysisItem from "@/features/analysis/components/category-analysis/CategoryAnalysisItem";
 import CategoryTitle from "@/features/analysis/components/category-analysis/CategoryTitle";
+import CategoryAnalysisSectionSkeleton from "@/features/analysis/components/CategoryAnalysisSectionSkeleton";
 import { formatDate, formatDuration } from "@/utils/date";
 
 const CategoryAnalysisSection = ({ selectedDate }: { selectedDate: Date }) => {
-  const { data } = useGetAnalysisCategoryAnalysis(
+  const { data, isLoading } = useGetAnalysisCategoryAnalysis(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );
 
@@ -22,7 +23,9 @@ const CategoryAnalysisSection = ({ selectedDate }: { selectedDate: Date }) => {
       }));
   }, [data]);
 
-  console.log("sortedCategoryAnalyses", sortedCategoryAnalyses);
+  if (isLoading) {
+    return <CategoryAnalysisSectionSkeleton />;
+  }
   return (
     <div className="bg-white pt-8 px-5 pb-11">
       <CategoryTitle
