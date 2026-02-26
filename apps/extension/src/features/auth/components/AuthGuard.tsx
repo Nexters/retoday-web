@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
 import LogoImg from "@/assets/icons/favicon-128.png";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
@@ -23,7 +23,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
     setIsLoggedIn(accessToken !== null);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     checkAuth();
   }, []);
 
@@ -37,6 +37,10 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
       type: MESSAGE_TYPE.GOOGLE_LOGIN,
     });
   };
+
+  if (isLoggedIn === null) {
+    return null;
+  }
 
   if (isLoggedIn) {
     return <>{children}</>;
