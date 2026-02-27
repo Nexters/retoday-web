@@ -9,9 +9,16 @@ import {
 } from "@recap/ui";
 
 import Icon from "@/components/Icon";
+import type { AnalysisCategoryItem } from "@/entities/analysis/model/analysis.type";
 import CategoryLink from "@/features/analysis/components/CategoryLink";
+import { formatDuration } from "@/utils/date";
 
-const CategoryAnalysisItem = () => {
+const CategoryAnalysisItem = ({
+  categoryName,
+  stayDuration,
+  websiteAnalyses,
+  count,
+}: AnalysisCategoryItem & { count: number }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <Accordion
@@ -26,10 +33,14 @@ const CategoryAnalysisItem = () => {
             <div className="w-full pt-2 pb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Badge className="size-4.5 rounded-full text-sm font-semibold bg-gray-100 text-gray-600 flex items-center justify-center p-0">
-                  1
+                  {count}
                 </Badge>
-                <p className="text-subtitle-2-sb text-gray-900">생활/편의</p>
-                <p className="text-subtitle-2-rg text-gray-800">20분</p>
+                <p className="text-subtitle-2-sb text-gray-900">
+                  {categoryName}
+                </p>
+                <p className="text-subtitle-2-rg text-gray-800">
+                  {formatDuration(stayDuration)}
+                </p>
               </div>
               <Icon
                 name={isOpen ? "arrow-up" : "arrow-down"}
@@ -39,8 +50,8 @@ const CategoryAnalysisItem = () => {
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent className="flex flex-col gap-1">
-          {[...Array(3)].map((_, idx) => (
-            <CategoryLink key={idx} />
+          {websiteAnalyses.map((website, idx) => (
+            <CategoryLink key={idx} {...website} />
           ))}
           <div className="flex items-center justify-center py-3">
             <p className="text-caption-1 text-gray-500 w-full text-center">

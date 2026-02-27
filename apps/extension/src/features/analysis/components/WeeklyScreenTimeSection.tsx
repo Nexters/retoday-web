@@ -2,12 +2,40 @@ import { useState } from "react";
 
 import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ToggleGroup";
-import { DUMMY_CHART_DATA } from "@/features/ai-recap/const/dummy.const";
+import { DATE_FORMAT } from "@/const/date-format.const";
+import {
+  ANALYSIS_PERIOD,
+  type AnalysisPeriod,
+} from "@/entities/analysis/model/analysis.type";
+import { transformScreenTimeToChartData } from "@/entities/analysis/model/screen-time-chart-mapper";
+import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
+import WeeklyScreenTimeSectionSkeleton from "@/features/analysis/components/WeeklyScreenTimeSectionSkeleton";
+import { formatDate, formatDuration } from "@/utils/date";
 
-type ViewMode = "today" | "week";
+const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
+  const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
 
-const WeeklyScreenTimeSection = () => {
-  const [mode, setMode] = useState<ViewMode>("week");
+  const { data: screenTime, isLoading } = useGetAnalysisScreenTime(
+    mode,
+    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+  );
+
+  const { data: weeklyScreenTime, isLoading: isLoadingWeeklyScreenTime } =
+    useGetAnalysisScreenTime(
+      ANALYSIS_PERIOD.WEEKLY,
+      formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+      {
+        select: (data) =>
+          data.screenTimes.reduce(
+            (acc, screenTime) => acc + screenTime.stayDuration,
+            0,
+          ),
+      },
+    );
+
+  if (isLoading || isLoadingWeeklyScreenTime) {
+    return <WeeklyScreenTimeSectionSkeleton />;
+  }
 
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">
@@ -17,7 +45,7 @@ const WeeklyScreenTimeSection = () => {
             이번주 평균 스크린타임
           </h2>
           <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
-            하루 109시간 2분
+            하루 {weeklyScreenTime ? formatDuration(weeklyScreenTime) : "-"}
           </h3>
         </div>
         <ToggleGroup
@@ -25,13 +53,13 @@ const WeeklyScreenTimeSection = () => {
           value={mode}
           onValueChange={(value) => {
             if (value.length === 0) return;
-            setMode(value as ViewMode);
+            setMode(value as AnalysisPeriod);
           }}
         >
-          <ToggleGroupItem value="today" position="left">
+          <ToggleGroupItem value={ANALYSIS_PERIOD.DAILY} position="left">
             오늘
           </ToggleGroupItem>
-          <ToggleGroupItem value="week" position="right">
+          <ToggleGroupItem value={ANALYSIS_PERIOD.WEEKLY} position="right">
             주간
           </ToggleGroupItem>
         </ToggleGroup>
@@ -40,7 +68,9 @@ const WeeklyScreenTimeSection = () => {
       <div className="h-6" />
 
       <ScreenTimeWeeklyBarChart
-        data={DUMMY_CHART_DATA}
+        data={
+          screenTime ? transformScreenTimeToChartData(mode, screenTime) : []
+        }
         height={100}
         className="mt-20"
         minBarHeight={10}

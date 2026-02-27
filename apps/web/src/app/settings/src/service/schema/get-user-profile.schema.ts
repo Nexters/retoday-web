@@ -6,6 +6,7 @@ const UserProfileSchema = z.object({
   firstName: z.string(),
   lastName: z.string(),
   imageUrl: z.string(),
+  excludedDomains: z.array(z.string()),
 });
 
 export type UserProfileType = z.infer<typeof UserProfileSchema>;

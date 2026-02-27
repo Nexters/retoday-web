@@ -1,18 +1,16 @@
-import DateRangePicker from "@/components/DateRangePicker";
 import Divider from "@/components/Divider";
 import CategoryAnalysisSection from "@/features/analysis/components/category-analysis/CategoryAnalysisSection";
 import TodayTimeThiefSection from "@/features/analysis/components/TodayTimeThiefSection";
 import WeeklyScreenTimeSection from "@/features/analysis/components/WeeklyScreenTimeSection";
 
-const AnalysisView = () => {
+const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
   return (
     <>
-      <DateRangePicker />
-      <WeeklyScreenTimeSection />
+      <WeeklyScreenTimeSection selectedDate={selectedDate} />
       <Divider />
-      <CategoryAnalysisSection />
+      <CategoryAnalysisSection selectedDate={selectedDate} />
       <Divider />
-      <TodayTimeThiefSection />
+      <TodayTimeThiefSection selectedDate={selectedDate} />
     </>
   );
 };

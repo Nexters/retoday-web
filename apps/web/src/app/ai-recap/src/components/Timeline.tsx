@@ -1,11 +1,10 @@
 "use client";
 
 import { useCustomScrollbar } from "@/app/ai-recap/src/hooks/useCustomScrollbar";
+import type { NormalizedRecap } from "@/app/ai-recap/src/types/recap";
 import TimeLineBackgroundImg from "@/assets/img/timeline-bg.png";
 
-const HOURS = Array.from({ length: 24 }, (_, i) => i);
-
-const Timeline = () => {
+const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
   const {
     scrollerRef,
     trackRef,
@@ -25,7 +24,7 @@ const Timeline = () => {
     backgroundSize: "cover",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
-    backgroundAttachment: "fixed", // 핵심: 배경 정렬을 viewport 기준으로 통일
+    backgroundAttachment: "fixed",
   };
 
   return (
@@ -63,34 +62,47 @@ const Timeline = () => {
           className="h-96 overflow-y-auto overscroll-contain py-6"
           style={{ scrollbarWidth: "none" }}
         >
-          <div className="relative ml-3.25 space-y-4">
-            {HOURS.map((h) => {
-              return (
-                <div className="flex items-center gap-9" key={h}>
-                  <div className="relative flex items-center">
-                    <div
-                      className="size-4 rounded-full border border-white"
-                      style={bgStyle}
-                    />
-                  </div>
+          {recap.timelines.length === 0 ? (
+            <div className="text-body-1 text-gray-500">
+              타임라인 데이터가 없어요
+            </div>
+          ) : (
+            <div className="relative ml-3.25 space-y-4">
+              {recap.timelines.map((timeline, index) => {
+                return (
+                  <div
+                    className="flex items-center gap-9"
+                    key={`${timeline.title}-${index}`}
+                  >
+                    <div className="relative flex items-center">
+                      <div
+                        className="size-4 rounded-full border border-white"
+                        style={bgStyle}
+                      />
+                    </div>
 
-                  <div className="bg-gray-75 flex w-full items-center justify-between rounded-xl p-4">
-                    <p className="text-headline-md text-gray-900">
-                      신발 쇼핑하기
-                    </p>
+                    <div className="bg-gray-75 flex w-full items-center justify-between rounded-xl p-4">
+                      <p className="text-headline-md text-gray-900">
+                        {timeline.title}
+                      </p>
 
-                    <div className="flex items-center gap-2">
-                      <p className="text-body-1 text-gray-500">30m</p>
+                      <div className="flex items-center gap-2">
+                        <p className="text-body-1 text-gray-500">
+                          {formatDuration(timeline.durationMinutes)}
+                        </p>
 
-                      <div className="size-1 rounded-full bg-gray-200" />
+                        <div className="size-1 rounded-full bg-gray-200" />
 
-                      <p className="text-body-1 text-gray-500">00:00 - 00:30</p>
+                        <p className="text-body-1 text-gray-500">
+                          {`${timeline.startedAt} - ${timeline.endedAt}`}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -98,3 +110,12 @@ const Timeline = () => {
 };
 
 export default Timeline;
+
+const formatDuration = (minutes: number) => {
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  const restMinutes = minutes % 60;
+
+  if (restMinutes === 0) return `${hours}h`;
+  return `${hours}h ${restMinutes}m`;
+};
