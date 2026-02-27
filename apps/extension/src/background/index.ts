@@ -18,13 +18,9 @@ import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
 
 const removedTabIds = new Set<number>();
 
-browser.action.onClicked.addListener(async (tab) => {
-  if (tab.id) {
-    if (chrome?.sidePanel) {
-      await chrome.sidePanel.open({ tabId: tab.id });
-    }
-  }
-});
+chrome.sidePanel
+  .setPanelBehavior({ openPanelOnActionClick: true })
+  .catch((error: unknown) => console.error(error));
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
   removedTabIds.add(tabId);
