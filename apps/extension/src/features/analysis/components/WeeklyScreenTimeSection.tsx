@@ -45,7 +45,7 @@ const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
             이번주 평균 스크린타임
           </h2>
           <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
-            하루 {weeklyScreenTime ? formatDuration(weeklyScreenTime) : "-"}
+            하루 {weeklyScreenTime ? formatDuration(weeklyScreenTime / 7) : "-"}
           </h3>
         </div>
         <ToggleGroup
