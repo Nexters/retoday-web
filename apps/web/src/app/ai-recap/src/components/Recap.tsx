@@ -34,12 +34,10 @@ const Recap = ({ date }: { date: string }) => {
 };
 
 const LoggedInRecap = ({ date }: { date: string }) => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["generateRecap", date],
     queryFn: () => recapAPIService.getRecap({ date }),
   });
-
-  console.log(data);
 
   const emptyRecap: NormalizedRecap = {
     id: 0,
@@ -86,6 +84,19 @@ const LoggedInRecap = ({ date }: { date: string }) => {
       }
     : emptyRecap;
 
+  const hasRecapData = Boolean(
+    rawRecap &&
+    ((rawRecap.title && rawRecap.title.trim()) ||
+      (rawRecap.summary && rawRecap.summary.trim()) ||
+      (rawRecap.sections && rawRecap.sections.length > 0) ||
+      (rawRecap.timelines && rawRecap.timelines.length > 0) ||
+      (rawRecap.topics && rawRecap.topics.length > 0)),
+  );
+
+  if (!isLoading && !hasRecapData) {
+    return <UnloginRecapLayout showLoginBanner={false} />;
+  }
+
   return (
     <>
       <RecapSummary recap={recap} />
@@ -96,9 +107,11 @@ const LoggedInRecap = ({ date }: { date: string }) => {
 };
 
 const UnloginRecapLayout = ({
+  showLoginBanner = true,
   onLoginSuccess,
 }: {
-  onLoginSuccess: () => void;
+  showLoginBanner?: boolean;
+  onLoginSuccess?: () => void;
 }) => {
   const queryClient = useQueryClient();
 
@@ -106,12 +119,16 @@ const UnloginRecapLayout = ({
     await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
     await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
 
-    onLoginSuccess();
+    if (onLoginSuccess) {
+      onLoginSuccess();
+    }
   };
 
   return (
     <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-      <LoginBanner handleLoginSuccess={handleLoginSuccess} />
+      {showLoginBanner ? (
+        <LoginBanner handleLoginSuccess={handleLoginSuccess} />
+      ) : null}
 
       <div className="rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
