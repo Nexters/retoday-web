@@ -7,8 +7,8 @@ const RecapSectionSchema = z.object({
 });
 
 const RecapTimelineSchema = z.object({
-  startedAt: dateStringSchema,
-  endedAt: dateStringSchema,
+  startedAt: z.string(),
+  endedAt: z.string(),
   title: z.string(),
   durationMinutes: z.number(),
 });

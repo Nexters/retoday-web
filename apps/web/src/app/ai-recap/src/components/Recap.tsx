@@ -9,6 +9,7 @@ import RecapSummary from "@/app/ai-recap/src/components/RecapSummary";
 import Timeline from "@/app/ai-recap/src/components/Timeline";
 import TopVisitedTopics from "@/app/ai-recap/src/components/TopVisitedTopics";
 import { recapAPIService } from "@/app/ai-recap/src/service";
+import type { NormalizedRecap } from "@/app/ai-recap/src/types/recap";
 import { tokenStore } from "@/app/settings/src/lib/token-store";
 import EmptyRecapImg1 from "@/assets/img/empty-reacp-1.png";
 import EmptyRecapImg2 from "@/assets/img/empty-recap-2.png";
@@ -38,13 +39,58 @@ const LoggedInRecap = ({ date }: { date: string }) => {
     queryFn: () => recapAPIService.getRecap({ date }),
   });
 
-  void data;
+  console.log(data);
+
+  const emptyRecap: NormalizedRecap = {
+    id: 0,
+    userId: 0,
+    recapDate: date,
+    title: "-",
+    summary: "-",
+    startedAt: new Date(0),
+    closedAt: new Date(0),
+    sections: [],
+    timelines: [],
+    topics: [],
+  };
+
+  const rawRecap = data && data.data ? data.data : null;
+  const rawSections = rawRecap && rawRecap.sections ? rawRecap.sections : [];
+  const rawTimelines = rawRecap && rawRecap.timelines ? rawRecap.timelines : [];
+  const rawTopics = rawRecap && rawRecap.topics ? rawRecap.topics : [];
+
+  const recap: NormalizedRecap = rawRecap
+    ? {
+        id: rawRecap.id ?? 0,
+        userId: rawRecap.userId ?? 0,
+        recapDate: rawRecap.recapDate ?? date,
+        title: rawRecap.title ?? "-",
+        summary: rawRecap.summary ?? "-",
+        startedAt: rawRecap.startedAt ?? new Date(0),
+        closedAt: rawRecap.closedAt ?? new Date(0),
+        sections: rawSections.map((section) => ({
+          title: section.title,
+          content: section.content,
+        })),
+        timelines: rawTimelines.map((timeline) => ({
+          startedAt: timeline.startedAt,
+          endedAt: timeline.endedAt,
+          title: timeline.title,
+          durationMinutes: timeline.durationMinutes,
+        })),
+        topics: rawTopics.map((topic) => ({
+          keyword: topic.keyword,
+          title: topic.title,
+          content: topic.content,
+        })),
+      }
+    : emptyRecap;
 
   return (
     <>
-      <RecapSummary />
-      <Timeline />
-      <TopVisitedTopics />
+      <RecapSummary recap={recap} />
+      <Timeline recap={recap} />
+      <TopVisitedTopics recap={recap} />
     </>
   );
 };
