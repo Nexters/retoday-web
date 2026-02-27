@@ -1,8 +1,4 @@
-import {
-  defaultStorage,
-  type PageSnapshot,
-  type StorageSession,
-} from "@/types/storage";
+import { type PageSnapshot, type StorageSession } from "@/types/storage";
 import { getStorage, setStorage } from "@/utils/storage";
 
 async function getBrowserSession() {
@@ -20,7 +16,7 @@ async function setBrowserSession(sessions: Record<string, StorageSession>) {
 }
 
 async function clearBrowserSession() {
-  await setStorage(defaultStorage);
+  await setStorage({ sessions: {} });
 }
 
 async function deleteBrowserSession(tabId: string) {

@@ -7,8 +7,10 @@ import { domainStore } from "@/lib/domain-store";
 import { tokenStore } from "@/lib/token-store";
 import {
   addBrowserSession,
+  clearBrowserSession,
   closeBrowserSession,
   deleteBrowserSession,
+  getBrowserSession,
   getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
@@ -21,6 +23,18 @@ const removedTabIds = new Set<number>();
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error: unknown) => console.error(error));
+
+browser.windows.onRemoved.addListener(async () => {
+  getBrowserSession().then((sessions) => {
+    Object.entries(sessions).forEach(([tabId, session]) => {
+      browserHistory.createClosedHistory({
+        ...session,
+        tabId: Number(tabId),
+      } as StorageSession);
+    });
+  });
+  clearBrowserSession();
+});
 
 browser.tabs.onRemoved.addListener(async (tabId) => {
   removedTabIds.add(tabId);
@@ -39,7 +53,6 @@ browser.tabs.onRemoved.addListener(async (tabId) => {
 browser.tabs.onActivated.addListener(async ({ tabId }) => {
   const closedSession = await closeBrowserSession();
   await visitBrowserSession(String(tabId));
-
   if (!closedSession) return;
   const excludedDomains = await domainStore.getExcludedDomains();
 
