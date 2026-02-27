@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,21 +10,21 @@ import Timeline from "@/app/ai-recap/src/components/Timeline";
 import TopVisitedTopics from "@/app/ai-recap/src/components/TopVisitedTopics";
 import { recapAPIService } from "@/app/ai-recap/src/service";
 import type { NormalizedRecap } from "@/app/ai-recap/src/types/recap";
-import { tokenStore } from "@/app/settings/src/lib/token-store";
+import { useAuthStatus } from "@/app/settings/src/lib/use-auth-status";
 import EmptyRecapImg1 from "@/assets/img/empty-reacp-1.png";
 import EmptyRecapImg2 from "@/assets/img/empty-recap-2.png";
 import LoginBanner from "@/components/LoginBanner";
 
 const Recap = ({ date }: { date: string }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(Boolean(tokenStore.getAccess()));
-  }, []);
+  const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();
 
   const handleLoginSuccess = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+    refreshAuth();
+  }, [refreshAuth]);
+
+  if (!isReady) {
+    return <LoadingRecapLayout />;
+  }
 
   if (!isLoggedIn) {
     return <UnloginRecapLayout onLoginSuccess={handleLoginSuccess} />;
@@ -34,10 +34,11 @@ const Recap = ({ date }: { date: string }) => {
 };
 
 const LoggedInRecap = ({ date }: { date: string }) => {
-  const { data, isLoading } = useQuery({
-    queryKey: ["generateRecap", date],
-    queryFn: () => recapAPIService.getRecap({ date }),
-  });
+  const { data, isError, isFetching, isLoading, isFetchedAfterMount } =
+    useQuery({
+      queryKey: ["generateRecap", date],
+      queryFn: () => recapAPIService.getRecap({ date }),
+    });
 
   const emptyRecap: NormalizedRecap = {
     id: 0,
@@ -93,7 +94,13 @@ const LoggedInRecap = ({ date }: { date: string }) => {
       (rawRecap.topics && rawRecap.topics.length > 0)),
   );
 
-  if (!isLoading && !hasRecapData) {
+  const shouldShowLoading = isLoading || (isFetching && !isFetchedAfterMount);
+
+  if (shouldShowLoading) {
+    return <LoadingRecapLayout />;
+  }
+
+  if (isError || !hasRecapData) {
     return <UnloginRecapLayout showLoginBanner={false} />;
   }
 
@@ -103,6 +110,16 @@ const LoggedInRecap = ({ date }: { date: string }) => {
       <Timeline recap={recap} />
       <TopVisitedTopics recap={recap} />
     </>
+  );
+};
+
+const LoadingRecapLayout = () => {
+  return (
+    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+      <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+      <div className="h-112 animate-pulse rounded-[1.25rem] bg-white md:h-120" />
+      <div className="h-74 animate-pulse rounded-[1.25rem] bg-white" />
+    </div>
   );
 };
 

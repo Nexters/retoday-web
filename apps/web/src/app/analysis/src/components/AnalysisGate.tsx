@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,7 +10,7 @@ import ScreenTime from "@/app/analysis/src/components/ScreenTime";
 import TodayTimeThief from "@/app/analysis/src/components/TodayTimeThief";
 import TopVisitedSites from "@/app/analysis/src/components/TopVisitedSites";
 import WorkPattern from "@/app/analysis/src/components/WorkPattern";
-import { tokenStore } from "@/app/settings/src/lib/token-store";
+import { useAuthStatus } from "@/app/settings/src/lib/use-auth-status";
 import UnloginCategoryImg from "@/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/assets/img/analysis-unlogin-screentime.png";
 import UnloginTimeThiefImg from "@/assets/img/analysis-unlogin-timethief.png";
@@ -19,15 +19,15 @@ import UnloginWorkPatternImg from "@/assets/img/analysis-unlogin-workpattern.png
 import LoginBanner from "@/components/LoginBanner";
 
 const AnalysisGate = ({ date }: { date: string }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(Boolean(tokenStore.getAccess()));
-  }, []);
+  const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();
 
   const handleLoginSuccess = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+    refreshAuth();
+  }, [refreshAuth]);
+
+  if (!isReady) {
+    return <LoadingAnalysisLayout />;
+  }
 
   if (!isLoggedIn) {
     return <UnloginAnalysisLayout onLoginSuccess={handleLoginSuccess} />;
@@ -47,6 +47,20 @@ const AnalysisGate = ({ date }: { date: string }) => {
 };
 
 export default AnalysisGate;
+
+const LoadingAnalysisLayout = () => {
+  return (
+    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+      <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+      <div className="h-108 animate-pulse rounded-[1.25rem] bg-white md:h-120" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
+        <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+        <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+      </div>
+      <div className="h-88 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+    </div>
+  );
+};
 
 const UnloginAnalysisLayout = ({
   onLoginSuccess,
