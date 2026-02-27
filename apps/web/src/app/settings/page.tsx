@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
+import { catchAPIError } from "@recap/api";
 import { cn } from "@recap/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -18,7 +19,6 @@ export default function SettingPage() {
   const {
     data: profileData,
     isLoading: profileLoading,
-    isFetching: profileFetching,
     isError: profileError,
   } = useQuery({
     queryKey: ["getUserProfile"],
@@ -27,11 +27,9 @@ export default function SettingPage() {
     retry: false,
   });
 
-  const isProfileLoading = useMemo(() => {
-    return isReady && isLoggedIn && (profileLoading || profileFetching);
-  }, [isLoggedIn, isReady, profileFetching, profileLoading]);
-
-  const hasProfile = Boolean(profileData?.data);
+  const hasProfile = Boolean(profileData && profileData.data);
+  const isProfileLoading =
+    isReady && isLoggedIn && profileLoading && !hasProfile;
 
   const refetchProfile = async () => {
     refreshAuth();
@@ -40,6 +38,25 @@ export default function SettingPage() {
   };
 
   const canUseSettings = isReady && isLoggedIn && hasProfile && !profileError;
+
+  const handleExcludedDoamin = async () => {
+    try {
+      await userAPIService.addExcludedDomain({ domain });
+      refetchProfile();
+      setDomain("");
+    } catch (err) {
+      catchAPIError(err);
+    }
+  };
+
+  const handleDeleteExcludedDomain = async (domain: string) => {
+    try {
+      await userAPIService.deleteExcludedDomain({ domain });
+      refetchProfile();
+    } catch (err) {
+      catchAPIError(err);
+    }
+  };
 
   return (
     <>
@@ -67,14 +84,19 @@ export default function SettingPage() {
         </p>
 
         <div className="mt-6 space-y-1">
-          {[1, 2].map((_, index) => (
+          {profileData?.data.excludedDomains.map((excludedDomain, index) => (
             <div
               className="bg-gray-75 flex items-center justify-between rounded-full px-4 py-2"
               key={index}
             >
-              <p className="text-body-1 text-gray-500">https://www.figma.com</p>
+              <p className="text-body-1 text-gray-500">{excludedDomain}</p>
 
-              <button className="text-body-1 text-[#ff4242]">삭제</button>
+              <button
+                className="text-body-1 text-[#ff4242]"
+                onClick={() => handleDeleteExcludedDomain(excludedDomain)}
+              >
+                삭제
+              </button>
             </div>
           ))}
         </div>
@@ -93,6 +115,7 @@ export default function SettingPage() {
               "text-subtitle-1-md rounded-xl px-6 py-4 whitespace-nowrap text-gray-100",
               domain.length === 0 ? "bg-gray-500" : "bg-gray-800",
             )}
+            onClick={handleExcludedDoamin}
           >
             추가하기
           </button>
