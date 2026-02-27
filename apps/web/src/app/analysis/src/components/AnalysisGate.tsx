@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
@@ -10,24 +10,24 @@ import ScreenTime from "@/app/analysis/src/components/ScreenTime";
 import TodayTimeThief from "@/app/analysis/src/components/TodayTimeThief";
 import TopVisitedSites from "@/app/analysis/src/components/TopVisitedSites";
 import WorkPattern from "@/app/analysis/src/components/WorkPattern";
-import { tokenStore } from "@/app/settings/src/lib/token-store";
+import { useAuthStatus } from "@/app/settings/src/lib/use-auth-status";
 import UnloginCategoryImg from "@/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/assets/img/analysis-unlogin-screentime.png";
 import UnloginTimeThiefImg from "@/assets/img/analysis-unlogin-timethief.png";
 import UnloginTopVisitedImg from "@/assets/img/analysis-unlogin-topvisited.png";
 import UnloginWorkPatternImg from "@/assets/img/analysis-unlogin-workpattern.png";
-import LoginButton from "@/components/LoginButton";
+import LoginBanner from "@/components/LoginBanner";
 
 const AnalysisGate = ({ date }: { date: string }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    setIsLoggedIn(Boolean(tokenStore.getAccess()));
-  }, []);
+  const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();
 
   const handleLoginSuccess = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
+    refreshAuth();
+  }, [refreshAuth]);
+
+  if (!isReady) {
+    return <LoadingAnalysisLayout />;
+  }
 
   if (!isLoggedIn) {
     return <UnloginAnalysisLayout onLoginSuccess={handleLoginSuccess} />;
@@ -48,6 +48,20 @@ const AnalysisGate = ({ date }: { date: string }) => {
 
 export default AnalysisGate;
 
+const LoadingAnalysisLayout = () => {
+  return (
+    <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+      <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+      <div className="h-108 animate-pulse rounded-[1.25rem] bg-white md:h-120" />
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
+        <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+        <div className="h-80 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+      </div>
+      <div className="h-88 animate-pulse rounded-[1.25rem] bg-white md:h-96" />
+    </div>
+  );
+};
+
 const UnloginAnalysisLayout = ({
   onLoginSuccess,
 }: {
@@ -64,18 +78,7 @@ const UnloginAnalysisLayout = ({
 
   return (
     <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-      <div className="bg-blue-75 rounded-[1.25rem] px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-display-3 text-gray-800">
-            로그인하고 내 하루 기록을 확인해 보세요
-          </h2>
-
-          <LoginButton onLoginSuccess={handleLoginSuccess} />
-        </div>
-        <p className="text-heading-rg mt-2 text-gray-800">
-          지금 보이는 화면은 샘플데이터에요
-        </p>
-      </div>
+      <LoginBanner handleLoginSuccess={handleLoginSuccess} />
 
       <AssetCardImage src={UnloginScreenTimeImg} alt="unlogin-screentime" />
       <AssetCardImage src={UnloginCategoryImg} alt="unlogin-category" />

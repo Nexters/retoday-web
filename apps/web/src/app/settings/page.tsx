@@ -5,38 +5,47 @@ import { cn } from "@recap/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import UserProfile from "@/app/settings/src/components/UserProfile";
+import { useAuthStatus } from "@/app/settings/src/lib/use-auth-status";
 import { userAPIService } from "@/app/settings/src/service";
 import LoginButton from "@/components/LoginButton";
 
 export default function SettingPage() {
   const [domain, setDomain] = useState("");
+  const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();
 
   const queryClient = useQueryClient();
 
   const {
     data: profileData,
     isLoading: profileLoading,
+    isFetching: profileFetching,
     isError: profileError,
   } = useQuery({
     queryKey: ["getUserProfile"],
     queryFn: () => userAPIService.getUserProfile(),
+    enabled: isReady && isLoggedIn,
     retry: false,
   });
 
-  const isLoggedIn = useMemo(() => {
-    if (profileLoading) return false;
-    if (profileError) return false;
-    return Boolean(profileData?.data);
-  }, [profileData, profileError, profileLoading]);
+  const isProfileLoading = useMemo(() => {
+    return isReady && isLoggedIn && (profileLoading || profileFetching);
+  }, [isLoggedIn, isReady, profileFetching, profileLoading]);
+
+  const hasProfile = Boolean(profileData?.data);
 
   const refetchProfile = async () => {
+    refreshAuth();
     await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
     await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
   };
 
+  const canUseSettings = isReady && isLoggedIn && hasProfile && !profileError;
+
   return (
     <>
-      {isLoggedIn ? (
+      {!isReady || isProfileLoading ? (
+        <LoadingUserProfile />
+      ) : canUseSettings ? (
         <UserProfile
           data={profileData?.data}
           onLogoutSuccess={refetchProfile}
@@ -48,7 +57,7 @@ export default function SettingPage() {
       <div
         className={cn(
           "rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8",
-          !isLoggedIn && "pointer-events-none opacity-50",
+          !canUseSettings && "pointer-events-none opacity-50",
         )}
       >
         <h2 className="text-heading-rg text-gray-800">추적금지 도메인</h2>
@@ -92,6 +101,19 @@ export default function SettingPage() {
     </>
   );
 }
+
+const LoadingUserProfile = () => {
+  return (
+    <div className="rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
+      <div className="h-6 w-56 animate-pulse rounded-md bg-gray-200" />
+      <div className="my-6 h-px w-full bg-gray-200" />
+      <div className="flex items-center gap-3">
+        <div className="size-14 animate-pulse rounded-full bg-gray-200" />
+        <div className="h-6 w-28 animate-pulse rounded-md bg-gray-200" />
+      </div>
+    </div>
+  );
+};
 
 const UnLoginUserProfile = ({
   onLoginSuccess,
