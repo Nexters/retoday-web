@@ -25,6 +25,7 @@ const RecapSchema = z.object({
   recapDate: z.string().optional(),
   title: z.string().optional(),
   summary: z.string().optional(),
+  imageUrl: z.string().nullable().optional(),
   startedAt: dateStringSchema.optional(),
   closedAt: dateStringSchema.optional(),
   sections: z.array(RecapSectionSchema).optional(),
