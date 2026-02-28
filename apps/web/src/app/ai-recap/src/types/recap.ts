@@ -22,6 +22,7 @@ export type NormalizedRecap = {
   recapDate: string;
   title: string;
   summary: string;
+  imageUrl: string | null;
   startedAt: Date;
   closedAt: Date;
   sections: RecapSection[];
