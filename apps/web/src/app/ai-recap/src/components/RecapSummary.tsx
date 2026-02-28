@@ -116,7 +116,12 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
           )}
         </div>
 
-        <Image src={RecapImg} alt="recapImg" width={464} height={420} />
+        <Image
+          src={recap?.imageUrl ?? RecapImg}
+          alt="recapImg"
+          width={464}
+          height={420}
+        />
       </div>
     </div>
   );

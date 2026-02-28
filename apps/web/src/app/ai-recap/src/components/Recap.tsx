@@ -46,6 +46,7 @@ const LoggedInRecap = ({ date }: { date: string }) => {
     recapDate: date,
     title: "-",
     summary: "-",
+    imageUrl: null,
     startedAt: new Date(0),
     closedAt: new Date(0),
     sections: [],
@@ -65,6 +66,7 @@ const LoggedInRecap = ({ date }: { date: string }) => {
         recapDate: rawRecap.recapDate ?? date,
         title: rawRecap.title ?? "-",
         summary: rawRecap.summary ?? "-",
+        imageUrl: (rawRecap as { imageUrl?: string | null }).imageUrl ?? null,
         startedAt: rawRecap.startedAt ?? new Date(0),
         closedAt: rawRecap.closedAt ?? new Date(0),
         sections: rawSections.map((section) => ({
