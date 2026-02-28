@@ -2,12 +2,22 @@ import { Button } from "@recap/ui";
 import browser from "webextension-polyfill";
 
 import Icon from "@/components/Icon";
+import { DATE_FORMAT } from "@/const/date-format.const";
+import { GNB_TABS } from "@/const/navigation.const";
 import { RETODAY_BASE_URL } from "@/const/retoday.const";
+import { formatDate } from "@/utils/date";
 
-const Footer = () => {
+const Footer = ({
+  selectedDate,
+  activeTab,
+}: {
+  selectedDate: Date;
+  activeTab: string;
+}) => {
   const handleOpenDashboard = () => {
+    const path = GNB_TABS.find((tab) => tab.value === activeTab)?.path;
     browser.tabs.create({
-      url: RETODAY_BASE_URL,
+      url: `${RETODAY_BASE_URL}${path}?date=${formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH)}`,
     });
   };
 
