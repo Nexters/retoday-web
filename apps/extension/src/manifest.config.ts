@@ -1,11 +1,13 @@
 import type { ManifestV3Export } from "@crxjs/vite-plugin";
 
 export function createManifest(env: Record<string, string>): ManifestV3Export {
+  const version = env.EXTENSION_VERSION || "1.0.0";
+
   return {
     manifest_version: 3,
-    name: "ReToday",
-    version: "1.0.0",
-    description: "ReToday Extension",
+    name: "Retoday",
+    version,
+    description: "Retoday Extension",
     ...(env.VITE_EXTENSION_KEY && { key: env.VITE_EXTENSION_KEY }),
     permissions: ["tabs", "storage", "sidePanel", "identity"],
     action: {
