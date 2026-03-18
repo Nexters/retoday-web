@@ -1,135 +1,46 @@
-# Turborepo starter
+# Retoday
 
-This Turborepo starter is maintained by the Turborepo core team.
+> 브라우저가 기억하는 나의 하루
 
-## Using this example
+Retoday는 사용자의 브라우저 활동을 바탕으로 **오늘 하루의 인터넷 사용 기록을 분석하고**, 카테고리별 사용 패턴과 주요 활동 흐름을 정리해 **나만의 AI 리캡**으로 보여주는 서비스입니다.
 
-Run the following command:
+<img width="600" height="750" alt="Image" src="https://github.com/user-attachments/assets/eaedbbb6-7c9d-4e84-9b63-d24380e0a1b9" />
 
-```sh
-npx create-turbo@latest
-```
+## 링크
 
-## What's inside?
+- 웹 서비스: https://www.re-today.com
+- 크롬 익스텐션: https://chromewebstore.google.com/detail/retoday/nhmoobiapfdnlhendekmjfobcenofdih
 
-This Turborepo includes the following packages/apps:
+## 프로젝트 소개
 
-### Apps and Packages
+대부분의 시간을 모니터 앞에서 보내는 사용자에게, Retoday는 흘려보내기 쉬운 브라우저 기록을 다시 읽을 수 있는 인사이트로 바꿔줍니다.  
+단순한 사용 기록 수집을 넘어, **어떤 활동에 시간을 많이 썼는지**, **언제 가장 집중했는지**, **오늘을 대표하는 키워드와 흐름이 무엇인지**를 직관적으로 확인할 수 있도록 설계했습니다.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+<img width="1400" height="560" alt="Image" src="https://github.com/user-attachments/assets/0fc93c58-344e-443d-8405-357d159b7ca8" />
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+## 주요 기능
 
-### Utilities
+### 1. 카테고리별 활동 분석
 
-This Turborepo has some additional tools already setup for you:
+- 개발, 디자인, 쇼핑 등 **내가 어떤 활동에 시간을 썼는지** 분류해서 보여줍니다.
+- 하루 사용 흐름을 카테고리 기준으로 확인할 수 있어, 시간 사용 패턴을 한눈에 파악할 수 있습니다.
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+### 2. 오늘의 시간 도둑
 
-### Build
+- 가장 많이 사용한 웹페이지 또는 서비스가 무엇인지 보여줍니다.
+- 단순 총 사용 시간뿐 아니라, **실제로 집중을 가장 많이 빼앗은 서비스**를 빠르게 확인할 수 있습니다.
 
-To build all apps and packages, run the following command:
+### 3. Daily Recap
 
-```
-cd my-turborepo
+- 오늘 하루의 활동 내역과 타임라인을 바탕으로 **AI가 하루를 요약**해줍니다.
+- 브라우저 기록을 바탕으로 회고 포인트를 제공해, 다음 날 더 나은 루틴을 만드는 데 도움을 줍니다.
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
+### 4. 키워드 기반 회고
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
-```
+- 오늘 가장 자주 다룬 주제나 관심사를 키워드로 정리해 보여줍니다.
+- “오늘 나는 무엇에 몰입했는가?”를 빠르게 되짚을 수 있습니다.
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+### 5. 사용 시간 및 집중 시간대 시각화
 
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- 총 스크린타임, 집중 시간대, 주요 활동 구간을 시각적으로 제공합니다.
+- 하루의 리듬을 정리하고, 생산성이 높았던 시간을 파악할 수 있습니다.
