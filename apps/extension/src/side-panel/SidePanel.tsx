@@ -42,7 +42,7 @@ export function SidePanel() {
           {activeTab === NAVIGATION_TAB.SETTINGS && <SettingView />}
         </PageContent>
       </AuthGuard>
-      <Footer />
+      <Footer activeTab={activeTab} selectedDate={selectedDate ?? new Date()} />
     </div>
   );
 }

@@ -26,11 +26,12 @@ export function calculateTimeDiff(
 }
 
 export const formatDuration = (seconds: number): string => {
-  if (seconds < 0) return "0분";
+  if (seconds < 0) return "0초";
 
   const dur = dayjs.duration(seconds, "seconds");
   const hours = dur.hours();
   const minutes = dur.minutes();
+  const secs = dur.seconds();
 
   if (hours > 0) {
     if (minutes > 0) {
@@ -40,10 +41,13 @@ export const formatDuration = (seconds: number): string => {
   }
 
   if (minutes > 0) {
+    if (secs > 0) {
+      return `${minutes}분 ${secs}초`;
+    }
     return `${minutes}분`;
   }
 
-  return "0분";
+  return `${secs}초`;
 };
 
 export const formatTimeRange = (
