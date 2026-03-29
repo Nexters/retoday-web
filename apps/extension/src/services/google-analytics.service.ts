@@ -15,6 +15,14 @@ const SESSION_EXPIRATION_IN_MIN = 30;
 
 type GaEventParams = Record<string, string | number | undefined>;
 
+type GaRequestBody = {
+  client_id: string;
+  events: Array<{
+    name: string;
+    params: GaEventParams;
+  }>;
+};
+
 class Analytics {
   debug: boolean;
 
@@ -24,6 +32,10 @@ class Analytics {
 
   get isConfigured(): boolean {
     return Boolean(MEASUREMENT_ID && API_SECRET);
+  }
+
+  get endpoint() {
+    return this.debug ? GA_DEBUG_ENDPOINT : GA_ENDPOINT;
   }
 
   getRandomId() {
@@ -42,13 +54,15 @@ class Analytics {
   // the extension is installed.
   async getOrCreateClientId() {
     let { clientId } = await chrome.storage.local.get("clientId");
+
     if (!clientId) {
-      // Generate a unique client ID, the actual value is not relevant. We use
-      // the <number>.<number> format since this is typical for GA client IDs.
+      // Generate a unique client ID, the actual value is not relevant.
+      // We use the <number>.<number> format since this is typical for GA client IDs.
       const unixTimestampSeconds = Math.floor(new Date().getTime() / 1000);
       clientId = `${this.getRandomId()}.${unixTimestampSeconds}`;
       await chrome.storage.local.set({ clientId });
     }
+
     return clientId;
   }
 
@@ -58,10 +72,12 @@ class Analytics {
     // Use storage.session because it is only in memory
     let { sessionData } = await browser.storage.session.get("sessionData");
     const currentTimeInMs = Date.now();
+
     // Check if session exists and is still valid
     if (sessionData && sessionData.timestamp != null) {
       const lastMs = Number(sessionData.timestamp);
       const durationInMin = (currentTimeInMs - lastMs) / 60000;
+
       // Check if last update lays past the session expiration threshold
       if (durationInMin > SESSION_EXPIRATION_IN_MIN) {
         // Clear old session id to start a new session
@@ -72,6 +88,7 @@ class Analytics {
         await browser.storage.session.set({ sessionData });
       }
     }
+
     if (!sessionData) {
       // Create and store a new session
       sessionData = {
@@ -80,7 +97,12 @@ class Analytics {
       };
       await browser.storage.session.set({ sessionData });
     }
+
     return sessionData.session_id;
+  }
+
+  getRequestUrl() {
+    return `${this.endpoint}?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`;
   }
 
   // Fires an event with optional params. Event names must only include letters and underscores.
@@ -90,37 +112,55 @@ class Analytics {
     }
 
     const payload: GaEventParams = { ...params };
-    // Configure session id and engagement time if not present, for more details see:
-    // https://developers.google.com/analytics/devguides/collection/protocol/ga4/sending-events?client_type=gtag#recommended_parameters_for_reports
+
+    // Configure session id and engagement time if not present
     if (!payload.session_id) {
       payload.session_id = await this.getOrCreateSessionId();
     }
+
     if (!payload.engagement_time_msec) {
       payload.engagement_time_msec = DEFAULT_ENGAGEMENT_TIME_MSEC;
     }
 
-    try {
-      const response = await fetch(
-        `${
-          this.debug ? GA_DEBUG_ENDPOINT : GA_ENDPOINT
-        }?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`,
+    const requestBody: GaRequestBody = {
+      client_id: await this.getOrCreateClientId(),
+      events: [
         {
-          method: "POST",
-          body: JSON.stringify({
-            client_id: await this.getOrCreateClientId(),
-            events: [
-              {
-                name,
-                params: payload,
-              },
-            ],
-          }),
+          name,
+          params: payload,
         },
-      );
-      if (!this.debug) {
+      ],
+    };
+
+    const url = this.getRequestUrl();
+
+    try {
+      if (this.debug) {
+        console.groupCollapsed("[Analytics MOCK]");
+        console.log("endpoint:", url);
+        console.log("event:", name);
+        console.log("payload:", requestBody);
+        console.groupEnd();
         return;
       }
-      console.log(await response.text());
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      const responseText = await response.text();
+
+      if (!response.ok) {
+        console.error("Google Analytics request failed", {
+          status: response.status,
+          statusText: response.statusText,
+          body: responseText,
+        });
+      }
     } catch (e) {
       console.error("Google Analytics request failed with an exception", e);
     }
@@ -145,12 +185,11 @@ class Analytics {
     additionalParams: GaEventParams = {},
   ) {
     // Note: 'error' is a reserved event name and cannot be used
-    // see https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_names
     return this.fireEvent("extension_error", {
       ...error,
       ...additionalParams,
     });
   }
 }
-
-export default new Analytics();
+const isDev = import.meta.env.MODE === "development";
+export default new Analytics(isDev);
