@@ -2,15 +2,17 @@ import type { PropsWithChildren } from "react";
 import { useLayoutEffect, useState } from "react";
 
 import LogoImg from "@/assets/icons/favicon-128.png";
-import { NAVIGATION_TAB } from "@/const/navigation.const";
 import {
+  NAVIGATION_TAB,
   PRIVACY_POLICY_URL,
   TERMS_OF_SERVICE_URL,
-} from "@/const/retoday.const";
+} from "@/const";
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
-import NavigationTabs from "@/features/layout/components/NavigationTabs";
-import PageContent from "@/features/layout/components/PageContent";
-import PageHeader from "@/features/layout/components/PageHeader";
+import {
+  NavigationTabs,
+  PageContent,
+  PageHeader,
+} from "@/features/layout/components";
 import useBrowserMessage from "@/hooks/use-browser-message";
 import { tokenStore } from "@/lib/token-store";
 import { MESSAGE_TYPE } from "@/types/messages";

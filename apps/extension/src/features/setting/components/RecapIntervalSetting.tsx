@@ -9,7 +9,7 @@ import {
   SwitchThumb,
 } from "@recap/ui";
 
-import Icon from "@/components/Icon";
+import { Icon } from "@/components";
 
 const RecapIntervalSetting = () => {
   const [hour, setHour] = useState("09");

@@ -1,4 +1,4 @@
-import Divider from "@/components/Divider";
+import { Divider } from "@/components";
 import type { AiRecapSection } from "@/entities/ai-recap/model/ai-recap.type";
 
 const TodayRecapDetail = ({ sections }: { sections: AiRecapSection[] }) => {

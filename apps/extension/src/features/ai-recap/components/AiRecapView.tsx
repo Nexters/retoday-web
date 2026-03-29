@@ -1,5 +1,5 @@
-import Divider from "@/components/Divider";
-import { DATE_FORMAT } from "@/const/date-format.const";
+import { Divider } from "@/components";
+import { DATE_FORMAT } from "@/const";
 import { useGetAiRecap } from "@/entities/ai-recap/queries/ai-recap-query";
 import AiRecapEmptyView from "@/features/ai-recap/components/AiRecapEmptyView";
 import AiRecapViewSkeleton from "@/features/ai-recap/components/AiRecapViewSkeleton";

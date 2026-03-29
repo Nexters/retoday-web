@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from "react";
 
 import DatePicker from "@/components/DatePicker";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
-import AiRecapView from "@/features/ai-recap/components/AiRecapView";
-import AnalysisView from "@/features/analysis/components/AnalysisView";
-import AuthGuard from "@/features/auth/components/AuthGuard";
-import Footer from "@/features/layout/components/Footer";
-import NavigationTabs from "@/features/layout/components/NavigationTabs";
-import PageContent from "@/features/layout/components/PageContent";
-import PageHeader from "@/features/layout/components/PageHeader";
-import SettingView from "@/features/setting/components/SettingView";
+import { AiRecapView } from "@/features/ai-recap/components";
+import { AnalysisView } from "@/features/analysis/components";
+import { AuthGuard } from "@/features/auth/components";
+import {
+  Footer,
+  NavigationTabs,
+  PageContent,
+  PageHeader,
+} from "@/features/layout/components";
+import { SettingView } from "@/features/setting/components";
 import analytics from "@/services/google-analytics.service";
 
 export function SidePanel() {

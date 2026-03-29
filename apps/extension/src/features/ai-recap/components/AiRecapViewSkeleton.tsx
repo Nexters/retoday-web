@@ -1,6 +1,6 @@
 import { Skeleton } from "@recap/ui";
 
-import Divider from "@/components/Divider";
+import { Divider } from "@/components";
 
 const TodayRecapSectionSkeleton = () => {
   return (

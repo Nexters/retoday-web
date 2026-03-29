@@ -1,5 +1,5 @@
 import TimeThiefImg from "@/assets/imgs/time-thief.png";
-import { DATE_FORMAT } from "@/const/date-format.const";
+import { DATE_FORMAT } from "@/const";
 import { useGetLongestWebSite } from "@/entities/analysis/queries/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/components/TodayTimeThiefSectionSkeleton";
 import { formatDate } from "@/utils/date";

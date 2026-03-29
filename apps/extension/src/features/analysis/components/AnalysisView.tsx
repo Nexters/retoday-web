@@ -1,7 +1,8 @@
-import Divider from "@/components/Divider";
+import { Divider } from "@/components";
 import CategoryAnalysisSection from "@/features/analysis/components/category-analysis/CategoryAnalysisSection";
-import TodayTimeThiefSection from "@/features/analysis/components/TodayTimeThiefSection";
-import WeeklyScreenTimeSection from "@/features/analysis/components/WeeklyScreenTimeSection";
+
+import TodayTimeThiefSection from "./TodayTimeThiefSection";
+import WeeklyScreenTimeSection from "./WeeklyScreenTimeSection";
 
 const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
   return (

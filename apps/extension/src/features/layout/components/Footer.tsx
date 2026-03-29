@@ -1,10 +1,8 @@
 import { Button } from "@recap/ui";
 import browser from "webextension-polyfill";
 
-import Icon from "@/components/Icon";
-import { DATE_FORMAT } from "@/const/date-format.const";
-import { GNB_TABS } from "@/const/navigation.const";
-import { RETODAY_BASE_URL } from "@/const/retoday.const";
+import { Icon } from "@/components";
+import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/const";
 import { formatDate } from "@/utils/date";
 
 const Footer = ({

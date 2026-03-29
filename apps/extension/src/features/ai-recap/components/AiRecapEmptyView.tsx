@@ -1,6 +1,6 @@
 import RecapSection1Img from "@/assets/imgs/recap-section-1.png";
 import RecapSection2Img from "@/assets/imgs/recap-section-2.png";
-import Divider from "@/components/Divider";
+import { Divider } from "@/components";
 
 const AiRecapEmptyView = () => {
   return (

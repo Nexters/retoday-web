@@ -1,6 +1,6 @@
 import { cn } from "@recap/ui";
 
-import Icon from "@/components/Icon";
+import { Icon } from "@/components";
 
 type GoogleLoginButtonProps = {
   className?: string;

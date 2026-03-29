@@ -1,4 +1,4 @@
-import Icon from "@/components/Icon";
+import { Icon } from "@/components";
 import { useGetUserProfile } from "@/entities/user/queries/user-query";
 
 const ProfileCard = () => {

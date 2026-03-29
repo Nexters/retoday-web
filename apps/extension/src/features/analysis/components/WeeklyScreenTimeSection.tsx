@@ -1,8 +1,11 @@
 import { useState } from "react";
 
-import { ScreenTimeWeeklyBarChart } from "@/components/ScreenTimeWeeklyBarChart";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ToggleGroup";
-import { DATE_FORMAT } from "@/const/date-format.const";
+import {
+  ScreenTimeWeeklyBarChart,
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components";
+import { DATE_FORMAT } from "@/const";
 import {
   ANALYSIS_PERIOD,
   type AnalysisPeriod,

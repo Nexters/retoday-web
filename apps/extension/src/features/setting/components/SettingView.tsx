@@ -1,6 +1,7 @@
-import Divider from "@/components/Divider";
-import ProfileCard from "@/features/setting/components/ProfileCard";
-import UntrackedDomainSetting from "@/features/setting/components/UntrackedDomainSetting";
+import { Divider } from "@/components";
+
+import ProfileCard from "./ProfileCard";
+import UntrackedDomainSetting from "./UntrackedDomainSetting";
 
 const SettingView = () => {
   return (

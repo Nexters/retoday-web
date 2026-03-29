@@ -5,7 +5,7 @@ type Props = React.ComponentPropsWithoutRef<typeof WeeklyBarChart> & {
   data: WeeklyBarDatum[];
 };
 
-export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
+const ScreenTimeWeeklyBarChart = ({ className, ...props }: Props) => {
   return (
     <WeeklyBarChart
       className={className}
@@ -20,4 +20,6 @@ export function ScreenTimeWeeklyBarChart({ className, ...props }: Props) {
       )}
     />
   );
-}
+};
+
+export default ScreenTimeWeeklyBarChart;

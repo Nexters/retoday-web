@@ -1,5 +1,5 @@
-import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "@/components/GNBTabs";
-import { GNB_TABS } from "@/const/navigation.const";
+import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "@/components";
+import { GNB_TABS } from "@/const";
 
 type NavigationTabsProps = {
   defaultValue?: string;
