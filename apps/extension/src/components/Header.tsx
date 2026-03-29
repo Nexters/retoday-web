@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { cn } from "@recap/ui";
 
-const PageHeader = ({
+const Header = ({
   children,
   className,
 }: PropsWithChildren<{ className?: string }>) => {
@@ -12,4 +12,4 @@ const PageHeader = ({
   );
 };
 
-export default PageHeader;
+export default Header;

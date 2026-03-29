@@ -3,16 +3,19 @@ import { useLayoutEffect, useState } from "react";
 
 import LogoImg from "@/assets/icons/favicon-128.png";
 import {
+  Content,
+  GnbTabs,
+  GnbTabsList,
+  GnbTabsTrigger,
+  Header,
+} from "@/components";
+import {
+  GNB_TABS,
   NAVIGATION_TAB,
   PRIVACY_POLICY_URL,
   TERMS_OF_SERVICE_URL,
 } from "@/const";
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
-import {
-  NavigationTabs,
-  PageContent,
-  PageHeader,
-} from "@/features/layout/components";
 import useBrowserMessage from "@/hooks/use-browser-message";
 import { tokenStore } from "@/lib/token-store";
 import { MESSAGE_TYPE } from "@/types/messages";
@@ -50,10 +53,25 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
 
   return (
     <>
-      <PageHeader>
-        <NavigationTabs defaultValue={NAVIGATION_TAB.ANALYSIS} />
-      </PageHeader>
-      <PageContent className="pt-12">
+      <Header>
+        <GnbTabs
+          defaultValue={NAVIGATION_TAB.ANALYSIS}
+          className="border-b border-gray-200 w-full"
+        >
+          <GnbTabsList>
+            {GNB_TABS.map(({ label, value }) => (
+              <GnbTabsTrigger
+                className="cursor-pointer"
+                key={value}
+                value={value}
+              >
+                {label}
+              </GnbTabsTrigger>
+            ))}
+          </GnbTabsList>
+        </GnbTabs>
+      </Header>
+      <Content className="pt-12">
         <div className="flex h-full flex-col">
           <div className="flex flex-1 flex-col items-center justify-center">
             <img src={LogoImg} alt="ReToday" className="size-40 rounded-4xl" />
@@ -84,7 +102,7 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
             </p>
           </div>
         </div>
-      </PageContent>
+      </Content>
     </>
   );
 };

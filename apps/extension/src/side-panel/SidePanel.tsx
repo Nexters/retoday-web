@@ -1,24 +1,18 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import DatePicker from "@/components/DatePicker";
+import { Content } from "@/components";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
 import { AiRecapView } from "@/features/ai-recap/components";
 import { AnalysisView } from "@/features/analysis/components";
 import { AuthGuard } from "@/features/auth/components";
-import {
-  Footer,
-  NavigationTabs,
-  PageContent,
-  PageHeader,
-} from "@/features/layout/components";
 import { SettingView } from "@/features/setting/components";
 import analytics from "@/services/google-analytics.service";
+import { useSettingStore } from "@/stores";
+import { PageFooter, PageHeader } from "@/widgets";
 
 export function SidePanel() {
-  const [activeTab, setActiveTab] = useState<string>(NAVIGATION_TAB.ANALYSIS);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
-    new Date(),
-  );
+  const activeTab = useSettingStore((state) => state.activeTab);
+
   const hasLoggedPanelOpen = useRef(false);
 
   useEffect(() => {
@@ -37,29 +31,17 @@ export function SidePanel() {
   return (
     <div className="flex h-full flex-col">
       <AuthGuard>
-        <PageHeader>
-          <NavigationTabs value={activeTab} onValueChange={setActiveTab} />
-          {activeTab !== NAVIGATION_TAB.SETTINGS && (
-            <DatePicker
-              value={selectedDate ?? new Date()}
-              onChange={setSelectedDate}
-            />
-          )}
-        </PageHeader>
+        <PageHeader />
 
-        <PageContent
+        <Content
           className={activeTab === NAVIGATION_TAB.SETTINGS ? "pt-12" : ""}
         >
-          {activeTab === NAVIGATION_TAB.ANALYSIS && (
-            <AnalysisView selectedDate={selectedDate ?? new Date()} />
-          )}
-          {activeTab === NAVIGATION_TAB.AI_RECAP && (
-            <AiRecapView selectedDate={selectedDate ?? new Date()} />
-          )}
+          {activeTab === NAVIGATION_TAB.ANALYSIS && <AnalysisView />}
+          {activeTab === NAVIGATION_TAB.AI_RECAP && <AiRecapView />}
           {activeTab === NAVIGATION_TAB.SETTINGS && <SettingView />}
-        </PageContent>
+        </Content>
       </AuthGuard>
-      <Footer activeTab={activeTab} selectedDate={selectedDate ?? new Date()} />
+      <PageFooter />
     </div>
   );
 }

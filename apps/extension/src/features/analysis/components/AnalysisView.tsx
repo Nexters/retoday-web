@@ -4,14 +4,14 @@ import CategoryAnalysisSection from "@/features/analysis/components/category-ana
 import TodayTimeThiefSection from "./TodayTimeThiefSection";
 import WeeklyScreenTimeSection from "./WeeklyScreenTimeSection";
 
-const AnalysisView = ({ selectedDate }: { selectedDate: Date }) => {
+const AnalysisView = () => {
   return (
     <>
-      <WeeklyScreenTimeSection selectedDate={selectedDate} />
+      <WeeklyScreenTimeSection />
       <Divider />
-      <CategoryAnalysisSection selectedDate={selectedDate} />
+      <CategoryAnalysisSection />
       <Divider />
-      <TodayTimeThiefSection selectedDate={selectedDate} />
+      <TodayTimeThiefSection />
     </>
   );
 };

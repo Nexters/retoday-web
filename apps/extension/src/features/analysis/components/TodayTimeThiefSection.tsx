@@ -2,9 +2,11 @@ import TimeThiefImg from "@/assets/imgs/time-thief.png";
 import { DATE_FORMAT } from "@/const";
 import { useGetLongestWebSite } from "@/entities/analysis/queries/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/components/TodayTimeThiefSectionSkeleton";
+import { useSettingStore } from "@/stores";
 import { formatDate } from "@/utils/date";
 
-const TodayTimeThiefSection = ({ selectedDate }: { selectedDate: Date }) => {
+const TodayTimeThiefSection = () => {
+  const selectedDate = useSettingStore((state) => state.selectedDate);
   const { data, isLoading } = useGetLongestWebSite(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );

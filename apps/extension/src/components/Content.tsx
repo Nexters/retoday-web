@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { cn } from "@recap/ui";
 
-const PageContent = ({
+const Content = ({
   children,
   className,
 }: PropsWithChildren<{ className?: string }>) => {
@@ -11,4 +11,4 @@ const PageContent = ({
     </div>
   );
 };
-export default PageContent;
+export default Content;

@@ -7,9 +7,11 @@ import BubbleRanking from "@/features/analysis/components/category-analysis/Bubb
 import CategoryAnalysisItem from "@/features/analysis/components/category-analysis/CategoryAnalysisItem";
 import CategoryTitle from "@/features/analysis/components/category-analysis/CategoryTitle";
 import CategoryAnalysisSectionSkeleton from "@/features/analysis/components/CategoryAnalysisSectionSkeleton";
+import { useSettingStore } from "@/stores";
 import { formatDate, formatDuration } from "@/utils/date";
 
-const CategoryAnalysisSection = ({ selectedDate }: { selectedDate: Date }) => {
+const CategoryAnalysisSection = () => {
+  const selectedDate = useSettingStore((state) => state.selectedDate);
   const { data, isLoading } = useGetAnalysisCategoryAnalysis(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );

@@ -6,9 +6,11 @@ import AiRecapViewSkeleton from "@/features/ai-recap/components/AiRecapViewSkele
 import TodayRecapDetail from "@/features/ai-recap/components/TodayRecapDetail";
 import TodayRecapSection from "@/features/ai-recap/components/TodayRecapSection";
 import TodayTopicsSection from "@/features/ai-recap/components/TodayTopicsSection";
+import { useSettingStore } from "@/stores";
 import { formatDate } from "@/utils/date";
 
-const AiRecapView = ({ selectedDate }: { selectedDate: Date }) => {
+const AiRecapView = () => {
+  const selectedDate = useSettingStore((state) => state.selectedDate);
   const { data, isLoading } = useGetAiRecap(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );

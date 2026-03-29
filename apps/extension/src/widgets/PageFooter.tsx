@@ -3,15 +3,13 @@ import browser from "webextension-polyfill";
 
 import { Icon } from "@/components";
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/const";
+import { useSettingStore } from "@/stores";
 import { formatDate } from "@/utils/date";
 
-const Footer = ({
-  selectedDate,
-  activeTab,
-}: {
-  selectedDate: Date;
-  activeTab: string;
-}) => {
+function PageFooter() {
+  const activeTab = useSettingStore((state) => state.activeTab);
+  const selectedDate = useSettingStore((state) => state.selectedDate);
+
   const handleOpenDashboard = () => {
     const path = GNB_TABS.find((tab) => tab.value === activeTab)?.path;
     browser.tabs.create({
@@ -33,6 +31,6 @@ const Footer = ({
       </span>
     </footer>
   );
-};
+}
 
-export default Footer;
+export default PageFooter;

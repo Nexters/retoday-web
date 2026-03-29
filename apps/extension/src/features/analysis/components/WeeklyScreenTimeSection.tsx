@@ -13,9 +13,11 @@ import {
 import { transformScreenTimeToChartData } from "@/entities/analysis/model/screen-time-chart-mapper";
 import { useGetAnalysisScreenTime } from "@/entities/analysis/queries/analysis-query";
 import WeeklyScreenTimeSectionSkeleton from "@/features/analysis/components/WeeklyScreenTimeSectionSkeleton";
+import { useSettingStore } from "@/stores";
 import { formatDate, formatDuration } from "@/utils/date";
 
-const WeeklyScreenTimeSection = ({ selectedDate }: { selectedDate: Date }) => {
+const WeeklyScreenTimeSection = () => {
+  const selectedDate = useSettingStore((state) => state.selectedDate);
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
 
   const { data: screenTime, isLoading } = useGetAnalysisScreenTime(
