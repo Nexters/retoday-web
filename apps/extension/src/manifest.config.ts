@@ -19,7 +19,10 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
       client_id: env.VITE_GOOGLE_CLIENT_ID || "",
       scopes: ["profile", "email"],
     },
-    host_permissions: ["https://www.googleapis.com/*"],
+    host_permissions: [
+      "https://www.googleapis.com/*",
+      "https://www.google-analytics.com/*",
+    ],
     side_panel: {
       default_path: "src/side-panel/index.html",
     },

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import DatePicker from "@/components/DatePicker";
 import { NAVIGATION_TAB } from "@/const/navigation.const";
@@ -10,12 +10,27 @@ import NavigationTabs from "@/features/layout/components/NavigationTabs";
 import PageContent from "@/features/layout/components/PageContent";
 import PageHeader from "@/features/layout/components/PageHeader";
 import SettingView from "@/features/setting/components/SettingView";
+import analytics from "@/services/google-analytics.service";
 
 export function SidePanel() {
   const [activeTab, setActiveTab] = useState<string>(NAVIGATION_TAB.ANALYSIS);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date(),
   );
+  const hasLoggedPanelOpen = useRef(false);
+
+  useEffect(() => {
+    if (hasLoggedPanelOpen.current) return;
+    hasLoggedPanelOpen.current = true;
+    void analytics.firePageViewEvent(
+      "Retoday Side Panel",
+      typeof window !== "undefined" ? window.location.href : "",
+    );
+  }, []);
+
+  useEffect(() => {
+    void analytics.fireEvent("side_panel_tab_view", { tab: activeTab });
+  }, [activeTab]);
 
   return (
     <div className="flex h-full flex-col">

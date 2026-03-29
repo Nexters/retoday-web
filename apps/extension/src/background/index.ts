@@ -14,6 +14,7 @@ import {
   getBrowserSessionById,
   visitBrowserSession,
 } from "@/services/browser.service";
+import analytics from "@/services/google-analytics.service";
 import type { StorageSession } from "@/types/storage";
 
 import { type ExtensionMessage, MESSAGE_TYPE } from "../types/messages";
@@ -23,6 +24,15 @@ const removedTabIds = new Set<number>();
 chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error: unknown) => console.error(error));
+
+browser.runtime.onInstalled.addListener((details) => {
+  void analytics.fireEvent("extension_lifecycle", {
+    reason: details.reason,
+    ...(details.previousVersion != null
+      ? { previous_version: details.previousVersion }
+      : {}),
+  });
+});
 
 browser.windows.onRemoved.addListener(async () => {
   getBrowserSession().then((sessions) => {
@@ -78,7 +88,14 @@ browser.runtime.onMessage.addListener(
         return;
       }
 
-      return addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
+      await addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
+      try {
+        const host = new URL(msg.data.url).host;
+        void analytics.fireEvent("content_session_tracked", { host });
+      } catch {
+        /* invalid URL — skip GA */
+      }
+      return;
     }
 
     if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
@@ -90,6 +107,7 @@ browser.runtime.onMessage.addListener(
           })
           .then((data: unknown) => {
             tokenStore.set(data as BackendLoginResponse);
+            void analytics.fireEvent("login", { method: "google" });
             chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
           });
       });
