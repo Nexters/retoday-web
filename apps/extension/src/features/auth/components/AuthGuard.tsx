@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 
 import LogoImg from "@/assets/icons/favicon-128.png";
 import {
@@ -18,10 +18,12 @@ import {
 import GoogleLoginButton from "@/features/auth/components/GoogleLoginButton";
 import useBrowserMessage from "@/hooks/use-browser-message";
 import { tokenStore } from "@/lib/token-store";
+import { useAuthStore } from "@/stores";
 import { MESSAGE_TYPE } from "@/types/messages";
 
 const AuthGuard = ({ children }: PropsWithChildren) => {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+  const isLoggedIn = useAuthStore((s) => s.isLoggedIn);
+  const setIsLoggedIn = useAuthStore((s) => s.setIsLoggedIn);
 
   const checkAuth = async () => {
     const accessToken = await tokenStore.getAccess();
@@ -29,11 +31,11 @@ const AuthGuard = ({ children }: PropsWithChildren) => {
   };
 
   useLayoutEffect(() => {
-    checkAuth();
+    void checkAuth();
   }, []);
 
   useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
-    checkAuth();
+    void checkAuth();
   });
 
   const handleGoogleLogin = () => {
