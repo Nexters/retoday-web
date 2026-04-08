@@ -1,6 +1,6 @@
-import { HistoryAPIService } from "@/entities/history/api/history.api";
+import { UserAPIService } from "@/features/setting/api/user.api";
 import { createAuthedRestAPI } from "@/shared/lib/create-authed-rest";
 
-export const historyAPIService = new HistoryAPIService(
+export const userAPIService = new UserAPIService(
   createAuthedRestAPI(import.meta.env.VITE_BACKEND_URL || ""),
 );
