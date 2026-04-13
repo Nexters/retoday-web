@@ -4,7 +4,7 @@ import {
   TodayTimeThiefSection,
   WeeklyScreenTimeSection,
 } from "@/features/analysis/ui";
-import { Content, DatePicker, Divider } from "@/shared/ui";
+import { DatePicker, Divider } from "@/shared/ui";
 
 const AnalysisScreen = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);
@@ -15,13 +15,11 @@ const AnalysisScreen = () => {
         value={selectedDate ?? new Date()}
         onChange={(date) => setSelectedDate(date ?? new Date())}
       />
-      <Content>
-        <WeeklyScreenTimeSection />
-        <Divider />
-        <CategoryAnalysisSection />
-        <Divider />
-        <TodayTimeThiefSection />
-      </Content>
+      <WeeklyScreenTimeSection />
+      <Divider />
+      <CategoryAnalysisSection />
+      <Divider />
+      <TodayTimeThiefSection />
     </>
   );
 };

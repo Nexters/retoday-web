@@ -1,4 +1,3 @@
-export { default as Content } from "./Content";
 export { default as DatePicker } from "./DatePicker";
 export { default as Divider } from "./Divider";
 export * from "./GNBTabs";

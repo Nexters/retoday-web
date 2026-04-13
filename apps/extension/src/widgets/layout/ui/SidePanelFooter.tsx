@@ -6,7 +6,7 @@ import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";
 import { formatDate } from "@/shared/lib/date/date";
 import { Icon } from "@/shared/ui";
 
-function SidePanelFooter() {
+const SidePanelFooter = () => {
   const activeTab = useSettingStore((state) => state.activeTab);
   const selectedDate = useSettingStore((state) => state.selectedDate);
 
@@ -31,6 +31,6 @@ function SidePanelFooter() {
       </span>
     </footer>
   );
-}
+};
 
 export default SidePanelFooter;

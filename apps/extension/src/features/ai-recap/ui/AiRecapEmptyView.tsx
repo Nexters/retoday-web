@@ -21,7 +21,8 @@ const AiRecapEmptyView = () => {
           </p>
           <img
             src={RecapSection1Img}
-            className="h-auto w-full max-w-xs object-contain mt-4"
+            alt=""
+            className="mt-4 block h-auto w-full max-w-full object-contain"
           />
         </div>
 
@@ -32,7 +33,8 @@ const AiRecapEmptyView = () => {
           </p>
           <img
             src={RecapSection2Img}
-            className="h-auto w-full max-w-xs object-contain mt-4"
+            alt=""
+            className="mt-4 block h-auto w-full max-w-full object-contain"
           />
           <p className="text-caption-1 text-gray-500 mt-4 text-center">
             활동데이터가 쌓이는 날이면 밤 12시에 리캡을 배달해드려요.
