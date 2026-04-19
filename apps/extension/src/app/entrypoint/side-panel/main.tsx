@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { ReactQueryProvider } from "@recap/react-query";
+
+import { QueryProvider } from "@/app/providers/query-provider";
 
 import { SidePanel } from "./SidePanel";
 
@@ -10,9 +11,9 @@ const container = document.getElementById("root");
 if (container) {
   createRoot(container).render(
     <StrictMode>
-      <ReactQueryProvider>
+      <QueryProvider>
         <SidePanel />
-      </ReactQueryProvider>
+      </QueryProvider>
     </StrictMode>,
   );
 }
