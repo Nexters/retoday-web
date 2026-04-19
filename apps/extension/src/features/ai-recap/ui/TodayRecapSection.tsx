@@ -1,5 +1,5 @@
-import RecapImg from "@/assets/imgs/recap-img.png";
 import type { AiRecapResponse } from "@/features/ai-recap/model/ai-recap.type";
+import RecapImg from "@/shared/assets/imgs/recap-img.png";
 import { formatDuration, formatTimeRange } from "@/shared/lib/date/date";
 import { Divider } from "@/shared/ui";
 

@@ -1,11 +1,12 @@
 @import "tailwindcss";
 @import "@recap/tokens";
 
-@config "../../tailwind.config.js";
+@config "../../../tailwind.config.js";
 
 @font-face {
   font-family: "IBM Plex Sans KR";
-  src: url("../assets/fonts/IBMPlexSansKR-Regular.woff2") format("woff2");
+  src: url("../../shared/assets/fonts/IBMPlexSansKR-Regular.woff2")
+    format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -13,7 +14,8 @@
 
 @font-face {
   font-family: "IBM Plex Sans KR";
-  src: url("../assets/fonts/IBMPlexSansKR-Medium.woff2") format("woff2");
+  src: url("../../shared/assets/fonts/IBMPlexSansKR-Medium.woff2")
+    format("woff2");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -21,7 +23,8 @@
 
 @font-face {
   font-family: "IBM Plex Sans KR";
-  src: url("../assets/fonts/IBMPlexSansKR-SemiBold.woff2") format("woff2");
+  src: url("../../shared/assets/fonts/IBMPlexSansKR-SemiBold.woff2")
+    format("woff2");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -29,7 +32,7 @@
 
 @font-face {
   font-family: "IBM Plex Sans KR";
-  src: url("../assets/fonts/IBMPlexSansKR-Bold.woff2") format("woff2");
+  src: url("../../shared/assets/fonts/IBMPlexSansKR-Bold.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;

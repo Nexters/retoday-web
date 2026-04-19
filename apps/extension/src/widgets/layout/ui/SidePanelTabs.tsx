@@ -2,7 +2,7 @@ import { useSettingStore } from "@/app/store/model";
 import { GNB_TABS } from "@/shared/config";
 import { GnbTabs, GnbTabsList, GnbTabsTrigger, Header } from "@/shared/ui";
 
-function PageHeader() {
+const SidePanelTabs = () => {
   const activeTab = useSettingStore((state) => state.activeTab);
   const setActiveTab = useSettingStore((state) => state.setActiveTab);
 
@@ -27,6 +27,6 @@ function PageHeader() {
       </GnbTabs>
     </Header>
   );
-}
+};
 
-export default PageHeader;
+export default SidePanelTabs;

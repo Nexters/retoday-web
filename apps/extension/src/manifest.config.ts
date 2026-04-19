@@ -12,7 +12,7 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
     permissions: ["tabs", "storage", "sidePanel", "identity"],
     action: {
       default_icon: {
-        "128": "src/assets/icons/favicon-128.png",
+        "128": "src/shared/assets/icons/favicon-128.png",
       },
     },
     oauth2: {
@@ -24,21 +24,21 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
       "https://www.google-analytics.com/*",
     ],
     side_panel: {
-      default_path: "src/side-panel/index.html",
+      default_path: "src/app/entrypoint/side-panel/index.html",
     },
     background: {
-      service_worker: "src/background/index.ts",
+      service_worker: "src/app/entrypoint/background/index.ts",
       type: "module",
     },
     content_scripts: [
       {
         matches: ["<all_urls>"],
-        js: ["src/content/index.ts"],
+        js: ["src/app/entrypoint/content/index.ts"],
         run_at: "document_end",
       },
     ],
     icons: {
-      "128": "src/assets/icons/favicon-128.png",
+      "128": "src/shared/assets/icons/favicon-128.png",
     },
   };
 }

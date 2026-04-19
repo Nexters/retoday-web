@@ -1,9 +1,17 @@
 /** @type {import('next').NextConfig} */
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+// Pin Turbopack/project resolution to this package. If Next infers a parent folder
+// (e.g. a stray package-lock.json under the user profile), you get panics like
+// "app_dir must be a directory" / Failed to write app endpoint /page.
+const appDir = path.dirname(fileURLToPath(import.meta.url));
 
 const nextConfig = {
   transpilePackages: ["@recap/ui", "@recap/tokens"],
 
   turbopack: {
+    root: appDir,
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],

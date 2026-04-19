@@ -1,13 +1,13 @@
 import * as React from "react";
 import { cn } from "@recap/ui";
 
-import ArrowDownSvg from "@/assets/icons/arrow-down.svg?react";
-import ArrowRightSvg from "@/assets/icons/arrow-right.svg?react";
-import ArrowUpSvg from "@/assets/icons/arrow-up.svg?react";
-import ClockSvg from "@/assets/icons/clock.svg?react";
-import EmailSvg from "@/assets/icons/email.svg?react";
-import FigmaSvg from "@/assets/icons/figma.svg?react";
-import GoogleSvg from "@/assets/icons/google.svg?react";
+import ArrowDownSvg from "@/shared/assets/icons/arrow-down.svg?react";
+import ArrowRightSvg from "@/shared/assets/icons/arrow-right.svg?react";
+import ArrowUpSvg from "@/shared/assets/icons/arrow-up.svg?react";
+import ClockSvg from "@/shared/assets/icons/clock.svg?react";
+import EmailSvg from "@/shared/assets/icons/email.svg?react";
+import FigmaSvg from "@/shared/assets/icons/figma.svg?react";
+import GoogleSvg from "@/shared/assets/icons/google.svg?react";
 
 export type IconName =
   | "arrow-up"
