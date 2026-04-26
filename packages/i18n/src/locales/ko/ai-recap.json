@@ -1,0 +1,25 @@
+{
+  "screenTime": {
+    "todayRecapTitle": "Today's Recap",
+    "deliverRecapDailyNight": "매일밤 오늘의 인터넷 리캡을 배달해드려요",
+    "totalScreenTime": "총 스크린타임",
+    "measurementTime": "측정시간"
+  },
+  "preview": {
+    "recapProvidedInThisFormat": "리캡은 이런 형태로 제공돼요",
+    "summarizeYourDay": "오늘 하루가 어떤 하루였는지 요약해드려요",
+    "checkTopicsTimeline": "관심있었던 주제, 하루 타임라인을 확인해요",
+    "wantRecapAtDifferentTime": "다른 시간대에 리캡을 받고 싶다면?",
+    "recapDeliveryTimeInfo": "활동데이터가 쌓이는 날이면, 자동으로 밤 12시에 리캡을 배달해드려요",
+    "setTimeZone": "시간대 설정하기"
+  },
+  "todayRecap": {
+    "totalScreenTimeLabel": "총 스크린타임",
+    "totalScreenTimeValue": "{hours}시간 {minutes}분",
+    "measurementTimeLabel": "측정시간",
+    "dailySummaryLabel": "하루 요약",
+    "aiTimelineTitle": "AI 타임라인",
+    "lookingBackTitle": "오늘 하루 돌아보기",
+    "mostViewedTopicsTitle": "많이 돌려본 주제"
+  }
+}

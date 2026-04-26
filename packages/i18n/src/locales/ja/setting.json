@@ -1,0 +1,29 @@
+{
+  "account": {
+    "title": "マイアカウント",
+    "name": "アカウント名",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "dailyRecordsPrompt": "ログインして、今日の記録を確認してみてください"
+  },
+  "languageChange": {
+    "title": "言語変更（Language）",
+    "selectedLanguage": "Selected Language",
+    "apply": "適用する"
+  },
+  "recapFrequency": {
+    "title": "リキャップ頻度設定",
+    "description": "指定された時間にリキャップが生成されます。設定をオフにすると、毎日深夜に配信されます。",
+    "deliveryTime": "リキャップ配信時間",
+    "hourUnit": "{n}時",
+    "minuteUnit": "{n}分",
+    "receiveDailyAtThisTime": "毎日この時間にリキャップを受け取ります"
+  },
+  "untrackedDomains": {
+    "title": "トラッキング禁止ドメイン",
+    "description": "ブラウザの使用履歴集計から除外するドメインを管理します。",
+    "delete": "削除",
+    "domainInputPlaceholder": "ドメイン入力 (例: abc.com sample.kr)",
+    "add": "追加"
+  }
+}

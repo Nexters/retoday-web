@@ -1,0 +1,25 @@
+{
+  "screenTime": {
+    "todayRecapTitle": "今日のまとめ",
+    "deliverRecapDailyNight": "毎晩今日のインターネットリキャップをお届けします",
+    "totalScreenTime": "総スクリーンタイム",
+    "measurementTime": "測定時間"
+  },
+  "preview": {
+    "recapProvidedInThisFormat": "リキャップはこの形式で提供されます",
+    "summarizeYourDay": "今日一日がどのような一日だったかを要約します",
+    "checkTopicsTimeline": "関心のあるトピック、一日のタイムラインを確認します",
+    "wantRecapAtDifferentTime": "他の時間帯にリキャップを受け取りたいですか？",
+    "recapDeliveryTimeInfo": "活動データが蓄積される日は、自動的に深夜12時にリキャップをお届けします",
+    "setTimeZone": "時間帯を設定する"
+  },
+  "todayRecap": {
+    "totalScreenTimeLabel": "合計スクリーンタイム",
+    "totalScreenTimeValue": "{hours}時間 {minutes}分",
+    "measurementTimeLabel": "測定時間",
+    "dailySummaryLabel": "一日の要約",
+    "aiTimelineTitle": "AIタイムライン",
+    "lookingBackTitle": "今日一日を振り返る",
+    "mostViewedTopicsTitle": "よく閲覧したテーマ"
+  }
+}

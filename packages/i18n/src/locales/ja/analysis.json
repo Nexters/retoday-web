@@ -1,0 +1,42 @@
+{
+  "screenTime": {
+    "title": "総スクリーンタイム",
+    "durationValueExample": "{hours}時間 {minutes}分",
+    "buttonToday": "今日",
+    "buttonWeekly": "週ごと"
+  },
+  "category": {
+    "title": "カテゴリー別分析",
+    "shoppingFocusSummary": "{category}に{time_spent}没頭しました",
+    "keyword": "キーワード",
+    "shopping": "ショッピング",
+    "learning": "学習",
+    "game": "ゲーム",
+    "content": "コンテンツ",
+    "community": "コミュニティ",
+    "financeAsset": "金融/資産",
+    "etc": "その他",
+    "webSurfing": "ウェブサーフィン",
+    "design": "デザイン",
+    "development": "開発",
+    "lifeConvenience": "生活/利便性"
+  },
+  "workPattern": {
+    "title": "私の作業パターン",
+    "earlyBird": "朝型ワーカー",
+    "earlyBirdDiligent": "勤勉な朝型ワーカー",
+    "daytimeDiligent": "誠実な昼型ワーカー",
+    "nightLeisurely": "ゆとりの夜型ワーカー"
+  },
+  "timeThief": {
+    "title": "今日の時間泥棒",
+    "totalDurationExample": "合計 {duration}"
+  },
+  "frequentSites": {
+    "title": "よく訪れたサイト",
+    "visitCountDurationExample": "{count}回 {duration}"
+  },
+  "settings": {
+    "addNonTrackingDomainLink": "追跡禁止ドメインを追加"
+  }
+}

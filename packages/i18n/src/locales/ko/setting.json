@@ -1,0 +1,29 @@
+{
+  "account": {
+    "title": "내 계정",
+    "name": "계정이름",
+    "login": "로그인",
+    "logout": "로그아웃",
+    "dailyRecordsPrompt": "로그인하고 내 하루 기록을 확인해 보세요"
+  },
+  "languageChange": {
+    "title": "언어 변경 (Language)",
+    "selectedLanguage": "Selected Language",
+    "apply": "적용하기"
+  },
+  "recapFrequency": {
+    "title": "리캡 주기 설정",
+    "description": "지정된 시간에 리캡이 생성됩니다. 설정을 끌 경우 매일 자정에 배달됩니다.",
+    "deliveryTime": "리캡 배송 시간",
+    "hourUnit": "{n}시",
+    "minuteUnit": "{n}분",
+    "receiveDailyAtThisTime": "매일 이 시간에 리캡을 받습니다"
+  },
+  "untrackedDomains": {
+    "title": "추적금지 도메인",
+    "description": "브라우저 사용 기록 집계에서 제외할 도메인을 관리합니다.",
+    "delete": "삭제",
+    "domainInputPlaceholder": "도메인 입력 (예 : abc.com sample.kr)",
+    "add": "추가하기"
+  }
+}

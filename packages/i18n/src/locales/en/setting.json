@@ -1,0 +1,29 @@
+{
+  "account": {
+    "title": "My Account",
+    "name": "Account Name",
+    "login": "Sign In",
+    "logout": "Log Out",
+    "dailyRecordsPrompt": "Log in and check my daily records"
+  },
+  "languageChange": {
+    "title": "언어 변경 (Language)",
+    "selectedLanguage": "Selected Language",
+    "apply": "Apply"
+  },
+  "recapFrequency": {
+    "title": "Recap Frequency Settings",
+    "description": "Recaps are generated at the specified time. If the setting is off, they will be delivered daily at midnight.",
+    "deliveryTime": "Recap Delivery Time",
+    "hourUnit": "{n}hr",
+    "minuteUnit": "{n}min",
+    "receiveDailyAtThisTime": "Receive recaps daily at this time"
+  },
+  "untrackedDomains": {
+    "title": "Untracked Domains",
+    "description": "Manage domains to exclude from browser usage history aggregation.",
+    "delete": "Delete",
+    "domainInputPlaceholder": "Enter domain (e.g., abc.com sample.kr)",
+    "add": "Add"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "brand": "ReToday",
+    "headline": "毎晩届く、私のブラウザレキャップ",
+    "checkInDashboard": "ダッシュボードで確認する",
+    "dashboardDescription": "詳しいレキャップはダッシュボードで確認してください",
+    "delete": "削除"
+  },
+  "auth": {
+    "signInWithGoogle": "Google でログイン",
+    "agreement": "ログインをクリックすると、<terms>利用規約</terms>および<privacy>プライバシーポリシー</privacy>に同意したものとみなされます"
+  },
+
+  "navigation": {
+    "analysis": "分析",
+    "aiRecap": "AI レキャップ",
+    "settings": "設定"
+  }
+}

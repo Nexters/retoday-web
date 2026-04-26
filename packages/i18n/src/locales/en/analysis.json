@@ -1,0 +1,42 @@
+{
+  "screenTime": {
+    "title": "Total Screen Time",
+    "durationValueExample": "{hours} hours {minutes} minutes",
+    "buttonToday": "Today",
+    "buttonWeekly": "Weekly"
+  },
+  "category": {
+    "title": "Category Analysis",
+    "shoppingFocusSummary": "You spent {time_spent} immersed in {category}",
+    "keyword": "Keyword",
+    "shopping": "Shopping",
+    "learning": "Learning",
+    "game": "Games",
+    "content": "Content",
+    "community": "Community",
+    "financeAsset": "Finance/Assets",
+    "etc": "Etc.",
+    "webSurfing": "Web Surfing",
+    "design": "Design",
+    "development": "Development",
+    "lifeConvenience": "Life/Convenience"
+  },
+  "workPattern": {
+    "title": "My Work Pattern",
+    "earlyBird": "Early Bird Worker",
+    "earlyBirdDiligent": "Diligent Early Bird Worker",
+    "daytimeDiligent": "Diligent Daytime Worker",
+    "nightLeisurely": "Leisurely Night Worker"
+  },
+  "timeThief": {
+    "title": "Today's Time Thief",
+    "totalDurationExample": "Total {duration}"
+  },
+  "frequentSites": {
+    "title": "Frequently Visited Sites",
+    "visitCountDurationExample": "{count} visits {duration}"
+  },
+  "settings": {
+    "addNonTrackingDomainLink": "Add non-tracking domain"
+  }
+}

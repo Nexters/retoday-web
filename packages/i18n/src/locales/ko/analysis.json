@@ -1,0 +1,42 @@
+{
+  "screenTime": {
+    "title": "총 스크린타임",
+    "durationValueExample": "{hours}시간 {minutes}분",
+    "buttonToday": "오늘",
+    "buttonWeekly": "주간"
+  },
+  "category": {
+    "title": "카테고리별 분석",
+    "shoppingFocusSummary": "{category}에 {time_spent} 몰두했어요",
+    "keyword": "키워드",
+    "shopping": "쇼핑",
+    "learning": "학습",
+    "game": "게임",
+    "content": "콘텐츠",
+    "community": "커뮤니티",
+    "financeAsset": "금융/자산",
+    "etc": "기타",
+    "webSurfing": "웹서핑",
+    "design": "디자인",
+    "development": "개발",
+    "lifeConvenience": "생활/편의"
+  },
+  "workPattern": {
+    "title": "내 작업 패턴",
+    "earlyBird": "얼리버드 작업자",
+    "earlyBirdDiligent": "부지런한 얼리버드 작업러",
+    "daytimeDiligent": "성실한 데이타임 작업러",
+    "nightLeisurely": "여유로운 나이트 작업러"
+  },
+  "timeThief": {
+    "title": "오늘의 시간 도둑",
+    "totalDurationExample": "총 {duration}"
+  },
+  "frequentSites": {
+    "title": "자주 방문한 사이트",
+    "visitCountDurationExample": "{count}회 {duration}"
+  },
+  "settings": {
+    "addNonTrackingDomainLink": "추적금지 도메인 추가하기"
+  }
+}
