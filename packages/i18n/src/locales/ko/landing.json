@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "brand": "ReToday",
+    "headline": "매일 밤 만나는 나의 브라우저 리캡",
+    "checkInDashboard": "대시보드에서 확인하기",
+    "dashboardDescription": "자세한 리캡은 대시보드에서 확인해 보세요",
+    "delete": "삭제"
+  },
+  "auth": {
+    "signInWithGoogle": "Sign in with Google",
+    "agreement": "By clicking on sign in you agree to our <terms>Terms and Conditions</terms> and our <privacy>Privacy Policy</privacy>"
+  },
+
+  "navigation": {
+    "analysis": "분석",
+    "aiRecap": "AI리캡",
+    "settings": "설정"
+  }
+}

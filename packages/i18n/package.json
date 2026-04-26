@@ -1,0 +1,22 @@
+{
+  "name": "@recap/i18n",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "devDependencies": {
+    "@recap/typescript-config": "workspace:*",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "tsup": "^8.5.1",
+    "typescript": "5.9.2"
+  },
+  "dependencies": {
+    "i18next": "^26.0.6",
+    "react-i18next": "^17.0.4"
+  }
+}

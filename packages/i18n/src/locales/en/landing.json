@@ -1,0 +1,19 @@
+{
+  "landing": {
+    "brand": "ReToday",
+    "headline": "My daily browser recap, delivered every night",
+    "checkInDashboard": "Check in dashboard",
+    "dashboardDescription": "Check the detailed recap in the dashboard",
+    "delete": "Delete"
+  },
+  "auth": {
+    "signInWithGoogle": "Sign in with Google",
+    "agreement": "By clicking on sign in you agree to our <terms>Terms and Conditions</terms> and our <privacy>Privacy Policy</privacy>"
+  },
+
+  "navigation": {
+    "analysis": "Analysis",
+    "aiRecap": "AI Recap",
+    "settings": "Settings"
+  }
+}
