@@ -301,6 +301,31 @@ importers:
         specifier: ^8.0.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
 
+  packages/hooks:
+    dependencies:
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+    devDependencies:
+      '@recap/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@recap/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      '@types/react':
+        specifier: 19.2.2
+        version: 19.2.2
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.6.1)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
   packages/i18n:
     dependencies:
       i18next:
