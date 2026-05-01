@@ -1,4 +1,4 @@
-import type { DEFAULT_NAMESPACE, Resources } from "../config/resources.const";
+import type { DEFAULT_NAMESPACE, Resources } from "./constants";
 
 import "react-i18next";
 

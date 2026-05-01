@@ -3,11 +3,15 @@
     "title": "총 스크린타임",
     "durationValueExample": "{hours}시간 {minutes}분",
     "buttonToday": "오늘",
-    "buttonWeekly": "주간"
+    "buttonWeekly": "주간",
+    "weeklyAverageTitle": "이번주 평균 스크린타임",
+    "perDayAverage": "하루 {{duration}}"
   },
   "category": {
     "title": "카테고리별 분석",
-    "shoppingFocusSummary": "{category}에 {time_spent} 몰두했어요",
+    "shoppingFocusSummary": "<category>{{category}}</category>에 <time>{{time_spent}}</time> 몰두했어요",
+    "moreInDashboard": "더 자세한 내역은 대시보드에서 확인해주세요",
+    "bubbleRankAria": "{{rank}}등: {{label}}",
     "keyword": "키워드",
     "shopping": "쇼핑",
     "learning": "학습",
@@ -30,7 +34,8 @@
   },
   "timeThief": {
     "title": "오늘의 시간 도둑",
-    "totalDurationExample": "총 {duration}"
+    "totalDurationExample": "총 {duration}",
+    "imageAlt": "시간 도둑"
   },
   "frequentSites": {
     "title": "자주 방문한 사이트",

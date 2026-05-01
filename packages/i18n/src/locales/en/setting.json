@@ -17,7 +17,9 @@
     "deliveryTime": "Recap Delivery Time",
     "hourUnit": "{n}hr",
     "minuteUnit": "{n}min",
-    "receiveDailyAtThisTime": "Receive recaps daily at this time"
+    "receiveDailyAtThisTime": "Receive recaps daily at this time",
+    "hourSelectPlaceholder": "Hour",
+    "minuteSelectPlaceholder": "Minute"
   },
   "untrackedDomains": {
     "title": "Untracked Domains",

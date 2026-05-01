@@ -15,5 +15,8 @@
     "analysis": "Analysis",
     "aiRecap": "AI Recap",
     "settings": "Settings"
+  },
+  "datePicker": {
+    "placeholder": "Select date"
   }
 }

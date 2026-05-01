@@ -17,7 +17,9 @@
     "deliveryTime": "리캡 배송 시간",
     "hourUnit": "{n}시",
     "minuteUnit": "{n}분",
-    "receiveDailyAtThisTime": "매일 이 시간에 리캡을 받습니다"
+    "receiveDailyAtThisTime": "매일 이 시간에 리캡을 받습니다",
+    "hourSelectPlaceholder": "시간",
+    "minuteSelectPlaceholder": "분"
   },
   "untrackedDomains": {
     "title": "추적금지 도메인",

@@ -15,5 +15,8 @@
     "analysis": "分析",
     "aiRecap": "AI レキャップ",
     "settings": "設定"
+  },
+  "datePicker": {
+    "placeholder": "日付を選択"
   }
 }

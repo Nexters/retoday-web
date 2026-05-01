@@ -15,5 +15,8 @@
     "analysis": "분석",
     "aiRecap": "AI리캡",
     "settings": "설정"
+  },
+  "datePicker": {
+    "placeholder": "날짜 선택"
   }
 }
