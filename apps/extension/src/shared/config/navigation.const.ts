@@ -8,22 +8,25 @@ export type NavigationTabValue =
   (typeof NAVIGATION_TAB)[keyof typeof NAVIGATION_TAB];
 
 export const GNB_TABS: {
-  label: string;
+  labelKey:
+    | "navigation.analysis"
+    | "navigation.aiRecap"
+    | "navigation.settings";
   value: NavigationTabValue;
   path: string;
 }[] = [
   {
-    label: "분석",
+    labelKey: "navigation.analysis",
     value: "analysis",
     path: "/analysis",
   },
   {
-    label: "AI 리캡",
+    labelKey: "navigation.aiRecap",
     value: "ai-recap",
     path: "/ai-recap",
   },
   {
-    label: "설정",
+    labelKey: "navigation.settings",
     value: "settings",
     path: "/settings",
   },

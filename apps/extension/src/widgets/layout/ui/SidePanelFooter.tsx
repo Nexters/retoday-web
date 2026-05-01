@@ -1,3 +1,4 @@
+import { useLocale } from "@recap/i18n";
 import { Button } from "@recap/ui";
 import browser from "webextension-polyfill";
 
@@ -9,6 +10,7 @@ import { Icon } from "@/shared/ui";
 const SidePanelFooter = () => {
   const activeTab = useSettingStore((state) => state.activeTab);
   const selectedDate = useSettingStore((state) => state.selectedDate);
+  const { t } = useLocale("landing");
 
   const handleOpenDashboard = () => {
     const path = GNB_TABS.find((tab) => tab.value === activeTab)?.path;
@@ -23,11 +25,11 @@ const SidePanelFooter = () => {
         className="flex items-center justify-center gap-2"
         onClick={handleOpenDashboard}
       >
-        대시보드에서 확인하기
+        {t("landing.checkInDashboard")}
         <Icon name="arrow-right" className="size-4" />
       </Button>
       <span className="text-caption-1 text-gray-500">
-        자세한 리캡은 대시보드에서 확인해 보세요
+        {t("landing.dashboardDescription")}
       </span>
     </footer>
   );

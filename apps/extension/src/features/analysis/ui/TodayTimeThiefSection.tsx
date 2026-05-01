@@ -1,3 +1,5 @@
+import { useLocale } from "@recap/i18n";
+
 import { useSettingStore } from "@/app/store/model";
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
@@ -7,6 +9,7 @@ import { formatDate } from "@/shared/lib/date/date";
 
 const TodayTimeThiefSection = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);
+  const { t } = useLocale("analysis");
   const { data, isLoading } = useGetLongestWebSite(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );
@@ -18,7 +21,7 @@ const TodayTimeThiefSection = () => {
     <div className="bg-white px-5 py-8">
       <div className="flex items-center justify-between">
         <h2 className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
-          오늘의 시간 도둑
+          {t("timeThief.title")}
         </h2>
 
         <div className="bg-blue-75 text-label-1 flex items-center gap-2 w-fit rounded-xl px-3 py-1 text-gray-900">
@@ -40,7 +43,7 @@ const TodayTimeThiefSection = () => {
         <div className="relative">
           <img
             src={TimeThiefImg}
-            alt="시간 도둑"
+            alt={t("timeThief.imageAlt")}
             className="h-auto w-full max-w-xs object-contain"
           />
 

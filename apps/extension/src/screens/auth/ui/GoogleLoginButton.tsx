@@ -1,3 +1,4 @@
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 
 import { Icon } from "@/shared/ui";
@@ -7,6 +8,8 @@ type GoogleLoginButtonProps = {
   onClick?: () => void;
 };
 const GoogleLoginButton = ({ className, onClick }: GoogleLoginButtonProps) => {
+  const { t } = useLocale("landing");
+
   return (
     <button
       className={cn(
@@ -20,7 +23,7 @@ const GoogleLoginButton = ({ className, onClick }: GoogleLoginButtonProps) => {
       </div>
       <div className="bg-[#346EF1] p-2.5">
         <span className="text-sm font-bold text-white">
-          Sign in with Google
+          {t("auth.signInWithGoogle")}
         </span>
       </div>
     </button>

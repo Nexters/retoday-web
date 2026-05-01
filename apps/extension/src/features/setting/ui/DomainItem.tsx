@@ -1,3 +1,4 @@
+import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button } from "@recap/ui";
 
@@ -6,6 +7,7 @@ import { useDeleteExcludeDomain } from "@/features/setting/api/user-query";
 import { domainStore } from "@/shared/lib/domain-store";
 
 const DomainItem = ({ domain }: { domain: string }) => {
+  const { t } = useLocale("settings");
   const queryClient = useQueryClient();
 
   const { mutate } = useDeleteExcludeDomain({
@@ -37,7 +39,7 @@ const DomainItem = ({ domain }: { domain: string }) => {
         className="w-auto text-red-500 px-2.5"
         onClick={handleDeleteDomain}
       >
-        삭제
+        {t("untrackedDomains.delete")}
       </Button>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocale } from "@recap/i18n";
 import {
   Accordion,
   AccordionContent,
@@ -20,6 +21,7 @@ const CategoryAnalysisItem = ({
   count,
 }: AnalysisCategoryItem & { count: number }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { t } = useLocale("analysis");
   return (
     <Accordion
       type="single"
@@ -55,7 +57,7 @@ const CategoryAnalysisItem = ({
           ))}
           <div className="flex items-center justify-center py-3">
             <p className="text-caption-1 text-gray-500 w-full text-center">
-              더 자세한 내역은 대시보드에서 확인해주세요
+              {t("category.moreInDashboard")}
             </p>
           </div>
         </AccordionContent>
