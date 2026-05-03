@@ -1,12 +1,15 @@
+import { useLocale } from "@recap/i18n";
+
 import { useGetUserProfile } from "@/features/setting/api/user-query";
 import { Icon } from "@/shared/ui";
 
 const ProfileCard = () => {
   const { data: userProfile } = useGetUserProfile();
+  const { t } = useLocale("settings");
 
   return (
     <div className="py-8 px-5">
-      <p className="text-subtitle-2-rg text-gray-800">내 계정</p>
+      <p className="text-subtitle-2-rg text-gray-800">{t("account.title")}</p>
       <div className="flex items-center gap-3 mt-4">
         {userProfile?.imageUrl ? (
           <img

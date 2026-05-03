@@ -17,7 +17,9 @@
     "deliveryTime": "リキャップ配信時間",
     "hourUnit": "{n}時",
     "minuteUnit": "{n}分",
-    "receiveDailyAtThisTime": "毎日この時間にリキャップを受け取ります"
+    "receiveDailyAtThisTime": "毎日この時間にリキャップを受け取ります",
+    "hourSelectPlaceholder": "時",
+    "minuteSelectPlaceholder": "分"
   },
   "untrackedDomains": {
     "title": "トラッキング禁止ドメイン",

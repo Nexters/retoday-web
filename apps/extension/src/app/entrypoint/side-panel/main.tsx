@@ -1,6 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
+import { LanguageProvider } from "@/app/providers/language-provider";
 import { QueryProvider } from "@/app/providers/query-provider";
 
 import { SidePanel } from "./SidePanel";
@@ -11,9 +12,11 @@ const container = document.getElementById("root");
 if (container) {
   createRoot(container).render(
     <StrictMode>
-      <QueryProvider>
-        <SidePanel />
-      </QueryProvider>
+      <LanguageProvider>
+        <QueryProvider>
+          <SidePanel />
+        </QueryProvider>
+      </LanguageProvider>
     </StrictMode>,
   );
 }

@@ -3,14 +3,12 @@ import i18next, { type i18n as I18nInstance, type InitOptions } from "i18next";
 
 import {
   DEFAULT_LANGUAGE,
-  type LanguageType,
-  SUPPORTED_LANGUAGES,
-} from "../config/localize.const";
-import {
   DEFAULT_NAMESPACE,
+  type LanguageType,
   NAMESPACES,
   resources,
-} from "../config/resources.const";
+  SUPPORTED_LANGUAGES,
+} from "./constants";
 
 function isDevelopment(): boolean {
   const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } })
@@ -19,7 +17,6 @@ function isDevelopment(): boolean {
 }
 
 export type CreateI18nOptions = {
-  /** 초기 언어 (기본: ko) */
   lng?: LanguageType;
   overrides?: InitOptions;
 };
@@ -52,7 +49,4 @@ export function createI18n(options: CreateI18nOptions = {}): I18nInstance {
   return instance;
 }
 
-/**
- * 앱에서 공용으로 사용할 기본 인스턴스.
- */
 export const i18n: I18nInstance = createI18n();

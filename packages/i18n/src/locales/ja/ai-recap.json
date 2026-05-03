@@ -13,6 +13,12 @@
     "recapDeliveryTimeInfo": "活動データが蓄積される日は、自動的に深夜12時にリキャップをお届けします",
     "setTimeZone": "時間帯を設定する"
   },
+  "empty": {
+    "headlineLine1": "毎晩届く、今日の",
+    "headlineLine2": "インターネットリキャップ",
+    "recapDeliveryShort": "活動データが蓄積された日は、深夜0時にリキャップをお届けします。",
+    "changeDeliveryInSettings": "リキャップの配信時間は設定から変更できます。"
+  },
   "todayRecap": {
     "totalScreenTimeLabel": "合計スクリーンタイム",
     "totalScreenTimeValue": "{hours}時間 {minutes}分",
@@ -20,6 +26,7 @@
     "dailySummaryLabel": "一日の要約",
     "aiTimelineTitle": "AIタイムライン",
     "lookingBackTitle": "今日一日を振り返る",
-    "mostViewedTopicsTitle": "よく閲覧したテーマ"
+    "mostViewedTopicsTitle": "よく閲覧したテーマ",
+    "todayTopicsTitle": "今日のトピック"
   }
 }

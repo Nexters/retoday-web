@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocale } from "@recap/i18n";
 
 import { useSettingStore } from "@/app/store/model";
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
@@ -19,6 +20,7 @@ import {
 const WeeklyScreenTimeSection = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
+  const { t } = useLocale("analysis");
 
   const { data: screenTime, isLoading } = useGetAnalysisScreenTime(
     mode,
@@ -47,10 +49,14 @@ const WeeklyScreenTimeSection = () => {
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <h2 className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
-            이번주 평균 스크린타임
+            {t("screenTime.weeklyAverageTitle")}
           </h2>
           <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
-            하루 {weeklyScreenTime ? formatDuration(weeklyScreenTime / 7) : "-"}
+            {t("screenTime.perDayAverage", {
+              duration: weeklyScreenTime
+                ? formatDuration(weeklyScreenTime / 7)
+                : "-",
+            })}
           </h3>
         </div>
         <ToggleGroup
@@ -62,10 +68,10 @@ const WeeklyScreenTimeSection = () => {
           }}
         >
           <ToggleGroupItem value={ANALYSIS_PERIOD.DAILY} position="left">
-            오늘
+            {t("screenTime.buttonToday")}
           </ToggleGroupItem>
           <ToggleGroupItem value={ANALYSIS_PERIOD.WEEKLY} position="right">
-            주간
+            {t("screenTime.buttonWeekly")}
           </ToggleGroupItem>
         </ToggleGroup>
       </div>

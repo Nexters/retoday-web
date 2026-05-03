@@ -1,3 +1,4 @@
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 
 /**
@@ -119,11 +120,13 @@ function Bubble({
   item,
   pos,
   size,
+  ariaLabel,
 }: {
   rank: 1 | 2 | 3 | 4 | 5;
   item: BubbleItem;
   pos: { x: number; y: number };
   size: string;
+  ariaLabel: string;
 }) {
   const tone = bubbleTone(item, rank);
 
@@ -141,7 +144,7 @@ function Bubble({
         width: size,
         height: size,
       }}
-      aria-label={`${rank}등: ${item.label}`}
+      aria-label={ariaLabel}
     >
       {item.tone !== "custom" && (
         <div
@@ -191,7 +194,11 @@ export default function BubbleRanking({
   layout,
   className = "",
 }: BubbleRankingProps) {
+  const { t } = useLocale("analysis");
   const [rank1, rank2, rank3, rank4, rank5] = items;
+
+  const bubbleAria = (rank: 1 | 2 | 3 | 4 | 5, item: BubbleItem) =>
+    t("category.bubbleRankAria", { rank, label: item.label });
 
   const mergedLayout: Record<1 | 2 | 3 | 4 | 5, { x: number; y: number }> = {
     1: { ...DEFAULT_LAYOUT[1], ...(layout?.[1] ?? {}) },
@@ -260,30 +267,35 @@ export default function BubbleRanking({
           item={normalized[1]}
           pos={mergedLayout[2]}
           size={size2}
+          ariaLabel={bubbleAria(2, normalized[1])}
         />
         <Bubble
           rank={1}
           item={normalized[0]}
           pos={mergedLayout[1]}
           size={size1}
+          ariaLabel={bubbleAria(1, normalized[0])}
         />
         <Bubble
           rank={5}
           item={normalized[4]}
           pos={mergedLayout[5]}
           size={size5}
+          ariaLabel={bubbleAria(5, normalized[4])}
         />
         <Bubble
           rank={3}
           item={normalized[2]}
           pos={mergedLayout[3]}
           size={size3}
+          ariaLabel={bubbleAria(3, normalized[2])}
         />
         <Bubble
           rank={4}
           item={normalized[3]}
           pos={mergedLayout[4]}
           size={size4}
+          ariaLabel={bubbleAria(4, normalized[3])}
         />
       </div>
     </div>

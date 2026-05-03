@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button, Input } from "@recap/ui";
 
@@ -11,6 +12,7 @@ import DomainItem from "@/features/setting/ui/DomainItem";
 import { domainStore } from "@/shared/lib/domain-store";
 
 const UntrackedDomainSetting = () => {
+  const { t } = useLocale("settings");
   const { data: userProfile } = useGetUserProfile();
   const queryClient = useQueryClient();
   const [doaminValue, setDoaminValue] = useState<string>("");
@@ -36,9 +38,11 @@ const UntrackedDomainSetting = () => {
 
   return (
     <div className="pt-8 pb-6 px-5">
-      <h2 className="text-headline-sb text-gray-900">추적금지 도메인</h2>
+      <h2 className="text-headline-sb text-gray-900">
+        {t("untrackedDomains.title")}
+      </h2>
       <p className="text-subtitle-2-rg text-gray-800 mt-1">
-        브라우저 기록 집계에서 제외할 도메인을 관리합니다.
+        {t("untrackedDomains.description")}
       </p>
 
       <div className="mt-4 flex flex-col gap-1">
@@ -50,7 +54,7 @@ const UntrackedDomainSetting = () => {
         className="mt-4"
         value={doaminValue}
         onChange={(e) => setDoaminValue(e.target.value)}
-        placeholder="도메인 입력 ( 예 : abc.com sample.kr)"
+        placeholder={t("untrackedDomains.domainInputPlaceholder")}
       />
       <Button
         disabled={!doaminValue.trim().length}
@@ -58,7 +62,7 @@ const UntrackedDomainSetting = () => {
         variant="secondary"
         onClick={handleAddDomain}
       >
-        추가하기
+        {t("untrackedDomains.add")}
       </Button>
     </div>
   );

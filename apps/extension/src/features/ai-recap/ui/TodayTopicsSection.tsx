@@ -1,9 +1,15 @@
+import { useLocale } from "@recap/i18n";
+
 import type { AiRecapTopic } from "@/features/ai-recap/model/ai-recap.type";
 
 const TodayTopicsSection = ({ topics }: { topics: AiRecapTopic[] }) => {
+  const { t } = useLocale("ai-recap");
+
   return (
     <div className="py-8 px-5">
-      <p className="text-subtitle-2-rg text-gray-800">오늘의 주제</p>
+      <p className="text-subtitle-2-rg text-gray-800">
+        {t("todayRecap.todayTopicsTitle")}
+      </p>
 
       <div className="flex justify-center mt-4">
         <div className="relative h-60 w-full max-w-md overflow-hidden rounded-xl bg-blue-50 px-6 py-6">
