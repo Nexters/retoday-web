@@ -1,3 +1,5 @@
+import { formatDate } from "@recap/utils";
+
 import { useSettingStore } from "@/app/store/model";
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
 import {
@@ -8,7 +10,6 @@ import {
   TodayTopicsSection,
 } from "@/features/ai-recap/ui";
 import { DATE_FORMAT } from "@/shared/config";
-import { formatDate } from "@/shared/lib/date/date";
 import { Divider } from "@/shared/ui";
 
 const AiRecapContent = () => {

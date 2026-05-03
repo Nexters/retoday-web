@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocale } from "@recap/i18n";
+import { formatDate, formatDuration } from "@recap/utils";
 
 import { useSettingStore } from "@/app/store/model";
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
@@ -10,7 +11,6 @@ import {
 import { transformScreenTimeToChartData } from "@/features/analysis/model/screen-time-chart-mapper";
 import WeeklyScreenTimeSectionSkeleton from "@/features/analysis/ui/WeeklyScreenTimeSectionSkeleton";
 import { DATE_FORMAT } from "@/shared/config";
-import { formatDate, formatDuration } from "@/shared/lib/date/date";
 import {
   ScreenTimeWeeklyBarChart,
   ToggleGroup,
@@ -20,7 +20,7 @@ import {
 const WeeklyScreenTimeSection = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
-  const { t } = useLocale("analysis");
+  const { locale, t } = useLocale("analysis");
 
   const { data: screenTime, isLoading } = useGetAnalysisScreenTime(
     mode,
@@ -54,7 +54,7 @@ const WeeklyScreenTimeSection = () => {
           <h3 className="text-headline-sb mt-2 whitespace-nowrap text-gray-900">
             {t("screenTime.perDayAverage", {
               duration: weeklyScreenTime
-                ? formatDuration(weeklyScreenTime / 7)
+                ? formatDuration(weeklyScreenTime / 7, t)
                 : "-",
             })}
           </h3>
@@ -80,7 +80,12 @@ const WeeklyScreenTimeSection = () => {
 
       <ScreenTimeWeeklyBarChart
         data={
-          screenTime ? transformScreenTimeToChartData(mode, screenTime) : []
+          screenTime
+            ? transformScreenTimeToChartData(mode, screenTime, {
+                locale,
+                t,
+              })
+            : []
         }
         height={100}
         className="mt-20"

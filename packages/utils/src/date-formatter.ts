@@ -41,13 +41,42 @@ export const toDayjsLocale = (locale?: string): "ko" | "ja" | "en" => {
   return "en";
 };
 
-const resolveOptions = (options: DateFormatterOptions = {}) => {
+/** `locale` / `timeZone` / `timeFormat`을 브라우저 기본값까지 포함해 확정한다. */
+export const resolveDateFormatterOptions = (
+  options: DateFormatterOptions = {},
+) => {
   return {
     locale: normalizeLocale(options.locale ?? getBrowserLocale()),
     timeZone: options.timeZone ?? getBrowserTimeZone(),
     timeFormat: options.timeFormat ?? 24,
   };
 };
+
+export type ResolvedDateFormatterOptions = ReturnType<
+  typeof resolveDateFormatterOptions
+>;
+
+/** 고정 일요일(ISO). `weekdayIndex`만큼 더해 요일 이름을 만들 때 사용한다. */
+const SUNDAY_REF = "2024-01-07";
+
+/**
+ * dayjs 요일 인덱스(0=일~6=토)에 해당하는 짧은 요일 문자열 (로케일 반영).
+ */
+export const formatWeekdayShort = (
+  weekdayIndex: number,
+  options: DateFormatterOptions = {},
+): string => {
+  const { locale } = resolveDateFormatterOptions(options);
+
+  return dayjs(SUNDAY_REF)
+    .add(weekdayIndex, "day")
+    .locale(toDayjsLocale(locale))
+    .format("dd");
+};
+
+/** 시간대 라벨 등에 쓰는 2자리 문자열 (예: 3 → "03"). */
+export const formatTwoDigitNumber = (n: number): string =>
+  String(Math.trunc(n)).padStart(2, "0");
 
 /**
  * 지역별 날짜/시간 포맷.
@@ -66,7 +95,7 @@ export const formatLocalizedDateTime = (
 ): string => {
   if (!date) return "";
 
-  const { locale, timeZone } = resolveOptions(options);
+  const { locale, timeZone } = resolveDateFormatterOptions(options);
   const target = new Date(date);
 
   if (Number.isNaN(target.getTime())) return "";
@@ -86,7 +115,7 @@ export const formatDate = (
 ): string => {
   if (!date) return "";
 
-  const { locale, timeZone } = resolveOptions(options);
+  const { locale, timeZone } = resolveDateFormatterOptions(options);
 
   const target = dayjs(date).tz(timeZone);
 
@@ -101,7 +130,7 @@ export const formatTime = (
 ): string => {
   if (!date) return "";
 
-  const { timeZone, timeFormat } = resolveOptions(options);
+  const { timeZone, timeFormat } = resolveDateFormatterOptions(options);
 
   const target = dayjs(date).tz(timeZone);
 

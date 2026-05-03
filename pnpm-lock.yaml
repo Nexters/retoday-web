@@ -71,12 +71,6 @@ importers:
 
   apps/extension:
     dependencies:
-      '@recap/hooks':
-        specifier: workspace:*
-        version: link:../../packages/hooks
-      dayjs:
-        specifier: ^1.11.19
-        version: 1.11.19
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -99,6 +93,9 @@ importers:
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@recap/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@recap/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
@@ -117,6 +114,9 @@ importers:
       '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@recap/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.1.18(vite@6.4.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))

@@ -5,7 +5,8 @@
     "buttonToday": "Today",
     "buttonWeekly": "Weekly",
     "weeklyAverageTitle": "This week's average screen time",
-    "perDayAverage": "{{duration}} per day"
+    "perDayAverage": "{{duration}} per day",
+    "dailyTimeSlotSubLabel": "Today {{start}}:00 - {{end}}:00"
   },
   "category": {
     "title": "Category Analysis",
