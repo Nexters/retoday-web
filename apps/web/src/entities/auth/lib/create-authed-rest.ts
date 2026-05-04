@@ -1,7 +1,7 @@
 import type { RestAPIProtocol } from "@recap/api";
 import { RestAPI, RestAPIInstance } from "@recap/api";
 
-import { tokenStore } from "@/features/settings/lib/token-store";
+import { tokenStore } from "@/entities/auth/model/token-store";
 
 type RefreshResponse = { accessToken: string; refreshToken: string };
 

@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { catchAPIError } from "@recap/api";
 
-import { authWithTokenAPIService } from "@/features/settings/api";
-import { tokenStore } from "@/features/settings/lib/token-store";
+import { authWithTokenAPIService } from "@/entities/auth/api";
+import { tokenStore } from "@/entities/auth/model/token-store";
 import type { UserProfileType } from "@/features/settings/model/get-user-profile.schema";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 import MailIcon from "@/shared/assets/icons/mail.svg";

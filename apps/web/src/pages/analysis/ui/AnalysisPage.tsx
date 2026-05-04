@@ -6,12 +6,12 @@ import Link from "next/link";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { useAuthStatus } from "@/entities/auth/model/use-auth-status";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
 import ScreenTime from "@/features/analysis/ui/ScreenTime";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
 import TopVisitedSites from "@/features/analysis/ui/TopVisitedSites";
 import WorkPattern from "@/features/analysis/ui/WorkPattern";
-import { useAuthStatus } from "@/features/settings/lib/use-auth-status";
 import ArrowRightBlueIcon from "@/shared/assets/icons/arrow-right-blue.svg";
 import UnloginCategoryImg from "@/shared/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/shared/assets/img/analysis-unlogin-screentime.png";

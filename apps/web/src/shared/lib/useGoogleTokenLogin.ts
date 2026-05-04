@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { catchAPIError } from "@recap/api";
 
-import { authAPIService } from "@/features/settings/api";
-import { tokenStore } from "@/features/settings/lib/token-store";
+import { authAPIService } from "@/entities/auth/api";
+import { tokenStore } from "@/entities/auth/model/token-store";
 
 type BackendLoginResponse = {
   accessToken: string;

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { tokenStore } from "@/features/settings/lib/token-store";
+import { tokenStore } from "./token-store";
 
 export function useAuthStatus() {
   const [isReady, setIsReady] = useState(false);

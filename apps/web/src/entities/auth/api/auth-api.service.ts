@@ -1,6 +1,6 @@
 import type { RestAPIProtocol } from "@recap/api";
 
-import type { GoogleOAuthLoginDTO } from "@/features/settings/model/google-oauth-login.schema";
+import type { GoogleOAuthLoginDTO } from "@/entities/auth/model/google-oauth-login.schema";
 
 export class AuthAPIService {
   constructor(private fetch: RestAPIProtocol) {}

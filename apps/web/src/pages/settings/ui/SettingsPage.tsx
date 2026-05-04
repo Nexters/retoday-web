@@ -5,8 +5,8 @@ import { catchAPIError } from "@recap/api";
 import { cn } from "@recap/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { useAuthStatus } from "@/entities/auth/model/use-auth-status";
 import { userAPIService } from "@/features/settings/api";
-import { useAuthStatus } from "@/features/settings/lib/use-auth-status";
 import UserProfile from "@/features/settings/ui/UserProfile";
 import LoginButton from "@/shared/ui/LoginButton";
 
