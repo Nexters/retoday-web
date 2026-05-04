@@ -1,13 +1,11 @@
-import AnalysisGate from "@/app/analysis/src/components/AnalysisGate";
-import { getSafeQueryDate } from "@/lib/date/safe-query-date";
+import { AnalysisPage } from "@/pages/analysis/ui";
+import { getSafeQueryDate } from "@/shared/lib/date/safe-query-date";
 
-type AnalysisPageProps = {
+type AnalysisRouteProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function AnalysisPage({
-  searchParams,
-}: AnalysisPageProps) {
+export default async function Page({ searchParams }: AnalysisRouteProps) {
   const sp = searchParams ? await searchParams : {};
 
   const rawDate = sp.date;
@@ -15,5 +13,5 @@ export default async function AnalysisPage({
 
   const date = getSafeQueryDate(dateParam);
 
-  return <AnalysisGate date={date} />;
+  return <AnalysisPage date={date} />;
 }

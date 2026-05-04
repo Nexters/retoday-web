@@ -1,11 +1,11 @@
-import Recap from "@/app/ai-recap/src/components/Recap";
-import { getSafeQueryDate } from "@/lib/date/safe-query-date";
+import { AiRecapPage } from "@/pages/ai-recap/ui";
+import { getSafeQueryDate } from "@/shared/lib/date/safe-query-date";
 
-type AIRecapPageProps = {
+type AIRecapRouteProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function AIRecapPage({ searchParams }: AIRecapPageProps) {
+export default async function Page({ searchParams }: AIRecapRouteProps) {
   const sp = searchParams ? await searchParams : {};
 
   const rawDate = sp.date;
@@ -13,5 +13,5 @@ export default async function AIRecapPage({ searchParams }: AIRecapPageProps) {
 
   const date = getSafeQueryDate(dateParam);
 
-  return <Recap date={date} />;
+  return <AiRecapPage date={date} />;
 }
