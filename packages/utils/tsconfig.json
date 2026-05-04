@@ -1,0 +1,9 @@
+{
+  "extends": "@recap/typescript-config/base",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": ["src", "**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}

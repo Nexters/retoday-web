@@ -6,27 +6,31 @@
   "description": "Chrome Extension - Browser Recap",
   "scripts": {
     "dev": "vite build --watch --mode development",
-    "build": "vite build --mode production",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
     "build:chrome": "vite build --mode production --browser=chrome",
     "build:firefox": "vite build --mode production --browser=firefox",
     "lint": "eslint --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
-    "dayjs": "^1.11.19",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
-    "webextension-polyfill": "^0.12.0"
+    "webextension-polyfill": "^0.12.0",
+    "zustand": "^5.0.12"
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.3.0",
     "@recap/api": "workspace:*",
+    "@recap/hooks": "workspace:*",
     "@recap/eslint-config": "workspace:*",
+    "@recap/i18n": "workspace:*",
     "@recap/react-query": "workspace:*",
     "@recap/tailwind-config": "workspace:*",
     "@recap/tokens": "workspace:*",
     "@recap/typescript-config": "workspace:*",
     "@recap/ui": "workspace:*",
+    "@recap/utils": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",

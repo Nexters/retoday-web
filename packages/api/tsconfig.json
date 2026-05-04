@@ -2,9 +2,7 @@
   "extends": "@recap/typescript-config/base",
   "compilerOptions": {
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-
     "jsx": "preserve",
-
     "noEmit": true
   },
   "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],

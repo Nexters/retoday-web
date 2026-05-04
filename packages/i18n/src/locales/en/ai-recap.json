@@ -1,0 +1,32 @@
+{
+  "screenTime": {
+    "todayRecapTitle": "Today's Recap",
+    "deliverRecapDailyNight": "We deliver today's internet recap every night.",
+    "totalScreenTime": "Total Screen Time",
+    "measurementTime": "Measurement Time"
+  },
+  "preview": {
+    "recapProvidedInThisFormat": "Recaps are provided in this format.",
+    "summarizeYourDay": "We summarize what kind of day you had.",
+    "checkTopicsTimeline": "Check topics of interest and your daily timeline.",
+    "wantRecapAtDifferentTime": "Want to receive recaps at a different time?",
+    "recapDeliveryTimeInfo": "On days when activity data is accumulated, we automatically deliver recaps at 12 AM.",
+    "setTimeZone": "Set Time Zone"
+  },
+  "empty": {
+    "headlineLine1": "Every night, today's",
+    "headlineLine2": "internet recap, delivered to you",
+    "recapDeliveryShort": "On days with activity data, we deliver your recap at midnight.",
+    "changeDeliveryInSettings": "You can change recap delivery time in Settings."
+  },
+  "todayRecap": {
+    "totalScreenTimeLabel": "Total Screen Time",
+    "totalScreenTimeValue": "{hours}h {minutes}m",
+    "measurementTimeLabel": "Measurement Time",
+    "dailySummaryLabel": "Daily Summary",
+    "aiTimelineTitle": "AI Timeline",
+    "lookingBackTitle": "Looking Back at Today",
+    "mostViewedTopicsTitle": "Most Viewed Topics",
+    "todayTopicsTitle": "Today's topics"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "screenTime": {
+    "title": "Total Screen Time",
+    "durationValueExample": "{hours} hours {minutes} minutes",
+    "buttonToday": "Today",
+    "buttonWeekly": "Weekly",
+    "weeklyAverageTitle": "This week's average screen time",
+    "perDayAverage": "{{duration}} per day",
+    "dailyTimeSlotSubLabel": "Today {{start}}:00 - {{end}}:00"
+  },
+  "category": {
+    "title": "Category Analysis",
+    "shoppingFocusSummary": "You spent <time>{{time_spent}}</time> immersed in <category>{{category}}</category>",
+    "moreInDashboard": "See more details in the dashboard",
+    "bubbleRankAria": "Rank {{rank}}: {{label}}",
+    "keyword": "Keyword",
+    "shopping": "Shopping",
+    "learning": "Learning",
+    "game": "Games",
+    "content": "Content",
+    "community": "Community",
+    "financeAsset": "Finance/Assets",
+    "etc": "Etc.",
+    "webSurfing": "Web Surfing",
+    "design": "Design",
+    "development": "Development",
+    "lifeConvenience": "Life/Convenience"
+  },
+  "workPattern": {
+    "title": "My Work Pattern",
+    "earlyBird": "Early Bird Worker",
+    "earlyBirdDiligent": "Diligent Early Bird Worker",
+    "daytimeDiligent": "Diligent Daytime Worker",
+    "nightLeisurely": "Leisurely Night Worker"
+  },
+  "timeThief": {
+    "title": "Today's Time Thief",
+    "totalDurationExample": "Total {duration}",
+    "imageAlt": "Time thief"
+  },
+  "frequentSites": {
+    "title": "Frequently Visited Sites",
+    "visitCountDurationExample": "{count} visits {duration}"
+  },
+  "settings": {
+    "addNonTrackingDomainLink": "Add non-tracking domain"
+  }
+}

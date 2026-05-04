@@ -1,0 +1,27 @@
+import type { RestAPIProtocol } from "@recap/api";
+
+import type { UserProfileResponse } from "@/features/setting/model/user.type";
+
+export class UserAPIService {
+  constructor(private fetch: RestAPIProtocol) {}
+
+  getUserProfile() {
+    return this.fetch.get<UserProfileResponse>({
+      url: "users/me/profiles",
+    });
+  }
+
+  postExcludeDomain(data: { domain: string }) {
+    return this.fetch.post({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
+
+  deleteExcludeDomain(data: { domain: string }) {
+    return this.fetch.delete({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
+}
