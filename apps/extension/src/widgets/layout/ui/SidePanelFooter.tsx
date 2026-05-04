@@ -3,13 +3,14 @@ import { Button } from "@recap/ui";
 import { formatDate } from "@recap/utils";
 import browser from "webextension-polyfill";
 
-import { useSettingStore } from "@/app/store/model";
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";
 import { Icon } from "@/shared/ui";
+import { useDateSelectorStore } from "@/widgets/date-selector/model";
+import { useTabNavigationStore } from "@/widgets/tab-navigation/model";
 
 const SidePanelFooter = () => {
-  const activeTab = useSettingStore((state) => state.activeTab);
-  const selectedDate = useSettingStore((state) => state.selectedDate);
+  const activeTab = useTabNavigationStore((state) => state.activeTab);
+  const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("landing");
 
   const handleOpenDashboard = () => {

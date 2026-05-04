@@ -1,7 +1,7 @@
 import { useLayoutEffect } from "react";
 import { Trans, useLocale } from "@recap/i18n";
 
-import { useAuthStore } from "@/app/store/model";
+import { useAuthStore } from "@/entities/auth/model";
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
 import { LanguageSelect, useLanguageStore } from "@/entities/language";
 import GoogleLoginButton from "@/screens/auth/ui/GoogleLoginButton";

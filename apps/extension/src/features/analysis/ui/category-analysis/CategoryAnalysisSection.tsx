@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { useLocale } from "@recap/i18n";
 import { formatDate, formatDuration } from "@recap/utils";
 
-import { useSettingStore } from "@/app/store/model";
 import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
 import BubbleRanking from "@/features/analysis/ui/category-analysis/BubbleRanking";
 import CategoryAnalysisItem from "@/features/analysis/ui/category-analysis/CategoryAnalysisItem";
@@ -10,9 +9,10 @@ import CategoryTitle from "@/features/analysis/ui/category-analysis/CategoryTitl
 import CategoryAnalysisSectionSkeleton from "@/features/analysis/ui/CategoryAnalysisSectionSkeleton";
 import { DATE_FORMAT } from "@/shared/config/date-format.const";
 import Divider from "@/shared/ui/Divider";
+import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const CategoryAnalysisSection = () => {
-  const selectedDate = useSettingStore((state) => state.selectedDate);
+  const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale();
   const { data, isLoading } = useGetAnalysisCategoryAnalysis(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),

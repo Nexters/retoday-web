@@ -1,6 +1,5 @@
 import { formatDate } from "@recap/utils";
 
-import { useSettingStore } from "@/app/store/model";
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
 import {
   AiRecapEmptyView,
@@ -11,9 +10,10 @@ import {
 } from "@/features/ai-recap/ui";
 import { DATE_FORMAT } from "@/shared/config";
 import { Divider } from "@/shared/ui";
+import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const AiRecapContent = () => {
-  const selectedDate = useSettingStore((state) => state.selectedDate);
+  const selectedDate = useDateSelectorStore((state) => state.selectedDate);
 
   const { data, isLoading } = useGetAiRecap(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),

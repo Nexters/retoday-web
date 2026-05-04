@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { getHttpStatus, ReactQueryProvider } from "@recap/react-query";
 
-import { useAuthStore } from "@/app/store/model/auth.store";
+import { useAuthStore } from "@/entities/auth/model";
 
 const QueryProvider = ({ children }: PropsWithChildren) => {
   return (
