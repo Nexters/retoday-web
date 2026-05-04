@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useLocale } from "@recap/i18n";
 import { formatDate, formatDuration } from "@recap/utils";
 
-import { useSettingStore } from "@/app/store/model";
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import {
   ANALYSIS_PERIOD,
@@ -16,9 +15,10 @@ import {
   ToggleGroup,
   ToggleGroupItem,
 } from "@/shared/ui";
+import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const WeeklyScreenTimeSection = () => {
-  const selectedDate = useSettingStore((state) => state.selectedDate);
+  const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const [mode, setMode] = useState<AnalysisPeriod>(ANALYSIS_PERIOD.WEEKLY);
   const { locale, t } = useLocale("analysis");
 

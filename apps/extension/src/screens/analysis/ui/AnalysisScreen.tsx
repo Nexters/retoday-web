@@ -1,20 +1,15 @@
-import { useSettingStore } from "@/app/store/model/setting.store";
 import {
   CategoryAnalysisSection,
   TodayTimeThiefSection,
   WeeklyScreenTimeSection,
 } from "@/features/analysis/ui";
-import { DatePicker, Divider } from "@/shared/ui";
+import { Divider } from "@/shared/ui";
+import DateSelector from "@/widgets/date-selector/ui/DateSelector";
 
 const AnalysisScreen = () => {
-  const selectedDate = useSettingStore((state) => state.selectedDate);
-  const setSelectedDate = useSettingStore((state) => state.setSelectedDate);
   return (
     <>
-      <DatePicker
-        value={selectedDate ?? new Date()}
-        onChange={(date) => setSelectedDate(date ?? new Date())}
-      />
+      <DateSelector />
       <WeeklyScreenTimeSection />
       <Divider />
       <CategoryAnalysisSection />

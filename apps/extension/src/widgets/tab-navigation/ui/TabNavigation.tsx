@@ -1,20 +1,21 @@
 import { useLocale } from "@recap/i18n";
 
-import { useSettingStore } from "@/app/store/model";
-import { GNB_TABS } from "@/shared/config";
+import { GNB_TABS, type NavigationTabValue } from "@/shared/config";
 import { GnbTabs, GnbTabsList, GnbTabsTrigger, Header } from "@/shared/ui";
+import { useTabNavigationStore } from "@/widgets/tab-navigation/model";
 
-const SidePanelTabs = () => {
-  const activeTab = useSettingStore((state) => state.activeTab);
-  const setActiveTab = useSettingStore((state) => state.setActiveTab);
+const TabNavigation = () => {
   const { t } = useLocale("landing");
+
+  const activeTab = useTabNavigationStore((state) => state.activeTab);
+  const setActiveTab = useTabNavigationStore((state) => state.setActiveTab);
 
   return (
     <Header>
       <GnbTabs
         value={activeTab}
         className="border-b border-gray-200 w-full"
-        onValueChange={setActiveTab}
+        onValueChange={(value) => setActiveTab(value as NavigationTabValue)}
       >
         <GnbTabsList>
           {GNB_TABS.map(({ labelKey, value }) => (
@@ -32,4 +33,4 @@ const SidePanelTabs = () => {
   );
 };
 
-export default SidePanelTabs;
+export default TabNavigation;

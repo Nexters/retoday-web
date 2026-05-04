@@ -1,14 +1,14 @@
 import { useLocale } from "@recap/i18n";
 import { formatDate } from "@recap/utils";
 
-import { useSettingStore } from "@/app/store/model";
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
 import TimeThiefImg from "@/shared/assets/imgs/time-thief.png";
 import { DATE_FORMAT } from "@/shared/config";
+import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const TodayTimeThiefSection = () => {
-  const selectedDate = useSettingStore((state) => state.selectedDate);
+  const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("analysis");
   const { data, isLoading } = useGetLongestWebSite(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
