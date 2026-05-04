@@ -1,13 +1,16 @@
 import enAiRecap from "./locales/en/ai-recap.json";
 import enAnalysis from "./locales/en/analysis.json";
+import enCommon from "./locales/en/common.json";
 import enLanding from "./locales/en/landing.json";
 import enSettings from "./locales/en/setting.json";
 import jaAiRecap from "./locales/ja/ai-recap.json";
 import jaAnalysis from "./locales/ja/analysis.json";
+import jaCommon from "./locales/ja/common.json";
 import jaLanding from "./locales/ja/landing.json";
 import jaSettings from "./locales/ja/setting.json";
 import koAiRecap from "./locales/ko/ai-recap.json";
 import koAnalysis from "./locales/ko/analysis.json";
+import koCommon from "./locales/ko/common.json";
 import koLanding from "./locales/ko/landing.json";
 import koSettings from "./locales/ko/setting.json";
 
@@ -28,6 +31,7 @@ export const DEFAULT_LANGUAGE: LanguageType = LanguageList.KO;
 export const NAMESPACES = {
   AI_RECAP: "ai-recap",
   ANALYSIS: "analysis",
+  COMMON: "common",
   LANDING: "landing",
   SETTINGS: "settings",
 } as const;
@@ -40,18 +44,21 @@ export const resources = {
   en: {
     [NAMESPACES.AI_RECAP]: enAiRecap,
     [NAMESPACES.ANALYSIS]: enAnalysis,
+    [NAMESPACES.COMMON]: enCommon,
     [NAMESPACES.LANDING]: enLanding,
     [NAMESPACES.SETTINGS]: enSettings,
   },
   ko: {
     [NAMESPACES.AI_RECAP]: koAiRecap,
     [NAMESPACES.ANALYSIS]: koAnalysis,
+    [NAMESPACES.COMMON]: koCommon,
     [NAMESPACES.LANDING]: koLanding,
     [NAMESPACES.SETTINGS]: koSettings,
   },
   ja: {
     [NAMESPACES.AI_RECAP]: jaAiRecap,
     [NAMESPACES.ANALYSIS]: jaAnalysis,
+    [NAMESPACES.COMMON]: jaCommon,
     [NAMESPACES.LANDING]: jaLanding,
     [NAMESPACES.SETTINGS]: jaSettings,
   },

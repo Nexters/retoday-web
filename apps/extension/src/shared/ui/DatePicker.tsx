@@ -4,9 +4,9 @@ import {
   DatePickerContent,
   DatePickerTrigger,
 } from "@recap/ui";
+import { formatDate } from "@recap/utils";
 
 import { DATE_FORMAT } from "@/shared/config/date-format.const";
-import { formatDate } from "@/shared/lib/date/date";
 
 type DateRangePickerProps = {
   value: Date;

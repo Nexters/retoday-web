@@ -8,10 +8,10 @@ import {
   AccordionTrigger,
   Badge,
 } from "@recap/ui";
+import { formatDuration } from "@recap/utils";
 
 import type { AnalysisCategoryItem } from "@/features/analysis/model/analysis.type";
 import CategoryLink from "@/features/analysis/ui/CategoryLink";
-import { formatDuration } from "@/shared/lib/date/date";
 import Icon from "@/shared/ui/Icon";
 
 const CategoryAnalysisItem = ({
@@ -41,7 +41,7 @@ const CategoryAnalysisItem = ({
                   {categoryName}
                 </p>
                 <p className="text-subtitle-2-rg text-gray-800">
-                  {formatDuration(stayDuration)}
+                  {formatDuration(stayDuration, t)}
                 </p>
               </div>
               <Icon

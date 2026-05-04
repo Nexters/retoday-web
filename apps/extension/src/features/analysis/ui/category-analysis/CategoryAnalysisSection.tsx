@@ -1,4 +1,6 @@
 import { useMemo } from "react";
+import { useLocale } from "@recap/i18n";
+import { formatDate, formatDuration } from "@recap/utils";
 
 import { useSettingStore } from "@/app/store/model";
 import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
@@ -7,11 +9,11 @@ import CategoryAnalysisItem from "@/features/analysis/ui/category-analysis/Categ
 import CategoryTitle from "@/features/analysis/ui/category-analysis/CategoryTitle";
 import CategoryAnalysisSectionSkeleton from "@/features/analysis/ui/CategoryAnalysisSectionSkeleton";
 import { DATE_FORMAT } from "@/shared/config/date-format.const";
-import { formatDate, formatDuration } from "@/shared/lib/date/date";
 import Divider from "@/shared/ui/Divider";
 
 const CategoryAnalysisSection = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);
+  const { t } = useLocale();
   const { data, isLoading } = useGetAnalysisCategoryAnalysis(
     formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
   );
@@ -21,9 +23,9 @@ const CategoryAnalysisSection = () => {
       .sort((a, b) => b.stayDuration - a.stayDuration)
       .map((item) => ({
         label: item.categoryName,
-        description: formatDuration(item.stayDuration),
+        description: formatDuration(item.stayDuration, t),
       }));
-  }, [data]);
+  }, [data, t]);
 
   if (isLoading) {
     return <CategoryAnalysisSectionSkeleton />;

@@ -1,11 +1,11 @@
 import { useLocale } from "@recap/i18n";
+import { formatDate } from "@recap/utils";
 
 import { useSettingStore } from "@/app/store/model";
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
 import TimeThiefImg from "@/shared/assets/imgs/time-thief.png";
 import { DATE_FORMAT } from "@/shared/config";
-import { formatDate } from "@/shared/lib/date/date";
 
 const TodayTimeThiefSection = () => {
   const selectedDate = useSettingStore((state) => state.selectedDate);

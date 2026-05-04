@@ -5,7 +5,8 @@
     "buttonToday": "今日",
     "buttonWeekly": "週ごと",
     "weeklyAverageTitle": "今週の平均スクリーンタイム",
-    "perDayAverage": "1日あたり {{duration}}"
+    "perDayAverage": "1日あたり {{duration}}",
+    "dailyTimeSlotSubLabel": "今日 {{start}}:00 - {{end}}:00"
   },
   "category": {
     "title": "カテゴリー別分析",

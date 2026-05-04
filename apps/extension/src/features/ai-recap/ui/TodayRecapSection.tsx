@@ -1,8 +1,8 @@
 import { useLocale } from "@recap/i18n";
+import { formatDuration, formatTimeRange } from "@recap/utils";
 
 import type { AiRecapResponse } from "@/features/ai-recap/model/ai-recap.type";
 import RecapImg from "@/shared/assets/imgs/recap-img.png";
-import { formatDuration, formatTimeRange } from "@/shared/lib/date/date";
 import { Divider } from "@/shared/ui";
 
 const TodayRecapSection = ({
@@ -37,7 +37,7 @@ const TodayRecapSection = ({
                 {t("todayRecap.totalScreenTimeLabel")}
               </p>
               <p className="text-body-2 text-gray-900">
-                {formatDuration(totalScreenTime ?? 0)}
+                {formatDuration(totalScreenTime ?? 0, t)}
               </p>
             </div>
             <Divider className="w-0.5 h-12 mx-4" />
@@ -46,7 +46,7 @@ const TodayRecapSection = ({
                 {t("todayRecap.measurementTimeLabel")}
               </p>
               <p className="text-body-2 text-gray-900">
-                {formatTimeRange(startedAt, closedAt) ?? "-"}
+                {formatTimeRange(startedAt, closedAt) || "-"}
               </p>
             </div>
           </div>

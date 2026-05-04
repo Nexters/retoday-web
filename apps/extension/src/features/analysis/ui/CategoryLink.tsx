@@ -1,11 +1,15 @@
+import { useLocale } from "@recap/i18n";
+import { formatDuration } from "@recap/utils";
+
 import type { AnalysisWebsite } from "@/features/analysis/model/analysis.type";
-import { formatDuration } from "@/shared/lib/date/date";
 
 const CategoryLink = ({
   domain,
   faviconUrl,
   stayDuration,
 }: AnalysisWebsite) => {
+  const { t } = useLocale();
+
   return (
     <div className="bg-gray-75 flex items-center justify-between rounded-full pl-2 pr-4 py-2">
       <div className="flex items-center gap-3">
@@ -22,7 +26,7 @@ const CategoryLink = ({
       </div>
 
       <p className="text-body-1 text-gray-900">
-        {formatDuration(stayDuration)}
+        {formatDuration(stayDuration, t)}
       </p>
     </div>
   );

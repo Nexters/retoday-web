@@ -5,7 +5,8 @@
     "buttonToday": "오늘",
     "buttonWeekly": "주간",
     "weeklyAverageTitle": "이번주 평균 스크린타임",
-    "perDayAverage": "하루 {{duration}}"
+    "perDayAverage": "하루 {{duration}}",
+    "dailyTimeSlotSubLabel": "오늘 {{start}}:00 - {{end}}:00"
   },
   "category": {
     "title": "카테고리별 분석",

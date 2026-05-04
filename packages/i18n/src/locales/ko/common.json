@@ -1,0 +1,7 @@
+{
+  "duration": {
+    "hour_other": "{{count}}시간",
+    "minute_other": "{{count}}분",
+    "second_other": "{{count}}초"
+  }
+}

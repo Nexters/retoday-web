@@ -1,10 +1,10 @@
 import { useLocale } from "@recap/i18n";
 import { Button } from "@recap/ui";
+import { formatDate } from "@recap/utils";
 import browser from "webextension-polyfill";
 
 import { useSettingStore } from "@/app/store/model";
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";
-import { formatDate } from "@/shared/lib/date/date";
 import { Icon } from "@/shared/ui";
 
 const SidePanelFooter = () => {

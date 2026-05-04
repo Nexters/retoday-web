@@ -1,7 +1,8 @@
+import { calculateTimeDiff } from "@recap/utils";
+
 import { historyAPIService } from "@/entities/history/api";
 import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
 import type { StorageSession } from "@/entities/history/model/storage.type";
-import { calculateTimeDiff } from "@/shared/lib/date/date";
 import { extractDomainUrl } from "@/shared/lib/url";
 
 const browserHistory = {
