@@ -8,7 +8,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "global.d.ts",
+    "src/app/_types/*.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "**/*.d.ts",
