@@ -27,6 +27,7 @@
     "@recap/tokens": "workspace:*",
     "@recap/typescript-config": "workspace:*",
     "@recap/ui": "workspace:*",
+    "@recap/utils": "workspace:*",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.15.3",

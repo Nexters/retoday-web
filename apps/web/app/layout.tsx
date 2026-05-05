@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { ReactQueryProvider } from "@/app/providers";
-import GNB from "@/shared/ui/GNB";
+import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
 import "../src/app/styles/globals.css";
 
@@ -48,12 +48,12 @@ export default function RootLayout({
     <html lang="ko" className={ibmPlexSansKR.variable}>
       <body className="mx-auto max-w-7xl bg-gray-100">
         <ReactQueryProvider>
-          <div className="mx-4 mt-8 mb-12 flex flex-col gap-5 md:mx-8 md:mt-12 md:mb-20 md:gap-6 xl:mx-17.5 xl:mt-20 xl:mb-35 xl:gap-7">
+          <MainLayout>
             <Suspense>
-              <GNB />
+              <MainHeader />
             </Suspense>
             {children}
-          </div>
+          </MainLayout>
         </ReactQueryProvider>
       </body>
     </html>

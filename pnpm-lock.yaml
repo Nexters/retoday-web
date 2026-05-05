@@ -227,6 +227,9 @@ importers:
       '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@recap/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.9.2)
