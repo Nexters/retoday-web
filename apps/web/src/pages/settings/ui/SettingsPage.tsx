@@ -6,9 +6,9 @@ import { cn } from "@recap/ui";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { useAuthStatus } from "@/entities/auth/model/use-auth-status";
+import LoginButton from "@/features/login/ui/LoginButton";
 import { userAPIService } from "@/features/settings/api";
 import UserProfile from "@/features/settings/ui/UserProfile";
-import LoginButton from "@/shared/ui/LoginButton";
 
 const SettingsPage = () => {
   const [domain, setDomain] = useState("");

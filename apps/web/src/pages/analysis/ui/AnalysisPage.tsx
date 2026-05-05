@@ -12,13 +12,13 @@ import ScreenTime from "@/features/analysis/ui/ScreenTime";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
 import TopVisitedSites from "@/features/analysis/ui/TopVisitedSites";
 import WorkPattern from "@/features/analysis/ui/WorkPattern";
+import LoginBanner from "@/features/login/ui/LoginBanner";
 import ArrowRightBlueIcon from "@/shared/assets/icons/arrow-right-blue.svg";
 import UnloginCategoryImg from "@/shared/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/shared/assets/img/analysis-unlogin-screentime.png";
 import UnloginTimeThiefImg from "@/shared/assets/img/analysis-unlogin-timethief.png";
 import UnloginTopVisitedImg from "@/shared/assets/img/analysis-unlogin-topvisited.png";
 import UnloginWorkPatternImg from "@/shared/assets/img/analysis-unlogin-workpattern.png";
-import LoginBanner from "@/shared/ui/LoginBanner";
 
 const AnalysisPage = ({ date }: { date: string }) => {
   const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();

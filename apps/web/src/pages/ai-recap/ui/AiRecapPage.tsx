@@ -11,9 +11,9 @@ import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
 import Timeline from "@/features/ai-recap/ui/Timeline";
 import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
+import LoginBanner from "@/features/login/ui/LoginBanner";
 import EmptyRecapImg1 from "@/shared/assets/img/empty-reacp-1.png";
 import EmptyRecapImg2 from "@/shared/assets/img/empty-recap-2.png";
-import LoginBanner from "@/shared/ui/LoginBanner";
 
 const AiRecapPage = ({ date }: { date: string }) => {
   const { isReady, isLoggedIn, refreshAuth } = useAuthStatus();

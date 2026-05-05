@@ -2,8 +2,8 @@
 
 import { cn } from "@recap/ui";
 
+import { useGoogleTokenLogin } from "@/features/login/model/use-google-token-login";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
-import { useGoogleTokenLogin } from "@/shared/lib/useGoogleTokenLogin";
 
 const LoginButton = ({
   onLoginSuccess,

@@ -1,4 +1,4 @@
-import LoginButton from "@/shared/ui/LoginButton";
+import LoginButton from "@/features/login/ui/LoginButton";
 
 const LoginBanner = ({
   handleLoginSuccess,
