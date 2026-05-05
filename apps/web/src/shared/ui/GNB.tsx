@@ -23,16 +23,17 @@ const getTabFromPath = (pathname: string): TabValue => {
 const GNB = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const path = pathname ?? "/";
   const searchParams = useSearchParams();
 
-  const currentTab = useMemo(() => getTabFromPath(pathname), [pathname]);
+  const currentTab = useMemo(() => getTabFromPath(path), [path]);
 
   const onTabChange = useCallback(
     (next: string) => {
       if (next !== "analysis" && next !== "ai-recap" && next !== "settings")
         return;
 
-      const qs = searchParams.toString();
+      const qs = searchParams?.toString() ?? "";
       const url = qs ? `${TAB_TO_PATH[next]}?${qs}` : TAB_TO_PATH[next];
 
       router.push(url, { scroll: false });

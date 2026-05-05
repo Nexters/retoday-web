@@ -33,9 +33,10 @@ export type DatePickerProps = {
 const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
   const router = useRouter();
   const pathname = usePathname();
+  const path = pathname ?? "/";
   const searchParams = useSearchParams();
 
-  const queryString = searchParams.toString();
+  const queryString = searchParams?.toString() ?? "";
 
   const stableDefaultDate = useMemo(
     () => defaultDate ?? new Date(),
@@ -61,10 +62,10 @@ const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
       const next = new URLSearchParams(queryString);
       next.set(queryKey, formatQueryDate(d));
 
-      router.push(buildUrl(pathname, next), { scroll: false });
+      router.push(buildUrl(path, next), { scroll: false });
       setOpen(false);
     },
-    [pathname, queryKey, router, queryString],
+    [path, queryKey, router, queryString],
   );
 
   const onKeyDown = useCallback((e: ReactKeyboardEvent<HTMLDivElement>) => {
@@ -95,8 +96,8 @@ const DatePicker = ({ queryKey = "date", defaultDate }: DatePickerProps) => {
 
     next.set(queryKey, formatQueryDate(stableDefaultDate));
 
-    router.replace(buildUrl(pathname, next), { scroll: false });
-  }, [pathname, queryKey, queryString, router, stableDefaultDate]);
+    router.replace(buildUrl(path, next), { scroll: false });
+  }, [path, queryKey, queryString, router, stableDefaultDate]);
 
   return (
     <div ref={wrapRef} className="relative" onKeyDown={onKeyDown}>

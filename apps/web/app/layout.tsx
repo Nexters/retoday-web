@@ -2,30 +2,30 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
-import ReactQueryProvider from "@/app/_providers/react-query-provider";
+import { ReactQueryProvider } from "@/app/providers";
 import GNB from "@/shared/ui/GNB";
 
-import "./globals.css";
+import "../src/app/styles/globals.css";
 
 const ibmPlexSansKR = localFont({
   src: [
     {
-      path: "../shared/assets/fonts/IBMPlexSansKR-Regular.woff2",
+      path: "../src/shared/assets/fonts/IBMPlexSansKR-Regular.woff2",
       weight: "400",
       style: "normal",
     },
     {
-      path: "../shared/assets/fonts/IBMPlexSansKR-Medium.woff2",
+      path: "../src/shared/assets/fonts/IBMPlexSansKR-Medium.woff2",
       weight: "500",
       style: "normal",
     },
     {
-      path: "../shared/assets/fonts/IBMPlexSansKR-SemiBold.woff2",
+      path: "../src/shared/assets/fonts/IBMPlexSansKR-SemiBold.woff2",
       weight: "600",
       style: "normal",
     },
     {
-      path: "../shared/assets/fonts/IBMPlexSansKR-Bold.woff2",
+      path: "../src/shared/assets/fonts/IBMPlexSansKR-Bold.woff2",
       weight: "700",
       style: "normal",
     },
