@@ -4,12 +4,16 @@
     "name": "アカウント名",
     "login": "ログイン",
     "logout": "ログアウト",
-    "dailyRecordsPrompt": "ログインして、今日の記録を確認してみてください"
+    "dailyRecordsPrompt": "ログインして、今日の記録を確認してみてください",
+    "sampleDataCaption": "現在表示されているのはサンプルデータです"
   },
   "languageChange": {
     "title": "言語変更（Language）",
     "selectedLanguage": "Selected Language",
     "apply": "適用する"
+  },
+  "language": {
+    "selectPlaceholder": "選択中の言語"
   },
   "recapFrequency": {
     "title": "リキャップ頻度設定",

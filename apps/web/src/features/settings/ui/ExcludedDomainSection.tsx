@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { catchAPIError } from "@recap/api";
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -18,6 +19,7 @@ const ExcludedDomainSection = ({
   disabled = false,
   domains,
 }: ExcludedDomainSectionProps) => {
+  const { t } = useLocale("settings");
   const [domain, setDomain] = useState("");
 
   const { refreshAuth } = useAuth();
@@ -60,10 +62,12 @@ const ExcludedDomainSection = ({
         disabled && "pointer-events-none opacity-50",
       )}
     >
-      <h2 className="text-heading-rg text-gray-800">추적금지 도메인</h2>
+      <h2 className="text-heading-rg text-gray-800">
+        {t("untrackedDomains.title")}
+      </h2>
 
       <p className="text-body-1 mt-2 text-gray-900">
-        브라우저 사용 기록 집계에서 제외할 도메인을 관리합니다.
+        {t("untrackedDomains.description")}
       </p>
 
       <div className="mt-6 space-y-1">
@@ -78,7 +82,7 @@ const ExcludedDomainSection = ({
               className="text-body-1 text-[#ff4242]"
               onClick={() => handleDeleteDomain(excludedDomain)}
             >
-              삭제
+              {t("untrackedDomains.delete")}
             </button>
           </div>
         ))}
@@ -90,7 +94,7 @@ const ExcludedDomainSection = ({
           type="text"
           value={domain}
           onChange={(e) => setDomain(e.target.value)}
-          placeholder="도메인 입력 ( 예 : abc.com sample.kr)"
+          placeholder={t("untrackedDomains.domainInputPlaceholder")}
           disabled={disabled}
         />
 
@@ -102,7 +106,7 @@ const ExcludedDomainSection = ({
           onClick={handleAdd}
           disabled={disabled}
         >
-          추가하기
+          {t("untrackedDomains.add")}
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useLocale } from "@recap/i18n";
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
@@ -19,28 +20,34 @@ const AnalysisPage = ({ date }: { date: string }) => (
       if (!isReady) return <AnalysisLoadingPage />;
       if (!isLoggedIn) return <AnalysisUnloginPage />;
 
-      return (
-        <>
-          <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-            <ScreenTime date={date} />
-            <CategoryAnalysis date={date} />
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
-              <WorkPattern date={date} />
-              <TodayTimeThief date={date} />
-            </div>
-            <TopVisitedSites date={date} />
-          </div>
-          <Link
-            href="/settings"
-            className="text-subtitle-1-md mt-7 flex items-center justify-end gap-1 p-2 text-[#4378ff]"
-          >
-            추적금지 도메인 추가하기
-            <ArrowRightBlueIcon />
-          </Link>
-        </>
-      );
+      return <AnalysisLoggedInSection date={date} />;
     }}
   </AuthConsumer>
 );
+
+const AnalysisLoggedInSection = ({ date }: { date: string }) => {
+  const { t } = useLocale("analysis");
+
+  return (
+    <>
+      <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+        <ScreenTime date={date} />
+        <CategoryAnalysis date={date} />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
+          <WorkPattern date={date} />
+          <TodayTimeThief date={date} />
+        </div>
+        <TopVisitedSites date={date} />
+      </div>
+      <Link
+        href="/settings"
+        className="text-subtitle-1-md mt-7 flex items-center justify-end gap-1 p-2 text-[#4378ff]"
+      >
+        {t("settings.addNonTrackingDomainLink")}
+        <ArrowRightBlueIcon />
+      </Link>
+    </>
+  );
+};
 
 export default AnalysisPage;

@@ -2,21 +2,13 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 import { useQuery } from "@tanstack/react-query";
 
 import { analysisAPIService } from "@/features/analysis/api";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
-
-const formatMinutesFromSeconds = (seconds: number) => {
-  const minutes = Math.max(0, Math.round(seconds / 60));
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-
-  if (h <= 0) return `${m}분`;
-  if (m <= 0) return `${h}시간`;
-  return `${h}시간 ${m}분`;
-};
+import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 const getHostLabel = (domain: string | null) => {
   if (!domain) return null;
@@ -28,6 +20,8 @@ const getHostLabel = (domain: string | null) => {
 };
 
 const TodayTimeThief = ({ date }: { date: string }) => {
+  const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
   const { data, isLoading } = useQuery({
     queryKey: ["getTopVisitedSite", date],
     queryFn: () => analysisAPIService.getLongestStayedWebsite({ date }),
@@ -48,21 +42,23 @@ const TodayTimeThief = ({ date }: { date: string }) => {
     return {
       isEmpty: false,
       title: getHostLabel(site.domain) ?? "-",
-      durationText: formatMinutesFromSeconds(site.stayDuration ?? 0),
+      durationText: formatSecondsToMinutes(site.stayDuration ?? 0, tc),
       faviconUrl: site.faviconUrl ?? null,
     };
-  }, [data]);
+  }, [data, tc]);
 
   return (
     <div className="overflow-hidden rounded-[1.25rem] bg-white">
       <div className="p-5 pb-0 md:p-6 md:pb-0 xl:p-10 xl:pb-0">
         <div className="flex items-center justify-between">
           <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-            오늘의 시간 도둑
+            {t("timeThief.title")}
           </h2>
 
           <p className="text-body-1 text-gray-500">
-            {isLoading || served.isEmpty ? "-" : `총 ${served.durationText}`}
+            {isLoading || served.isEmpty
+              ? "-"
+              : t("timeThief.totalLabel", { duration: served.durationText })}
           </p>
         </div>
 
@@ -77,7 +73,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
       <div className="relative h-48 w-full md:h-52 xl:h-54">
         <Image
           src={TimeThiefImg}
-          alt="img"
+          alt={t("timeThief.imageAlt")}
           fill
           className="object-cover"
           priority={false}

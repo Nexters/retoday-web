@@ -25,8 +25,12 @@
     "measurementTimeLabel": "측정시간",
     "dailySummaryLabel": "하루 요약",
     "aiTimelineTitle": "AI 타임라인",
+    "aiTimelineSubtitle": "Retoday가 요약한 오늘 하루의 흐름",
+    "timelineEmpty": "타임라인 데이터가 없어요",
+    "topicsEmpty": "주제 데이터가 없어요",
+    "summarySectionsEmpty": "요약된 내용이 없어요",
     "lookingBackTitle": "오늘 하루 돌아보기",
-    "mostViewedTopicsTitle": "많이 돌려본 주제",
+    "mostViewedTopicsTitle": "많이 둘러본 주제",
     "todayTopicsTitle": "오늘의 주제"
   }
 }

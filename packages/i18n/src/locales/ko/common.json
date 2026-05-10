@@ -3,5 +3,8 @@
     "hour_other": "{{count}}시간",
     "minute_other": "{{count}}분",
     "second_other": "{{count}}초"
-  }
+  },
+  "selectPlaceholder": "선택",
+  "meridiemAm": "am",
+  "meridiemPm": "pm"
 }

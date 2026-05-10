@@ -4,12 +4,16 @@
     "name": "Account Name",
     "login": "Sign In",
     "logout": "Log Out",
-    "dailyRecordsPrompt": "Log in and check my daily records"
+    "dailyRecordsPrompt": "Log in and check my daily records",
+    "sampleDataCaption": "What you see now is sample data"
   },
   "languageChange": {
     "title": "언어 변경 (Language)",
     "selectedLanguage": "Selected Language",
     "apply": "Apply"
+  },
+  "language": {
+    "selectPlaceholder": "Selected language"
   },
   "recapFrequency": {
     "title": "Recap Frequency Settings",

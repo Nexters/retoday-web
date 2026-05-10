@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 
 import { useGoogleTokenLogin } from "@/features/login/model/use-google-token-login";
@@ -15,6 +16,7 @@ const LoginButton = ({
   children?: React.ReactNode;
 }) => {
   const { ready, login } = useGoogleTokenLogin({ onLoginSuccess });
+  const { t } = useLocale("settings");
 
   return (
     <button
@@ -26,7 +28,7 @@ const LoginButton = ({
         className,
       )}
     >
-      {children ?? "로그인"}
+      {children ?? t("account.login")}
       <RightIcon />
     </button>
   );

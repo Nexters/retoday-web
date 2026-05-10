@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { Trans, useLocale } from "@recap/i18n";
 import { Badge, cn } from "@recap/ui";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,6 +10,7 @@ import { analysisAPIService } from "@/features/analysis/api";
 import BubbleCloudFalling, {
   type BubbleDatum,
 } from "@/features/analysis/ui/BubbleCloud";
+import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type CategoryWebsite = {
   domain: string;
@@ -24,16 +26,6 @@ type CategoryItem = {
 
 const COLS = 2;
 
-const formatMinutesFromSeconds = (seconds: number) => {
-  const minutes = Math.max(0, Math.round(seconds / 60));
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-
-  if (h <= 0) return `${m}분`;
-  if (m <= 0) return `${h}시간`;
-  return `${h}시간 ${m}분`;
-};
-
 const pickTopCategory = (list: CategoryItem[]) => {
   if (list.length === 0) return null;
   return [...list].sort(
@@ -42,6 +34,9 @@ const pickTopCategory = (list: CategoryItem[]) => {
 };
 
 const CategoryAnalysis = ({ date }: { date: string }) => {
+  const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
+
   const { data, isLoading } = useQuery({
     queryKey: ["getCategoryAnalysis", date],
     queryFn: () => analysisAPIService.getCategoryAnalysis({ date }),
@@ -111,9 +106,9 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
     return {
       category: served.top.categoryName,
-      duration: formatMinutesFromSeconds(served.top.stayDuration),
+      duration: formatSecondsToMinutes(served.top.stayDuration, tc),
     };
-  }, [isLoading, served.top]);
+  }, [isLoading, served.top, tc]);
 
   const isSingle = listRows.length === 1;
 
@@ -121,13 +116,22 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
     <div className="flex rounded-[1.25rem] bg-white">
       <div className="w-full p-5 md:p-6 xl:p-10">
         <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-          카테고리별 분석
+          {t("category.title")}
         </h2>
 
         <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
-          <span className="text-blue-400">{headerText.category}</span>에{" "}
-          <span className="text-blue-400">{headerText.duration}</span>{" "}
-          몰두했어요
+          <Trans
+            ns="analysis"
+            i18nKey="category.shoppingFocusSummary"
+            values={{
+              category: headerText.category,
+              time_spent: headerText.duration,
+            }}
+            components={{
+              category: <span className="text-blue-400" />,
+              time: <span className="text-blue-400" />,
+            }}
+          />
         </h3>
 
         <BubbleCloudFalling data={bubbleData} />
@@ -138,7 +142,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
             className="cursor-pointer"
             onClick={() => setSelectedCategory("__ALL__")}
           >
-            전체
+            {t("category.filterAll")}
           </Badge>
 
           {served.categories.map((c) => (
@@ -158,7 +162,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
         <div className="mt-5 grid grid-cols-1 gap-x-8 md:grid-cols-2">
           {isEmpty ? (
             <div className="text-body-1 text-gray-500">
-              분석 데이터가 없어요
+              {t("category.emptyState")}
             </div>
           ) : (
             listRows.map((row, idx) => {
@@ -186,7 +190,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
                       {row.categoryName}
                     </p>
                     <p className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
-                      {formatMinutesFromSeconds(row.stayDuration)}
+                      {formatSecondsToMinutes(row.stayDuration, tc)}
                     </p>
                   </div>
 

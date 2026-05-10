@@ -25,6 +25,10 @@
     "measurementTimeLabel": "測定時間",
     "dailySummaryLabel": "一日の要約",
     "aiTimelineTitle": "AIタイムライン",
+    "aiTimelineSubtitle": "Retodayがまとめた今日一日の流れ",
+    "timelineEmpty": "タイムラインデータがありません",
+    "topicsEmpty": "テーマデータがありません",
+    "summarySectionsEmpty": "要約された内容がありません",
     "lookingBackTitle": "今日一日を振り返る",
     "mostViewedTopicsTitle": "よく閲覧したテーマ",
     "todayTopicsTitle": "今日のトピック"

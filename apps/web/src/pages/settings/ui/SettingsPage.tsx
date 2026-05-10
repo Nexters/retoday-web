@@ -3,6 +3,7 @@
 import { AuthConsumer } from "@/entities/auth/ui";
 import { useUserProfile } from "@/features/settings/api/use-get-user-profile";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
+import LanguageSection from "@/features/settings/ui/LanguageSection";
 import UserProfile from "@/features/settings/ui/UserProfile";
 
 import SettingsLoadingPage from "./SettingsLoadingPage";
@@ -27,6 +28,7 @@ const LoggedInSettings = () => {
   return (
     <>
       <UserProfile data={profile} />
+      <LanguageSection />
       <ExcludedDomainSection domains={profile.excludedDomains} />
     </>
   );

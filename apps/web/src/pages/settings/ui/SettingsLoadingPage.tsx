@@ -1,6 +1,7 @@
 import { Skeleton } from "@recap/ui";
 
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
+import LanguageSection from "@/features/settings/ui/LanguageSection";
 
 const SettingsLoadingPage = () => {
   return (
@@ -14,6 +15,7 @@ const SettingsLoadingPage = () => {
         </div>
       </div>
 
+      <LanguageSection />
       <ExcludedDomainSection domains={[]} disabled />
     </>
   );

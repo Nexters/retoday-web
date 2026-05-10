@@ -1,10 +1,15 @@
 "use client";
 
+import { useLocale } from "@recap/i18n";
+import { formatDuration } from "@recap/utils";
+
 import { useCustomScrollbar } from "@/features/ai-recap/lib/useCustomScrollbar";
 import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 import TimeLineBackgroundImg from "@/shared/assets/img/timeline-bg.png";
 
 const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
+  const { t } = useLocale("ai-recap");
+  const { t: tc } = useLocale("common");
   const {
     scrollerRef,
     trackRef,
@@ -30,9 +35,11 @@ const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
   return (
     <div className="relative flex gap-9 rounded-[1.25rem] bg-white px-9 py-8">
       <div className="max-w-57 space-y-2">
-        <p className="text-heading-rg text-gray-800">AI 타임라인</p>
+        <p className="text-heading-rg text-gray-800">
+          {t("todayRecap.aiTimelineTitle")}
+        </p>
         <h2 className="text-title-1 text-gray-900">
-          Retoday가 요약한 오늘 하루의 흐름
+          {t("todayRecap.aiTimelineSubtitle")}
         </h2>
       </div>
 
@@ -64,7 +71,7 @@ const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
         >
           {recap.timelines.length === 0 ? (
             <div className="text-body-1 text-gray-500">
-              타임라인 데이터가 없어요
+              {t("todayRecap.timelineEmpty")}
             </div>
           ) : (
             <div className="relative ml-3.25 space-y-4">
@@ -88,7 +95,7 @@ const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
 
                       <div className="flex items-center gap-2">
                         <p className="text-body-1 text-gray-500">
-                          {formatDuration(timeline.durationMinutes)}
+                          {formatDuration(timeline.durationMinutes * 60, tc)}
                         </p>
 
                         <div className="size-1 rounded-full bg-gray-200" />
@@ -110,12 +117,3 @@ const Timeline = ({ recap }: { recap: NormalizedRecap }) => {
 };
 
 export default Timeline;
-
-const formatDuration = (minutes: number) => {
-  if (minutes < 60) return `${minutes}m`;
-  const hours = Math.floor(minutes / 60);
-  const restMinutes = minutes % 60;
-
-  if (restMinutes === 0) return `${hours}h`;
-  return `${hours}h ${restMinutes}m`;
-};

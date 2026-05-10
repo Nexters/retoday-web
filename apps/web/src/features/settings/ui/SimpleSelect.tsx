@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 
 type Option = {
@@ -30,6 +31,7 @@ export function SimpleSelect({
   contentClassName,
   maxMenuHeight = 300,
 }: SimpleSelectProps) {
+  const { t } = useLocale("common");
   const [open, setOpen] = React.useState(false);
 
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -86,7 +88,7 @@ export function SimpleSelect({
         )}
       >
         <span className={cn(!selected && "text-gray-400")}>
-          {selected ? selected.label : (placeholder ?? "선택")}
+          {selected ? selected.label : (placeholder ?? t("selectPlaceholder"))}
         </span>
 
         <svg

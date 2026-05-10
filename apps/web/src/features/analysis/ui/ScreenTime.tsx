@@ -2,34 +2,31 @@
 
 import { useMemo, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
+import { useLocale } from "@recap/i18n";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
+import { dayjs, formatDuration } from "@recap/utils";
 import { useQuery } from "@tanstack/react-query";
 
 import { analysisAPIService } from "@/features/analysis/api";
-import type {
-  ScreenTimePeriodType,
-  ScreenTimeType,
-} from "@/features/analysis/model/get-screen-time.schema";
+import type { ScreenTimePeriodType } from "@/features/analysis/model/get-screen-time.schema";
+import {
+  toDailyBarData,
+  toWeeklyBarData,
+} from "@/features/analysis/model/screen-time-bar-data";
 import EmptyDayChartImg from "@/shared/assets/img/empty-day-chart.png";
 import EmptyWeekChartImg from "@/shared/assets/img/empty-week-chart.png";
+import { secondsToMinute } from "@/shared/lib/date/format-date";
 import ScreenTimeWeeklyBarChart from "@/shared/ui/ScreenTimeWeeklyBarChart";
 
-const EMPTY_ASSET: Record<
-  ScreenTimePeriodType,
-  { src: StaticImageData; alt: string }
-> = {
-  WEEKLY: {
-    src: EmptyWeekChartImg,
-    alt: "이번 주간에는 아직 누적된 활동이 보이지 않아요",
-  },
-  DAILY: {
-    src: EmptyDayChartImg,
-    alt: "이 날에는 누적된 활동이 없어요",
-  },
+const EMPTY_SRC: Record<ScreenTimePeriodType, StaticImageData> = {
+  WEEKLY: EmptyWeekChartImg,
+  DAILY: EmptyDayChartImg,
 };
 
 const ScreenTime = ({ date }: { date: string }) => {
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
+  const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
 
   const { data } = useQuery({
     queryKey: ["getScreenTime", mode, date],
@@ -49,23 +46,28 @@ const ScreenTime = ({ date }: { date: string }) => {
       };
     }
 
-    const totalMinutes = secondsToMinutes(data.data.totalStayDuration);
+    const totalMinutes = secondsToMinute(data.data.totalStayDuration);
     const isEmpty = totalMinutes <= 0 || data.data.screenTimes.length === 0;
 
-    const rangeLabel = `${toMMDD(data.data.startedAt)} - ${toMMDD(data.data.endedAt)}`;
+    const rangeLabel = `${dayjs(data.data.startedAt).format("MM.DD")} - ${dayjs(data.data.endedAt).format("MM.DD")}`;
 
     const chartData =
       data.data.period === "DAILY"
-        ? toDailyBarData(data.data.screenTimes)
-        : toWeeklyBarData(data.data.screenTimes, rangeLabel);
+        ? toDailyBarData(data.data.screenTimes, t)
+        : toWeeklyBarData(data.data.screenTimes, rangeLabel, t);
 
     const summaryText =
       data.data.period === "DAILY"
-        ? formatMinutes(totalMinutes)
-        : formatMinutes(Math.round(totalMinutes / 7));
+        ? formatDuration(totalMinutes * 60, tc)
+        : formatDuration(Math.round(totalMinutes / 7) * 60, tc);
 
     return { chartData, summaryText, isEmpty };
-  }, [data]);
+  }, [data, t, tc]);
+
+  const emptyAlt =
+    mode === "WEEKLY"
+      ? t("screenTime.emptyWeeklyChartAlt")
+      : t("screenTime.emptyDailyChartAlt");
 
   return (
     <div className="flex flex-col rounded-[1.25rem] bg-white xl:flex-row">
@@ -73,7 +75,9 @@ const ScreenTime = ({ date }: { date: string }) => {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-              {mode === "WEEKLY" ? "이번주 평균 스크린타임" : "총 스크린타임"}
+              {mode === "WEEKLY"
+                ? t("screenTime.weeklyAverageTitle")
+                : t("screenTime.title")}
             </h2>
 
             <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
@@ -87,7 +91,7 @@ const ScreenTime = ({ date }: { date: string }) => {
               className="cursor-pointer"
               onClick={() => setMode("DAILY")}
             >
-              오늘
+              {t("screenTime.buttonToday")}
             </Badge>
 
             <Badge
@@ -95,7 +99,7 @@ const ScreenTime = ({ date }: { date: string }) => {
               className="cursor-pointer"
               onClick={() => setMode("WEEKLY")}
             >
-              주간
+              {t("screenTime.buttonWeekly")}
             </Badge>
           </div>
         </div>
@@ -108,7 +112,7 @@ const ScreenTime = ({ date }: { date: string }) => {
             className="cursor-pointer"
             onClick={() => setMode("DAILY")}
           >
-            오늘
+            {t("screenTime.buttonToday")}
           </Badge>
 
           <Badge
@@ -116,7 +120,7 @@ const ScreenTime = ({ date }: { date: string }) => {
             className="cursor-pointer"
             onClick={() => setMode("WEEKLY")}
           >
-            주간
+            {t("screenTime.buttonWeekly")}
           </Badge>
         </div>
 
@@ -136,8 +140,8 @@ const ScreenTime = ({ date }: { date: string }) => {
             >
               <div className="absolute inset-0 bg-white" />
               <Image
-                src={EMPTY_ASSET[mode].src}
-                alt={EMPTY_ASSET[mode].alt}
+                src={EMPTY_SRC[mode]}
+                alt={emptyAlt}
                 fill
                 priority
                 sizes="(max-width: 1024px) 100vw, 900px"
@@ -152,74 +156,3 @@ const ScreenTime = ({ date }: { date: string }) => {
 };
 
 export default ScreenTime;
-
-const formatMinutes = (minutes: number) => {
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-
-  if (h <= 0) return `${m}분`;
-  if (m <= 0) return `${h}시간`;
-  return `${h}시간 ${m}분`;
-};
-
-const toMMDD = (date: Date) => {
-  const mm = String(date.getMonth() + 1).padStart(2, "0");
-  const dd = String(date.getDate()).padStart(2, "0");
-  return `${mm}.${dd}`;
-};
-
-const secondsToMinutes = (seconds: number) =>
-  Math.max(0, Math.round(seconds / 60));
-
-const toDailyBarData = (screenTimes: ScreenTimeType[]): WeeklyBarDatum[] => {
-  const blocks: WeeklyBarDatum[] = Array.from({ length: 12 }, (_, i) => {
-    const startHour = i * 2;
-    return {
-      key: `today-${startHour}`,
-      label: String(startHour),
-      subLabel: `오늘 ${String(startHour).padStart(2, "0")}:00 - ${String(
-        startHour + 2,
-      ).padStart(2, "0")}:00`,
-      totalMinutes: 0,
-      avgMinutes: 0,
-    };
-  });
-
-  for (const t of screenTimes) {
-    const d = new Date(t.startedAt);
-    const hour = d.getHours();
-    const idx = Math.floor(hour / 2);
-    if (!blocks[idx]) continue;
-
-    blocks[idx].totalMinutes += secondsToMinutes(t.stayDuration);
-  }
-
-  blocks.forEach((b) => (b.avgMinutes = b.totalMinutes));
-  return blocks;
-};
-
-const toWeeklyBarData = (
-  screenTimes: ScreenTimeType[],
-  rangeLabel: string,
-): WeeklyBarDatum[] => {
-  const labels = ["일", "월", "화", "수", "목", "금", "토"];
-
-  const blocks: WeeklyBarDatum[] = labels.map((label, idx) => ({
-    key: `week-${idx}-${label}`,
-    label,
-    subLabel: rangeLabel,
-    totalMinutes: 0,
-    avgMinutes: 0,
-  }));
-
-  for (const t of screenTimes) {
-    const d = new Date(t.startedAt);
-    const day = d.getDay();
-    if (!blocks[day]) continue;
-
-    blocks[day].totalMinutes += secondsToMinutes(t.stayDuration);
-  }
-
-  blocks.forEach((b) => (b.avgMinutes = b.totalMinutes));
-  return blocks;
-};

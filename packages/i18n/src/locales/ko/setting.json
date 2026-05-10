@@ -4,12 +4,16 @@
     "name": "계정이름",
     "login": "로그인",
     "logout": "로그아웃",
-    "dailyRecordsPrompt": "로그인하고 내 하루 기록을 확인해 보세요"
+    "dailyRecordsPrompt": "로그인하고 내 하루 기록을 확인해 보세요",
+    "sampleDataCaption": "지금 보이는 화면은 샘플데이터에요"
   },
   "languageChange": {
     "title": "언어 변경 (Language)",
     "selectedLanguage": "Selected Language",
     "apply": "적용하기"
+  },
+  "language": {
+    "selectPlaceholder": "선택된 언어"
   },
   "recapFrequency": {
     "title": "리캡 주기 설정",

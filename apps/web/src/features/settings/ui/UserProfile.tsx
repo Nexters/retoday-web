@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { catchAPIError } from "@recap/api";
+import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { authWithTokenAPIService } from "@/entities/auth/api";
@@ -14,6 +15,7 @@ import MailIcon from "@/shared/assets/icons/mail.svg";
 import DefaultImg from "@/shared/assets/img/recap-1.png";
 
 const UserProfile = ({ data }: { data: UserProfileType | undefined }) => {
+  const { t } = useLocale("settings");
   const { refreshAuth } = useAuth();
   const queryClient = useQueryClient();
 
@@ -39,7 +41,7 @@ const UserProfile = ({ data }: { data: UserProfileType | undefined }) => {
 
   return (
     <div className="rounded-[1.25rem] bg-white px-9 py-8">
-      <h2 className="text-heading-rg text-gray-800">내 계정</h2>
+      <h2 className="text-heading-rg text-gray-800">{t("account.title")}</h2>
 
       <div className="my-6 h-px w-full bg-gray-200" />
 
@@ -70,7 +72,7 @@ const UserProfile = ({ data }: { data: UserProfileType | undefined }) => {
           className="flex items-center gap-1 rounded-xl border border-solid border-gray-300 bg-white px-6 py-4"
           onClick={handleLogout}
         >
-          로그아웃
+          {t("account.logout")}
           <RightIcon />
         </button>
       </div>
