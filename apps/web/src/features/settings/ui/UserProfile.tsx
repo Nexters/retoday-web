@@ -2,21 +2,21 @@
 
 import Image from "next/image";
 import { catchAPIError } from "@recap/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { authWithTokenAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
+import { useAuth } from "@/entities/auth/ui";
+import { USER_PROFILE_QUERY_KEY } from "@/features/settings/api/use-get-user-profile";
 import type { UserProfileType } from "@/features/settings/model/get-user-profile.schema";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 import MailIcon from "@/shared/assets/icons/mail.svg";
 import DefaultImg from "@/shared/assets/img/recap-1.png";
 
-const UserProfile = ({
-  data,
-  onLogoutSuccess,
-}: {
-  data: UserProfileType | undefined;
-  onLogoutSuccess: () => void | Promise<void>;
-}) => {
+const UserProfile = ({ data }: { data: UserProfileType | undefined }) => {
+  const { refreshAuth } = useAuth();
+  const queryClient = useQueryClient();
+
   const handleLogout = async () => {
     try {
       await authWithTokenAPIService.logout();
@@ -27,7 +27,9 @@ const UserProfile = ({
         tokenStore.set({ accessToken: "", refreshToken: "" });
       }
 
-      await onLogoutSuccess();
+      refreshAuth();
+      await queryClient.resetQueries({ queryKey: USER_PROFILE_QUERY_KEY });
+      await queryClient.invalidateQueries({ queryKey: USER_PROFILE_QUERY_KEY });
     } catch (err) {
       catchAPIError(err);
     }

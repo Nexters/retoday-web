@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 
 import { ReactQueryProvider } from "@/app/providers";
+import { AuthProvider } from "@/entities/auth/ui";
 import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
 import "../src/app/styles/globals.css";
@@ -48,12 +49,14 @@ export default function RootLayout({
     <html lang="ko" className={ibmPlexSansKR.variable}>
       <body className="mx-auto max-w-7xl bg-gray-100">
         <ReactQueryProvider>
-          <MainLayout>
-            <Suspense>
-              <MainHeader />
-            </Suspense>
-            {children}
-          </MainLayout>
+          <AuthProvider>
+            <MainLayout>
+              <Suspense>
+                <MainHeader />
+              </Suspense>
+              {children}
+            </MainLayout>
+          </AuthProvider>
         </ReactQueryProvider>
       </body>
     </html>
