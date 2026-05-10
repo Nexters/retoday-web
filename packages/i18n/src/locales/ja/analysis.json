@@ -6,10 +6,23 @@
     "buttonWeekly": "週ごと",
     "weeklyAverageTitle": "今週の平均スクリーンタイム",
     "perDayAverage": "1日あたり {{duration}}",
-    "dailyTimeSlotSubLabel": "今日 {{start}}:00 - {{end}}:00"
+    "dailyTimeSlotSubLabel": "今日 {{start}}:00 - {{end}}:00",
+    "emptyWeeklyChartAlt": "今週はまだ累積された活動がありません",
+    "emptyDailyChartAlt": "この日は累積された活動がありません",
+    "weekdayShort": {
+      "sun": "日",
+      "mon": "月",
+      "tue": "火",
+      "wed": "水",
+      "thu": "木",
+      "fri": "金",
+      "sat": "土"
+    }
   },
   "category": {
     "title": "カテゴリー別分析",
+    "filterAll": "すべて",
+    "emptyState": "分析データがありません",
     "shoppingFocusSummary": "<category>{{category}}</category>に<time>{{time_spent}}</time>没頭しました",
     "moreInDashboard": "詳しくはダッシュボードでご確認ください",
     "bubbleRankAria": "{{rank}}位: {{label}}",
@@ -28,6 +41,10 @@
   },
   "workPattern": {
     "title": "私の作業パターン",
+    "labelDawn": "夜型ワーカー",
+    "labelMorning": "朝型ワーカー",
+    "labelDaytime": "日中型ワーカー",
+    "labelEvening": "夕方型ワーカー",
     "earlyBird": "朝型ワーカー",
     "earlyBirdDiligent": "勤勉な朝型ワーカー",
     "daytimeDiligent": "誠実な昼型ワーカー",
@@ -35,11 +52,13 @@
   },
   "timeThief": {
     "title": "今日の時間泥棒",
+    "totalLabel": "合計 {{duration}}",
     "totalDurationExample": "合計 {duration}",
     "imageAlt": "時間泥棒"
   },
   "frequentSites": {
     "title": "よく訪れたサイト",
+    "emptyState": "まだ訪れたサイトの記録がありません",
     "visitCountDurationExample": "{count}回 {duration}"
   },
   "settings": {

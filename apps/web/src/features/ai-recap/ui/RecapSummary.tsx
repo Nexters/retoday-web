@@ -1,44 +1,20 @@
-import Image from "next/image";
+"use client";
 
+import Image from "next/image";
+import { useLocale } from "@recap/i18n";
+
+import {
+  formatMeasuredRange,
+  formatScreenTime,
+} from "@/features/ai-recap/lib/format-date";
 import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 import AIRecapIcon from "@/shared/assets/icons/recap-ai.svg";
 import RecapImg from "@/shared/assets/img/recap-1.png";
 
-const formatScreenTime = (totalMinutes: number) => {
-  if (totalMinutes <= 0) return "-";
-
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (hours <= 0) return `${minutes}분`;
-  if (minutes <= 0) return `${hours}시간`;
-  return `${hours}시간 ${minutes}분`;
-};
-
-const formatMeridiemTime = (value: Date) => {
-  if (!(value instanceof Date) || Number.isNaN(value.getTime())) return null;
-
-  const hour = value.getHours();
-  const minute = value.getMinutes();
-  const meridiem = hour < 12 ? "am" : "pm";
-  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
-
-  if (minute === 0) {
-    return `${displayHour}${meridiem}`;
-  }
-
-  return `${displayHour}:${String(minute).padStart(2, "0")}${meridiem}`;
-};
-
-const formatMeasuredRange = (startedAt: Date, closedAt: Date) => {
-  const started = formatMeridiemTime(startedAt);
-  const closed = formatMeridiemTime(closedAt);
-
-  if (!started || !closed) return "-";
-  return `${started} - ${closed}`;
-};
-
 const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
+  const { t } = useLocale("ai-recap");
+  const { t: tc } = useLocale("common");
+
   const sections = recap.sections;
   const totalMinutes = recap.timelines.reduce(
     (sum, timeline) => sum + timeline.durationMinutes,
@@ -53,24 +29,30 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
       <div className="p-10">
         <div className="flex items-end justify-between">
           <div className="space-y-2">
-            <p className="text-heading-md text-blue-400">Today’s Recap</p>
+            <p className="text-heading-md text-blue-400">
+              {t("screenTime.todayRecapTitle")}
+            </p>
             <h2 className="text-display-2 text-gray-900">{title}</h2>
           </div>
 
           <div className="flex items-center gap-4">
             <div className="w-42 space-y-1">
-              <p className="text-subtitle-2-rg text-gray-500">총 스크린타임</p>
+              <p className="text-subtitle-2-rg text-gray-500">
+                {t("todayRecap.totalScreenTimeLabel")}
+              </p>
               <p className="text-heading-rg text-gray-900">
-                {formatScreenTime(totalMinutes)}
+                {formatScreenTime(tc, totalMinutes)}
               </p>
             </div>
 
             <div className="h-18 w-px bg-gray-200" />
 
             <div className="w-42 space-y-1">
-              <p className="text-subtitle-2-rg text-gray-500">측정시간</p>
+              <p className="text-subtitle-2-rg text-gray-500">
+                {t("todayRecap.measurementTimeLabel")}
+              </p>
               <p className="text-heading-rg text-gray-900">
-                {formatMeasuredRange(recap.startedAt, recap.closedAt)}
+                {formatMeasuredRange(tc, recap.startedAt, recap.closedAt)}
               </p>
             </div>
           </div>
@@ -79,7 +61,9 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
         <div className="mt-12 flex items-center gap-4 rounded-full bg-blue-50 px-2.5 py-2">
           <div className="flex items-center gap-2">
             <AIRecapIcon />
-            <p className="text-subtitle-1-sb text-gray-900">하루 요약</p>
+            <p className="text-subtitle-1-sb text-gray-900">
+              {t("todayRecap.dailySummaryLabel")}
+            </p>
           </div>
 
           <p className="text-body-2 text-gray-800">{summary}</p>
@@ -90,7 +74,9 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
         <div>
           {sections.length === 0 ? (
             <div className="pt-6 pr-9 pb-13 pl-10">
-              <p className="text-body-1 text-gray-500">요약된 내용이 없어요</p>
+              <p className="text-body-1 text-gray-500">
+                {t("todayRecap.summarySectionsEmpty")}
+              </p>
             </div>
           ) : (
             sections.map((section, index) => (

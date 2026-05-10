@@ -1,6 +1,12 @@
+"use client";
+
+import { useLocale } from "@recap/i18n";
+
 import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 
 const TopVisitedTopics = ({ recap }: { recap: NormalizedRecap }) => {
+  const { t } = useLocale("ai-recap");
+
   const topKeywords = recap.topics.slice(0, 3).map((topic) => topic.keyword);
   const topicCards = recap.topics.slice(0, 3);
   const keywordStyles = [
@@ -11,12 +17,16 @@ const TopVisitedTopics = ({ recap }: { recap: NormalizedRecap }) => {
 
   return (
     <div className="rounded-[1.25rem] bg-white px-9 py-8">
-      <p className="text-heading-rg text-gray-800">많이 둘러본 주제</p>
+      <p className="text-heading-rg text-gray-800">
+        {t("todayRecap.mostViewedTopicsTitle")}
+      </p>
 
       <div className="mt-6 grid h-74 grid-cols-4 gap-4">
         <div className="relative overflow-hidden rounded-[1.25rem] bg-blue-50 px-6.5 py-6">
           {topKeywords.length === 0 ? (
-            <p className="text-body-1 text-gray-500">주제 데이터가 없어요</p>
+            <p className="text-body-1 text-gray-500">
+              {t("todayRecap.topicsEmpty")}
+            </p>
           ) : (
             <>
               {topKeywords.map((keyword, index) => (
@@ -36,7 +46,7 @@ const TopVisitedTopics = ({ recap }: { recap: NormalizedRecap }) => {
               <div key={index} className="bg-gray-75 rounded-xl px-6.5 py-6">
                 <h3 className="text-heading-md text-gray-900">-</h3>
                 <p className="text-body-1 mt-4 whitespace-pre-line text-gray-500">
-                  주제 데이터가 없어요
+                  {t("todayRecap.topicsEmpty")}
                 </p>
               </div>
             ))

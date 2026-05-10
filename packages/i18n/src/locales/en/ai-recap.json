@@ -25,8 +25,12 @@
     "measurementTimeLabel": "Measurement Time",
     "dailySummaryLabel": "Daily Summary",
     "aiTimelineTitle": "AI Timeline",
+    "aiTimelineSubtitle": "Today's flow summarized by Retoday",
+    "timelineEmpty": "No timeline data yet",
+    "topicsEmpty": "No topic data yet",
+    "summarySectionsEmpty": "No summary content yet",
     "lookingBackTitle": "Looking Back at Today",
-    "mostViewedTopicsTitle": "Most Viewed Topics",
+    "mostViewedTopicsTitle": "Most browsed topics",
     "todayTopicsTitle": "Today's topics"
   }
 }

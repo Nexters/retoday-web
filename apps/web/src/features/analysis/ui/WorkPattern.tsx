@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import { useLocale } from "@recap/i18n";
 import { useQuery } from "@tanstack/react-query";
 
 import { analysisAPIService } from "@/features/analysis/api";
@@ -27,6 +28,7 @@ const ITEMS_META: Array<{
 ];
 
 const WorkPattern = ({ date }: { date: string }) => {
+  const { t } = useLocale("analysis");
   const { data, isLoading, isError } = useQuery({
     queryKey: ["getWorkPattern", date],
     queryFn: () => analysisAPIService.getWorkPattern({ date }),
@@ -55,10 +57,10 @@ const WorkPattern = ({ date }: { date: string }) => {
     );
 
     const labelMap: Record<WorkPatternDayType, string> = {
-      DAWN: "야행성 작업자",
-      MORNING: "얼리버드 작업자",
-      DAYTIME: "주간 작업자",
-      EVENING: "저녁형 작업자",
+      DAWN: t("workPattern.labelDawn"),
+      MORNING: t("workPattern.labelMorning"),
+      DAYTIME: t("workPattern.labelDaytime"),
+      EVENING: t("workPattern.labelEvening"),
     };
 
     const title = total <= 0 ? "-" : labelMap[best.key];
@@ -68,12 +70,12 @@ const WorkPattern = ({ date }: { date: string }) => {
       title,
       items,
     };
-  }, [data]);
+  }, [data, t]);
 
   return (
     <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
       <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-        내 작업 패턴
+        {t("workPattern.title")}
       </h2>
 
       <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">

@@ -6,5 +6,8 @@
     "minute_other": "{{count}} minutes",
     "second_one": "{{count}} second",
     "second_other": "{{count}} seconds"
-  }
+  },
+  "selectPlaceholder": "Select",
+  "meridiemAm": "am",
+  "meridiemPm": "pm"
 }

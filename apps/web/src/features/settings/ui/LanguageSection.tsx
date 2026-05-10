@@ -1,53 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  DEFAULT_LANGUAGE,
-  type LanguageType,
-  SUPPORTED_LANGUAGES,
-} from "@recap/i18n";
+import { useState } from "react";
+import { type LanguageType, useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
 
-import { LanguageSelect } from "@/entities/language/ui";
-
-const LOCALE_STORAGE_KEY = "re-today.locale";
-
-function parseStoredLocale(raw: string | null): LanguageType {
-  if (raw && SUPPORTED_LANGUAGES.includes(raw as LanguageType)) {
-    return raw as LanguageType;
-  }
-  return DEFAULT_LANGUAGE;
-}
+import { LanguageSelect, useLanguageStore } from "@/entities/language";
 
 type LanguageSectionProps = {
   disabled?: boolean;
 };
 
 const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
-  const [localize, setLocalize] = useState<LanguageType>(DEFAULT_LANGUAGE);
-  const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageType>(DEFAULT_LANGUAGE);
+  const { t } = useLocale("settings");
+  const localize = useLanguageStore((s) => s.localize);
+  const setLanguage = useLanguageStore((s) => s.setLanguage);
 
-  useEffect(() => {
-    const initial = parseStoredLocale(
-      window.localStorage.getItem(LOCALE_STORAGE_KEY),
-    );
-    setLocalize(initial);
-    setSelectedLanguage(initial);
-  }, []);
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<LanguageType>(localize);
 
   const handleApply = () => {
     if (disabled || selectedLanguage === localize) return;
-    try {
-      window.localStorage.setItem(LOCALE_STORAGE_KEY, selectedLanguage);
-    } finally {
-      setLocalize(selectedLanguage);
-      window.dispatchEvent(
-        new CustomEvent<LanguageType>("localechange", {
-          detail: selectedLanguage,
-        }),
-      );
-    }
+    setLanguage(selectedLanguage);
   };
 
   return (
@@ -57,7 +30,9 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
         disabled && "pointer-events-none opacity-50",
       )}
     >
-      <h2 className="text-heading-rg text-gray-800">Language (언어변경)</h2>
+      <h2 className="text-heading-rg text-gray-800">
+        {t("languageChange.title")}
+      </h2>
 
       <div className="mt-6 flex flex-col items-stretch gap-6 md:flex-row md:items-center md:gap-4">
         <div className="w-full min-w-0 md:flex-1">
@@ -79,7 +54,7 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
           onClick={handleApply}
           disabled={disabled}
         >
-          적용하기
+          {t("languageChange.apply")}
         </button>
       </div>
     </div>

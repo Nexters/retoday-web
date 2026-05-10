@@ -6,10 +6,23 @@
     "buttonWeekly": "Weekly",
     "weeklyAverageTitle": "This week's average screen time",
     "perDayAverage": "{{duration}} per day",
-    "dailyTimeSlotSubLabel": "Today {{start}}:00 - {{end}}:00"
+    "dailyTimeSlotSubLabel": "Today {{start}}:00 - {{end}}:00",
+    "emptyWeeklyChartAlt": "No accumulated activity for this week yet",
+    "emptyDailyChartAlt": "No accumulated activity for this day",
+    "weekdayShort": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
   },
   "category": {
     "title": "Category Analysis",
+    "filterAll": "All",
+    "emptyState": "No analysis data yet",
     "shoppingFocusSummary": "You spent <time>{{time_spent}}</time> immersed in <category>{{category}}</category>",
     "moreInDashboard": "See more details in the dashboard",
     "bubbleRankAria": "Rank {{rank}}: {{label}}",
@@ -28,6 +41,10 @@
   },
   "workPattern": {
     "title": "My Work Pattern",
+    "labelDawn": "Night owl worker",
+    "labelMorning": "Early bird worker",
+    "labelDaytime": "Daytime worker",
+    "labelEvening": "Evening worker",
     "earlyBird": "Early Bird Worker",
     "earlyBirdDiligent": "Diligent Early Bird Worker",
     "daytimeDiligent": "Diligent Daytime Worker",
@@ -35,11 +52,13 @@
   },
   "timeThief": {
     "title": "Today's Time Thief",
+    "totalLabel": "Total {{duration}}",
     "totalDurationExample": "Total {duration}",
     "imageAlt": "Time thief"
   },
   "frequentSites": {
     "title": "Frequently Visited Sites",
+    "emptyState": "No visited sites recorded yet",
     "visitCountDurationExample": "{count} visits {duration}"
   },
   "settings": {

@@ -5,6 +5,7 @@ import {
   DEFAULT_LANGUAGE,
   type LanguageType,
   SUPPORTED_LANGUAGES,
+  useLocale,
 } from "@recap/i18n";
 import {
   Select,
@@ -42,6 +43,7 @@ const LanguageSelect = ({
   onValueChange,
   disabled,
 }: LanguageSelectProps) => {
+  const { t } = useLocale("settings");
   const [selectedLanguage, setSelectedLanguage] = useUncontrolled<LanguageType>(
     {
       value,
@@ -62,7 +64,7 @@ const LanguageSelect = ({
       disabled={disabled}
     >
       <SelectTrigger className={className}>
-        <SelectValue placeholder="선택된 언어" />
+        <SelectValue placeholder={t("language.selectPlaceholder")} />
       </SelectTrigger>
 
       <SelectContent>

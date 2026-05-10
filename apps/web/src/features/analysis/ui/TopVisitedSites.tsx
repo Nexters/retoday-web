@@ -2,25 +2,17 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
+import { useLocale } from "@recap/i18n";
 import { useQuery } from "@tanstack/react-query";
 
 import { analysisAPIService } from "@/features/analysis/api";
+import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type WebsiteAnalysis = {
   domain: string;
   faviconUrl: string | null;
   visitCount: number;
   stayDuration: number;
-};
-
-const formatMinutesFromSeconds = (seconds: number) => {
-  const minutes = Math.max(0, Math.round(seconds / 60));
-  const h = Math.floor(minutes / 60);
-  const m = minutes % 60;
-
-  if (h <= 0) return `${m}분`;
-  if (m <= 0) return `${h}시간`;
-  return `${h}시간 ${m}분`;
 };
 
 const toDisplayUrl = (domain: string) => {
@@ -32,6 +24,8 @@ const toDisplayUrl = (domain: string) => {
 };
 
 const TopVisitedSites = ({ date }: { date: string }) => {
+  const { t } = useLocale("analysis");
+  const { t: tc } = useLocale("common");
   const { data, isLoading } = useQuery({
     queryKey: ["getFrequentlyVisitedWebSite", date, 10],
     queryFn: () =>
@@ -51,22 +45,22 @@ const TopVisitedSites = ({ date }: { date: string }) => {
     return top.map((it) => ({
       ...it,
       displayUrl: toDisplayUrl(it.domain),
-      durationText: formatMinutesFromSeconds(it.stayDuration ?? 0),
+      durationText: formatSecondsToMinutes(it.stayDuration ?? 0, tc),
     }));
-  }, [data]);
+  }, [data, tc]);
 
   const isEmpty = !isLoading && served.length === 0;
 
   return (
     <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
       <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-        자주 방문한 사이트
+        {t("frequentSites.title")}
       </h2>
 
       <div className="mt-5 flex flex-col gap-2 md:mt-6">
         {isEmpty ? (
           <div className="text-body-1 text-gray-500">
-            아직 기록된 방문 사이트가 없어요
+            {t("frequentSites.emptyState")}
           </div>
         ) : (
           served.map((it, idx) => (
