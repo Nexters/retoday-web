@@ -6,6 +6,7 @@ import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
 import { USER_PROFILE_QUERY_KEY } from "@/features/settings/api/use-get-user-profile";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
+import LanguageSection from "@/features/settings/ui/LanguageSection";
 
 const SettingsUnloginPage = () => {
   const { refreshAuth } = useAuth();
@@ -37,6 +38,7 @@ const SettingsUnloginPage = () => {
         </div>
       </div>
 
+      <LanguageSection />
       <ExcludedDomainSection domains={[]} disabled />
     </>
   );

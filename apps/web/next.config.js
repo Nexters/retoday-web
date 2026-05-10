@@ -10,7 +10,12 @@ const appDir = path.dirname(fileURLToPath(import.meta.url));
 const monorepoRoot = path.resolve(appDir, "../..");
 
 const nextConfig = {
-  transpilePackages: ["@recap/ui", "@recap/tokens"],
+  transpilePackages: [
+    "@recap/ui",
+    "@recap/tokens",
+    "@recap/i18n",
+    "@recap/hooks",
+  ],
 
   outputFileTracingRoot: monorepoRoot,
 

@@ -22,6 +22,8 @@
   "devDependencies": {
     "@recap/api": "workspace:*",
     "@recap/eslint-config": "workspace:*",
+    "@recap/hooks": "workspace:*",
+    "@recap/i18n": "workspace:*",
     "@recap/react-query": "workspace:*",
     "@recap/tailwind-config": "workspace:*",
     "@recap/tokens": "workspace:*",
