@@ -1,3 +1,5 @@
+"use client";
+
 import { type ReactNode, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 import type { i18n as I18nInstance } from "i18next";

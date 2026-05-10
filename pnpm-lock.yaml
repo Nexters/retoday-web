@@ -190,6 +190,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@recap/i18n':
+        specifier: workspace:*
+        version: link:../../packages/i18n
       '@tanstack/react-query':
         specifier: ^5.0.0
         version: 5.90.20(react@19.2.0)
@@ -205,6 +208,9 @@ importers:
       zod:
         specifier: ^4.3.6
         version: 4.3.6
+      zustand:
+        specifier: ^5.0.12
+        version: 5.0.12(@types/react@19.2.2)(react@19.2.0)(use-sync-external-store@1.6.0(react@19.2.0))
     devDependencies:
       '@recap/api':
         specifier: workspace:*
@@ -212,6 +218,9 @@ importers:
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@recap/hooks':
+        specifier: workspace:*
+        version: link:../../packages/hooks
       '@recap/react-query':
         specifier: workspace:*
         version: link:../../packages/react-query-config
@@ -227,6 +236,9 @@ importers:
       '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
+      '@recap/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.9.2)

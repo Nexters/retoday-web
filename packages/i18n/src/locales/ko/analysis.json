@@ -6,10 +6,23 @@
     "buttonWeekly": "주간",
     "weeklyAverageTitle": "이번주 평균 스크린타임",
     "perDayAverage": "하루 {{duration}}",
-    "dailyTimeSlotSubLabel": "오늘 {{start}}:00 - {{end}}:00"
+    "dailyTimeSlotSubLabel": "오늘 {{start}}:00 - {{end}}:00",
+    "emptyWeeklyChartAlt": "이번 주간에는 아직 누적된 활동이 보이지 않아요",
+    "emptyDailyChartAlt": "이 날에는 누적된 활동이 없어요",
+    "weekdayShort": {
+      "sun": "일",
+      "mon": "월",
+      "tue": "화",
+      "wed": "수",
+      "thu": "목",
+      "fri": "금",
+      "sat": "토"
+    }
   },
   "category": {
     "title": "카테고리별 분석",
+    "filterAll": "전체",
+    "emptyState": "분석 데이터가 없어요",
     "shoppingFocusSummary": "<category>{{category}}</category>에 <time>{{time_spent}}</time> 몰두했어요",
     "moreInDashboard": "더 자세한 내역은 대시보드에서 확인해주세요",
     "bubbleRankAria": "{{rank}}등: {{label}}",
@@ -28,6 +41,10 @@
   },
   "workPattern": {
     "title": "내 작업 패턴",
+    "labelDawn": "야행성 작업자",
+    "labelMorning": "얼리버드 작업자",
+    "labelDaytime": "주간 작업자",
+    "labelEvening": "저녁형 작업자",
     "earlyBird": "얼리버드 작업자",
     "earlyBirdDiligent": "부지런한 얼리버드 작업러",
     "daytimeDiligent": "성실한 데이타임 작업러",
@@ -35,11 +52,13 @@
   },
   "timeThief": {
     "title": "오늘의 시간 도둑",
+    "totalLabel": "총 {{duration}}",
     "totalDurationExample": "총 {duration}",
     "imageAlt": "시간 도둑"
   },
   "frequentSites": {
     "title": "자주 방문한 사이트",
+    "emptyState": "아직 기록된 방문 사이트가 없어요",
     "visitCountDurationExample": "{count}회 {duration}"
   },
   "settings": {

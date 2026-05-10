@@ -1,0 +1,3 @@
+@import "@recap/tokens";
+@import "tailwindcss";
+@config "../../../tailwind.config.js";
