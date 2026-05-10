@@ -1,8 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@recap/ui";
-import { useQueryClient } from "@tanstack/react-query";
 
-import { useAuth } from "@/entities/auth/ui";
 import LoginBanner from "@/features/login/ui/LoginBanner";
 import UnloginCategoryImg from "@/shared/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/shared/assets/img/analysis-unlogin-screentime.png";
@@ -27,19 +25,9 @@ const AssetCardImage = ({
 };
 
 const AnalysisUnloginPage = () => {
-  const { refreshAuth } = useAuth();
-  const queryClient = useQueryClient();
-
-  const handleLoginSuccess = async () => {
-    await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
-    await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
-
-    refreshAuth();
-  };
-
   return (
     <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-      <LoginBanner handleLoginSuccess={handleLoginSuccess} />
+      <LoginBanner />
 
       <AssetCardImage src={UnloginScreenTimeImg} alt="unlogin-screentime" />
       <AssetCardImage src={UnloginCategoryImg} alt="unlogin-category" />

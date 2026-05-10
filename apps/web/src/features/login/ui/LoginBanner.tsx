@@ -1,10 +1,19 @@
+import { useQueryClient } from "@tanstack/react-query";
+
+import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
 
-const LoginBanner = ({
-  handleLoginSuccess,
-}: {
-  handleLoginSuccess: () => void;
-}) => {
+const LoginBanner = () => {
+  const { refreshAuth } = useAuth();
+  const queryClient = useQueryClient();
+
+  const handleLoginSuccess = async () => {
+    await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
+    await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
+
+    refreshAuth();
+  };
+
   return (
     <div className="bg-blue-75 rounded-[1.25rem] px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between md:gap-4">

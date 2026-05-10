@@ -1,8 +1,6 @@
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
-import { useQueryClient } from "@tanstack/react-query";
 
-import { useAuth } from "@/entities/auth/ui";
 import LoginBanner from "@/features/login/ui/LoginBanner";
 import EmptyRecapImg1 from "@/shared/assets/img/empty-reacp-1.png";
 import EmptyRecapImg2 from "@/shared/assets/img/empty-recap-2.png";
@@ -21,18 +19,9 @@ const PreviewImage = ({ src, alt }: { src: StaticImageData; alt: string }) => {
 };
 
 const AiRecapUnloginPage = () => {
-  const { refreshAuth } = useAuth();
-  const queryClient = useQueryClient();
-
-  const handleLoginSuccess = async () => {
-    await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
-    await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
-
-    refreshAuth();
-  };
   return (
     <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
-      <LoginBanner handleLoginSuccess={handleLoginSuccess} />
+      <LoginBanner />
 
       <div className="rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
