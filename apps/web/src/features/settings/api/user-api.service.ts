@@ -1,0 +1,28 @@
+import type { RestAPIProtocol } from "@recap/api";
+
+import { GetUserProfileSchema } from "@/features/settings/model/get-user-profile.schema";
+
+export class UserAPIService {
+  constructor(private fetch: RestAPIProtocol) {}
+
+  getUserProfile() {
+    return this.fetch.get({
+      url: "users/me/profiles",
+      validate: GetUserProfileSchema.parse,
+    });
+  }
+
+  addExcludedDomain(data: { domain: string }) {
+    return this.fetch.post({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
+
+  deleteExcludedDomain(data: { domain: string }) {
+    return this.fetch.delete({
+      url: "users/me/excluded-domains",
+      data,
+    });
+  }
+}

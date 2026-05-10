@@ -2,16 +2,20 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Pin Turbopack/project resolution to this package. If Next infers a parent folder
-// (e.g. a stray package-lock.json under the user profile), you get panics like
-// "app_dir must be a directory" / Failed to write app endpoint /page.
 const appDir = path.dirname(fileURLToPath(import.meta.url));
+// Point Turbopack/output tracing at the monorepo root so pnpm-hoisted
+// `next` resolves correctly. Pointing at `apps/web` triggers a Next.js 16
+// regression where Turbopack infers `apps/web/app` as the project root.
+// See https://github.com/vercel/next.js/issues/92540
+const monorepoRoot = path.resolve(appDir, "../..");
 
 const nextConfig = {
   transpilePackages: ["@recap/ui", "@recap/tokens"],
 
+  outputFileTracingRoot: monorepoRoot,
+
   turbopack: {
-    root: appDir,
+    root: monorepoRoot,
     rules: {
       "*.svg": {
         loaders: ["@svgr/webpack"],
@@ -45,7 +49,6 @@ const nextConfig = {
   },
 
   images: {
-    domains: ["lh3.googleusercontent.com"],
     remotePatterns: [
       {
         protocol: "https",
