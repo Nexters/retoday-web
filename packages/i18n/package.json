@@ -6,7 +6,9 @@
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
-    "./locales/*": "./locales/*"
+    "./locales/*": "./src/locales/*",
+    "./next-i18next.config": "./next-i18next.config.cjs",
+    "./server": "./src/server.ts"
   },
   "dependencies": {
     "i18next": "^26.0.6",

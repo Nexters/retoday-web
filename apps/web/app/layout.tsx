@@ -1,8 +1,9 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { DEFAULT_LANGUAGE } from "@recap/i18n";
 
-import { ReactQueryProvider } from "@/app/providers";
+import { LanguageProvider, ReactQueryProvider } from "@/app/providers";
 import { AuthProvider } from "@/entities/auth/ui";
 import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
@@ -46,17 +47,23 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={ibmPlexSansKR.variable}>
-      <body className="mx-auto max-w-7xl bg-gray-100">
+    <html
+      lang={DEFAULT_LANGUAGE}
+      className={`${ibmPlexSansKR.variable} flex min-h-screen justify-center bg-gray-100`}
+      suppressHydrationWarning
+    >
+      <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
         <ReactQueryProvider>
-          <AuthProvider>
-            <MainLayout>
-              <Suspense>
-                <MainHeader />
-              </Suspense>
-              {children}
-            </MainLayout>
-          </AuthProvider>
+          <LanguageProvider>
+            <AuthProvider>
+              <MainLayout>
+                <Suspense>
+                  <MainHeader />
+                </Suspense>
+                {children}
+              </MainLayout>
+            </AuthProvider>
+          </LanguageProvider>
         </ReactQueryProvider>
       </body>
     </html>
