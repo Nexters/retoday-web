@@ -15,6 +15,7 @@ const nextConfig = {
     "@recap/tokens",
     "@recap/i18n",
     "@recap/hooks",
+    "@recap/analytics",
   ],
 
   outputFileTracingRoot: monorepoRoot,

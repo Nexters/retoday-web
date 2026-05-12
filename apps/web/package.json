@@ -13,6 +13,9 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@next/third-parties": "^16.1.0",
+    "@recap/analytics": "workspace:*",
+    "@recap/hooks": "workspace:*",
     "@recap/i18n": "workspace:*",
     "@tanstack/react-query": "^5.0.0",
     "next": "16.1.0",
@@ -24,7 +27,6 @@
   "devDependencies": {
     "@recap/api": "workspace:*",
     "@recap/eslint-config": "workspace:*",
-    "@recap/hooks": "workspace:*",
     "@recap/react-query": "workspace:*",
     "@recap/tailwind-config": "workspace:*",
     "@recap/tokens": "workspace:*",
