@@ -2,6 +2,9 @@ export {};
 
 declare global {
   interface Window {
+    gtag?: (...args: unknown[]) => void;
+    dataLayer?: unknown[];
+
     google?: {
       accounts?: {
         oauth2?: {

@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import { DEFAULT_LANGUAGE } from "@recap/i18n";
 
 import { LanguageProvider, ReactQueryProvider } from "@/app/providers";
+import { AnalyticsProvider, AnalyticsScripts } from "@/app/providers/analytics";
 import { AuthProvider } from "@/entities/auth/ui";
 import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
@@ -55,16 +56,19 @@ export default function RootLayout({
       <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
         <ReactQueryProvider>
           <LanguageProvider>
-            <AuthProvider>
-              <MainLayout>
-                <Suspense>
-                  <MainHeader />
-                </Suspense>
-                {children}
-              </MainLayout>
-            </AuthProvider>
+            <AnalyticsProvider>
+              <AuthProvider>
+                <MainLayout>
+                  <Suspense>
+                    <MainHeader />
+                  </Suspense>
+                  {children}
+                </MainLayout>
+              </AuthProvider>
+            </AnalyticsProvider>
           </LanguageProvider>
         </ReactQueryProvider>
+        <AnalyticsScripts />
       </body>
     </html>
   );

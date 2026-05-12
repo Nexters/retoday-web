@@ -6,21 +6,21 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "dist/**"],
-      "env": ["MODE"]
+      "env": ["MODE", "NODE_ENV"]
     },
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": [],
-      "env": ["MODE"]
+      "env": ["MODE", "NODE_ENV"]
     },
     "check-types": {
       "dependsOn": ["^check-types"],
-      "env": ["MODE"]
+      "env": ["MODE", "NODE_ENV"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["MODE"]
+      "env": ["MODE", "NODE_ENV"]
     }
   }
 }
