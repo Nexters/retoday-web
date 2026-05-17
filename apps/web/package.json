@@ -17,6 +17,7 @@
     "@recap/analytics": "workspace:*",
     "@recap/hooks": "workspace:*",
     "@recap/i18n": "workspace:*",
+    "@recap/react-query": "workspace:*",
     "@tanstack/react-query": "^5.0.0",
     "next": "16.1.0",
     "react": "^19.2.0",
@@ -27,7 +28,6 @@
   "devDependencies": {
     "@recap/api": "workspace:*",
     "@recap/eslint-config": "workspace:*",
-    "@recap/react-query": "workspace:*",
     "@recap/tailwind-config": "workspace:*",
     "@recap/tokens": "workspace:*",
     "@recap/typescript-config": "workspace:*",

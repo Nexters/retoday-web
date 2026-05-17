@@ -19,7 +19,7 @@ const UntrackedDomainSetting = () => {
   const { mutate } = usePostExcludeDomain({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: USER_KEYS.detail(["user-profile"]),
+        queryKey: USER_KEYS.details(),
       });
     },
   });

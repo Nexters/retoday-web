@@ -3,9 +3,8 @@
 import { useMemo } from "react";
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
-import { useQuery } from "@tanstack/react-query";
 
-import { analysisAPIService } from "@/features/analysis/api";
+import { useGetFrequencyVisitedSites } from "@/features/analysis/api/analysis-query";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type WebsiteAnalysis = {
@@ -26,14 +25,7 @@ const toDisplayUrl = (domain: string) => {
 const TopVisitedSites = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useQuery({
-    queryKey: ["getFrequentlyVisitedWebSite", date, 10],
-    queryFn: () =>
-      analysisAPIService.getFrequentlyVisitedWebSite({
-        date,
-        limit: 10,
-      }),
-  });
+  const { data, isLoading } = useGetFrequencyVisitedSites(date, 10);
 
   const served = useMemo(() => {
     const list: WebsiteAnalysis[] = data?.data?.websiteAnalyses ?? [];

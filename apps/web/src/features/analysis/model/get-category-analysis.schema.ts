@@ -13,7 +13,7 @@ const CategoryAnalysisItemSchema = z.object({
   websiteAnalyses: z.array(CategoryWebsiteAnalysisSchema),
 });
 
-const GetCategoryAnalysesSchema = z.object({
+export const GetCategoryAnalysesSchema = z.object({
   date: dateStringSchema,
   categoryAnalyses: z.array(CategoryAnalysisItemSchema),
 });

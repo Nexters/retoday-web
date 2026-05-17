@@ -13,7 +13,7 @@ const ScreenTimeSchema = z.object({
 
 export type ScreenTimeType = z.infer<typeof ScreenTimeSchema>;
 
-const GetScreenTimeSchema = z.object({
+export const GetScreenTimeSchema = z.object({
   period: ScreenTimePeriodEnum,
   startedAt: dateStringSchema,
   endedAt: dateStringSchema,

@@ -1,19 +1,22 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@recap/react-query";
 
+import { recapAPIService } from "@/features/ai-recap/api";
+import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-key.const";
 import {
   hasRecapContent,
   normalizeRecap,
 } from "@/features/ai-recap/lib/recap-mapper";
 
-import { recapAPIService } from "../api";
-
-type UseRecapOptions = {
+type UseGetAiRecapOptions = {
   enabled?: boolean;
 };
 
-export const useRecap = (date: string, options: UseRecapOptions = {}) => {
+export const useGetAiRecap = (
+  date: string,
+  options: UseGetAiRecapOptions = {},
+) => {
   const query = useQuery({
-    queryKey: ["generateRecap", date],
+    queryKey: AI_RECAP_KEYS.detail(["ai-recap", date]),
     queryFn: () => recapAPIService.getRecap({ date }),
     enabled: options.enabled,
   });

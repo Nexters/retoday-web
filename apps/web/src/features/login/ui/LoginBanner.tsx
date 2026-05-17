@@ -1,10 +1,11 @@
 "use client";
 
 import { useLocale } from "@recap/i18n";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@recap/react-query";
 
 import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
+import { USER_KEYS } from "@/features/settings/api/query-key.const";
 
 const LoginBanner = () => {
   const { t } = useLocale("settings");
@@ -12,8 +13,8 @@ const LoginBanner = () => {
   const queryClient = useQueryClient();
 
   const handleLoginSuccess = async () => {
-    await queryClient.resetQueries({ queryKey: ["getUserProfile"] });
-    await queryClient.invalidateQueries({ queryKey: ["getUserProfile"] });
+    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
+    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
 
     refreshAuth();
   };

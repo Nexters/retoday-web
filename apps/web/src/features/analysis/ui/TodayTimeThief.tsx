@@ -4,9 +4,8 @@ import { useMemo } from "react";
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
 import { cn } from "@recap/ui";
-import { useQuery } from "@tanstack/react-query";
 
-import { analysisAPIService } from "@/features/analysis/api";
+import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
@@ -22,10 +21,7 @@ const getHostLabel = (domain: string | null) => {
 const TodayTimeThief = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useQuery({
-    queryKey: ["getTopVisitedSite", date],
-    queryFn: () => analysisAPIService.getLongestStayedWebsite({ date }),
-  });
+  const { data, isLoading } = useGetLongestWebSite(date);
 
   const served = useMemo(() => {
     const site = data?.data;

@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { catchAPIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@recap/react-query";
 
 import { authWithTokenAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
 import { useAuth } from "@/entities/auth/ui";
-import { USER_PROFILE_QUERY_KEY } from "@/features/settings/api/use-get-user-profile";
+import { USER_KEYS } from "@/features/settings/api/query-key.const";
 import type { UserProfileType } from "@/features/settings/model/get-user-profile.schema";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 import MailIcon from "@/shared/assets/icons/mail.svg";
@@ -30,8 +30,8 @@ const UserProfile = ({ data }: { data: UserProfileType | undefined }) => {
       }
 
       refreshAuth();
-      await queryClient.resetQueries({ queryKey: USER_PROFILE_QUERY_KEY });
-      await queryClient.invalidateQueries({ queryKey: USER_PROFILE_QUERY_KEY });
+      await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
+      await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
     } catch (err) {
       catchAPIError(err);
     }
