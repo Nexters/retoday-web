@@ -1,3 +1,3 @@
-import { createQueryKeys } from "@/shared/lib/create-query-key";
+import { createQueryKeys } from "@recap/react-query";
 
 export const ANALYSIS_KEYS = createQueryKeys("analysis");
