@@ -1,11 +1,11 @@
 "use client";
 
 import { useLocale } from "@recap/i18n";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@recap/react-query";
 
 import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
-import { USER_PROFILE_QUERY_KEY } from "@/features/settings/api/use-get-user-profile";
+import { USER_KEYS } from "@/features/settings/api/query-key.const";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
 import LanguageSection from "@/features/settings/ui/LanguageSection";
 
@@ -15,8 +15,8 @@ const SettingsUnloginPage = () => {
   const queryClient = useQueryClient();
 
   const handleLoginSuccess = async () => {
-    await queryClient.resetQueries({ queryKey: USER_PROFILE_QUERY_KEY });
-    await queryClient.invalidateQueries({ queryKey: USER_PROFILE_QUERY_KEY });
+    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
+    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
 
     refreshAuth();
   };

@@ -10,7 +10,7 @@ import type { UserProfileResponse } from "@/features/setting/model/user.type";
 
 const useGetUserProfile = () => {
   return useQuery<UserProfileResponse>({
-    queryKey: USER_KEYS.detail(["user-profile"]),
+    queryKey: USER_KEYS.details(),
     queryFn: async () => {
       const response = await userAPIService.getUserProfile();
       return response as UserProfileResponse;

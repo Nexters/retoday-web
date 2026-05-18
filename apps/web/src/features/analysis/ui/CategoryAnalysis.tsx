@@ -4,9 +4,8 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { Trans, useLocale } from "@recap/i18n";
 import { Badge, cn } from "@recap/ui";
-import { useQuery } from "@tanstack/react-query";
 
-import { analysisAPIService } from "@/features/analysis/api";
+import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
 import BubbleCloudFalling, {
   type BubbleDatum,
 } from "@/features/analysis/ui/BubbleCloud";
@@ -37,10 +36,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["getCategoryAnalysis", date],
-    queryFn: () => analysisAPIService.getCategoryAnalysis({ date }),
-  });
+  const { data, isLoading } = useGetAnalysisCategoryAnalysis(date);
 
   const served = useMemo(() => {
     const categories: CategoryItem[] = data?.data?.categoryAnalyses ?? [];

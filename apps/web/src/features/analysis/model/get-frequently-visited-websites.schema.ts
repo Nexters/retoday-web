@@ -8,7 +8,7 @@ const WebsiteAnalysisSchema = z.object({
   stayDuration: z.number(),
 });
 
-const GetWebsiteAnalysesSchema = z.object({
+export const GetWebsiteAnalysesSchema = z.object({
   date: dateStringSchema,
   websiteAnalyses: z.array(WebsiteAnalysisSchema),
 });

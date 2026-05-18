@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthConsumer } from "@/entities/auth/ui";
-import { useRecap } from "@/features/ai-recap/api/use-get-ai-recap";
+import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
 import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
 import Timeline from "@/features/ai-recap/ui/Timeline";
 import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
@@ -27,7 +27,7 @@ const LoggedInRecap = ({ date }: { date: string }) => {
     isLoading,
     isFetching,
     isFetchedAfterMount,
-  } = useRecap(date);
+  } = useGetAiRecap(date);
 
   const shouldShowLoading = isLoading || (isFetching && !isFetchedAfterMount);
 

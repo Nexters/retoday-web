@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { catchAPIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
+import { useQueryClient } from "@recap/react-query";
 import { cn } from "@recap/ui";
-import { useQueryClient } from "@tanstack/react-query";
 
 import { useAuth } from "@/entities/auth/ui";
 import { userAPIService } from "@/features/settings/api";
-import { USER_PROFILE_QUERY_KEY } from "@/features/settings/api/use-get-user-profile";
+import { USER_KEYS } from "@/features/settings/api/query-key.const";
 
 type ExcludedDomainSectionProps = {
   disabled?: boolean;
@@ -27,8 +27,8 @@ const ExcludedDomainSection = ({
 
   const refetchProfile = async () => {
     refreshAuth();
-    await queryClient.resetQueries({ queryKey: USER_PROFILE_QUERY_KEY });
-    await queryClient.invalidateQueries({ queryKey: USER_PROFILE_QUERY_KEY });
+    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
+    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
   };
 
   const handleAddDomain = async (domain: string) => {

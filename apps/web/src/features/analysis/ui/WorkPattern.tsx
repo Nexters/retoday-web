@@ -2,9 +2,8 @@
 
 import { useMemo } from "react";
 import { useLocale } from "@recap/i18n";
-import { useQuery } from "@tanstack/react-query";
 
-import { analysisAPIService } from "@/features/analysis/api";
+import { useGetWorkPattern } from "@/features/analysis/api/analysis-query";
 import type { WorkPatternDayType } from "@/features/analysis/model/get-work-pattern.schema";
 import AfterNoonIcon from "@/shared/assets/icons/afternoon.svg";
 import EveningIcon from "@/shared/assets/icons/evening.svg";
@@ -29,10 +28,7 @@ const ITEMS_META: Array<{
 
 const WorkPattern = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["getWorkPattern", date],
-    queryFn: () => analysisAPIService.getWorkPattern({ date }),
-  });
+  const { data, isLoading, isError } = useGetWorkPattern(date);
 
   const served = useMemo(() => {
     const counts = data?.data?.counts ?? {};

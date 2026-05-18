@@ -18,7 +18,7 @@ const WorkPatternCountSchema = z
   })
   .partial();
 
-const GetWorkPatternSchema = z.object({
+export const GetWorkPatternSchema = z.object({
   date: dateStringSchema,
   counts: WorkPatternCountSchema,
 });

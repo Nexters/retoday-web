@@ -5,9 +5,8 @@ import Image, { type StaticImageData } from "next/image";
 import { useLocale } from "@recap/i18n";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
 import { dayjs, formatDuration } from "@recap/utils";
-import { useQuery } from "@tanstack/react-query";
 
-import { analysisAPIService } from "@/features/analysis/api";
+import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import type { ScreenTimePeriodType } from "@/features/analysis/model/get-screen-time.schema";
 import {
   toDailyBarData,
@@ -28,14 +27,7 @@ const ScreenTime = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
 
-  const { data } = useQuery({
-    queryKey: ["getScreenTime", mode, date],
-    queryFn: () =>
-      analysisAPIService.getScreenTime({
-        date,
-        period: mode,
-      }),
-  });
+  const { data } = useGetAnalysisScreenTime(mode, date);
 
   const served = useMemo(() => {
     if (!data) {

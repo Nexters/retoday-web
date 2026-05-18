@@ -71,6 +71,9 @@ importers:
 
   apps/extension:
     dependencies:
+      '@recap/react-query':
+        specifier: workspace:*
+        version: link:../../packages/react-query-config
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -99,9 +102,6 @@ importers:
       '@recap/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
-      '@recap/react-query':
-        specifier: workspace:*
-        version: link:../../packages/react-query-config
       '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
@@ -202,6 +202,9 @@ importers:
       '@recap/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@recap/react-query':
+        specifier: workspace:*
+        version: link:../../packages/react-query-config
       '@tanstack/react-query':
         specifier: ^5.0.0
         version: 5.90.20(react@19.2.0)
@@ -227,9 +230,6 @@ importers:
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@recap/react-query':
-        specifier: workspace:*
-        version: link:../../packages/react-query-config
       '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
