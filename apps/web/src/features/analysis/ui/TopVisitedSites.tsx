@@ -28,7 +28,7 @@ const TopVisitedSites = ({ date }: { date: string }) => {
   const { data, isLoading } = useGetFrequencyVisitedSites(date, 10);
 
   const served = useMemo(() => {
-    const list: WebsiteAnalysis[] = data?.data?.websiteAnalyses ?? [];
+    const list: WebsiteAnalysis[] = data?.websiteAnalyses ?? [];
 
     const top = [...list]
       .sort((a, b) => (b.stayDuration ?? 0) - (a.stayDuration ?? 0))

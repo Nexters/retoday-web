@@ -31,7 +31,7 @@ const WorkPattern = ({ date }: { date: string }) => {
   const { data, isLoading, isError } = useGetWorkPattern(date);
 
   const served = useMemo(() => {
-    const counts = data?.data?.counts ?? {};
+    const counts = data?.counts ?? {};
 
     const values = Object.values(counts).filter(
       (v): v is number => typeof v === "number" && Number.isFinite(v) && v > 0,

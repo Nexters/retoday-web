@@ -24,7 +24,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
   const { data, isLoading } = useGetLongestWebSite(date);
 
   const served = useMemo(() => {
-    const site = data?.data;
+    const site = data;
 
     if (!site) {
       return {

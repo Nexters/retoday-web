@@ -38,18 +38,18 @@ const ScreenTime = ({ date }: { date: string }) => {
       };
     }
 
-    const totalMinutes = secondsToMinute(data.data.totalStayDuration);
-    const isEmpty = totalMinutes <= 0 || data.data.screenTimes.length === 0;
+    const totalMinutes = secondsToMinute(data.totalStayDuration);
+    const isEmpty = totalMinutes <= 0 || data.screenTimes.length === 0;
 
-    const rangeLabel = `${dayjs(data.data.startedAt).format("MM.DD")} - ${dayjs(data.data.endedAt).format("MM.DD")}`;
+    const rangeLabel = `${dayjs(data.startedAt).format("MM.DD")} - ${dayjs(data.endedAt).format("MM.DD")}`;
 
     const chartData =
-      data.data.period === "DAILY"
-        ? toDailyBarData(data.data.screenTimes, t)
-        : toWeeklyBarData(data.data.screenTimes, rangeLabel, t);
+      data.period === "DAILY"
+        ? toDailyBarData(data.screenTimes, t)
+        : toWeeklyBarData(data.screenTimes, rangeLabel, t);
 
     const summaryText =
-      data.data.period === "DAILY"
+      data.period === "DAILY"
         ? formatDuration(totalMinutes * 60, tc)
         : formatDuration(Math.round(totalMinutes / 7) * 60, tc);
 
