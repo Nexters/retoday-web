@@ -6,7 +6,7 @@ import { useQueryClient } from "@recap/react-query";
 import { cn } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
-import { useGoogleTokenLogin } from "@/features/login/model/use-google-token-login";
+import { useGoogleTokenLogin } from "@/entities/login/model/use-google-token-login";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 

@@ -1,7 +1,7 @@
 import Image, { type StaticImageData } from "next/image";
 import { cn } from "@recap/ui";
 
-import LoginBanner from "@/features/login/ui/LoginBanner";
+import LoginBanner from "@/entities/login/ui/LoginBanner";
 import UnloginCategoryImg from "@/shared/assets/img/analysis-unlogin-category.png";
 import UnloginScreenTimeImg from "@/shared/assets/img/analysis-unlogin-screentime.png";
 import UnloginTimeThiefImg from "@/shared/assets/img/analysis-unlogin-timethief.png";

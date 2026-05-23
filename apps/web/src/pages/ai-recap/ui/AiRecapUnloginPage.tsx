@@ -4,7 +4,7 @@ import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
 
-import LoginBanner from "@/features/login/ui/LoginBanner";
+import LoginBanner from "@/entities/login/ui/LoginBanner";
 import EmptyRecapImg1 from "@/shared/assets/img/empty-reacp-1.png";
 import EmptyRecapImg2 from "@/shared/assets/img/empty-recap-2.png";
 

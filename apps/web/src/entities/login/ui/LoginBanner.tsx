@@ -2,7 +2,7 @@
 
 import { useLocale } from "@recap/i18n";
 
-import LoginButton from "@/features/login/ui/LoginButton";
+import LoginButton from "@/entities/login/ui/LoginButton";
 
 const LoginBanner = () => {
   const { t } = useLocale("settings");
