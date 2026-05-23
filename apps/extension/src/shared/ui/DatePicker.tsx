@@ -1,10 +1,10 @@
 import { useLocale } from "@recap/i18n";
+import { formatDate } from "@recap/lib";
 import {
   DatePicker as DatePickerComponent,
   DatePickerContent,
   DatePickerTrigger,
 } from "@recap/ui";
-import { formatDate } from "@recap/utils";
 
 import { DATE_FORMAT } from "@/shared/config/date-format.const";
 

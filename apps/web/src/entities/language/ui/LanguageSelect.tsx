@@ -1,12 +1,12 @@
 "use client";
 
-import { useUncontrolled } from "@recap/hooks";
 import {
   DEFAULT_LANGUAGE,
   type LanguageType,
   SUPPORTED_LANGUAGES,
   useLocale,
 } from "@recap/i18n";
+import { useUncontrolled } from "@recap/lib";
 import {
   Select,
   SelectContent,

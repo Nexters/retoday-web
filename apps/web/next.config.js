@@ -14,7 +14,7 @@ const nextConfig = {
     "@recap/ui",
     "@recap/tokens",
     "@recap/i18n",
-    "@recap/hooks",
+    "@recap/lib",
     "@recap/analytics",
   ],
 

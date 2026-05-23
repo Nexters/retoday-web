@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocale } from "@recap/i18n";
+import { formatDuration } from "@recap/lib";
 import {
   Accordion,
   AccordionContent,
@@ -8,7 +9,6 @@ import {
   AccordionTrigger,
   Badge,
 } from "@recap/ui";
-import { formatDuration } from "@recap/utils";
 
 import type { AnalysisCategoryItem } from "@/features/analysis/model/analysis.type";
 import CategoryLink from "@/features/analysis/ui/CategoryLink";

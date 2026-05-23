@@ -96,12 +96,12 @@ importers:
       '@recap/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@recap/hooks':
-        specifier: workspace:*
-        version: link:../../packages/hooks
       '@recap/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@recap/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
       '@recap/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config
@@ -114,9 +114,6 @@ importers:
       '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@recap/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       '@tailwindcss/vite':
         specifier: ^4.0.0
         version: 4.1.18(vite@6.4.1(@types/node@22.15.3)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2))
@@ -196,12 +193,12 @@ importers:
       '@recap/analytics':
         specifier: workspace:*
         version: link:../../packages/analytics
-      '@recap/hooks':
-        specifier: workspace:*
-        version: link:../../packages/hooks
       '@recap/i18n':
         specifier: workspace:*
         version: link:../../packages/i18n
+      '@recap/lib':
+        specifier: workspace:*
+        version: link:../../packages/lib
       '@recap/react-query':
         specifier: workspace:*
         version: link:../../packages/react-query-config
@@ -242,9 +239,6 @@ importers:
       '@recap/ui':
         specifier: workspace:*
         version: link:../../packages/ui
-      '@recap/utils':
-        specifier: workspace:*
-        version: link:../../packages/utils
       '@svgr/webpack':
         specifier: ^8.1.0
         version: 8.1.0(typescript@5.9.2)
@@ -343,31 +337,6 @@ importers:
         specifier: ^8.0.0
         version: 8.50.0(eslint@9.39.1(jiti@2.6.1))(typescript@5.9.2)
 
-  packages/hooks:
-    dependencies:
-      react:
-        specifier: ^19.2.0
-        version: 19.2.0
-    devDependencies:
-      '@recap/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@recap/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
-      '@types/react':
-        specifier: 19.2.2
-        version: 19.2.2
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-
   packages/i18n:
     dependencies:
       i18next:
@@ -392,6 +361,34 @@ importers:
       react-dom:
         specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
+      typescript:
+        specifier: 5.9.2
+        version: 5.9.2
+
+  packages/lib:
+    dependencies:
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.19
+      react:
+        specifier: ^19.2.0
+        version: 19.2.0
+    devDependencies:
+      '@recap/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@recap/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/node':
+        specifier: ^22.15.3
+        version: 22.15.3
+      '@types/react':
+        specifier: 19.2.2
+        version: 19.2.2
+      eslint:
+        specifier: ^9.39.1
+        version: 9.39.1(jiti@2.6.1)
       typescript:
         specifier: 5.9.2
         version: 5.9.2
@@ -481,28 +478,6 @@ importers:
       '@types/react-dom':
         specifier: 19.2.2
         version: 19.2.2(@types/react@19.2.2)
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-
-  packages/utils:
-    dependencies:
-      dayjs:
-        specifier: ^1.11.19
-        version: 1.11.19
-    devDependencies:
-      '@recap/eslint-config':
-        specifier: workspace:*
-        version: link:../eslint-config
-      '@recap/typescript-config':
-        specifier: workspace:*
-        version: link:../typescript-config
-      '@types/node':
-        specifier: ^22.15.3
-        version: 22.15.3
       eslint:
         specifier: ^9.39.1
         version: 9.39.1(jiti@2.6.1)

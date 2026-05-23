@@ -1,5 +1,5 @@
 import { useLocale } from "@recap/i18n";
-import { formatDuration } from "@recap/utils";
+import { formatDuration } from "@recap/lib";
 
 import type { AnalysisWebsite } from "@/features/analysis/model/analysis.type";
 

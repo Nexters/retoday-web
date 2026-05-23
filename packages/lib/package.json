@@ -1,10 +1,11 @@
 {
-  "name": "@recap/utils",
+  "name": "@recap/lib",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./hooks": "./src/hooks/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -14,10 +15,12 @@
     "@recap/eslint-config": "workspace:*",
     "@recap/typescript-config": "workspace:*",
     "@types/node": "^22.15.3",
+    "@types/react": "19.2.2",
     "eslint": "^9.39.1",
     "typescript": "5.9.2"
   },
   "dependencies": {
-    "dayjs": "^1.11.19"
+    "dayjs": "^1.11.19",
+    "react": "^19.2.0"
   }
 }

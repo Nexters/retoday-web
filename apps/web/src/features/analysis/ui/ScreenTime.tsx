@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { useLocale } from "@recap/i18n";
+import { dayjs, formatDuration } from "@recap/lib";
 import { Badge, type WeeklyBarDatum } from "@recap/ui";
-import { dayjs, formatDuration } from "@recap/utils";
 
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import type { ScreenTimePeriodType } from "@/features/analysis/model/get-screen-time.schema";

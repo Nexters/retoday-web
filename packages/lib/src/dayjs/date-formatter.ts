@@ -1,4 +1,4 @@
-import { dayjs } from "./dayjs";
+import { dayjs } from "./index";
 
 type DateInput = Date | string | number | null | undefined;
 

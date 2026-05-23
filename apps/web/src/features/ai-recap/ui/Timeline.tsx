@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocale } from "@recap/i18n";
-import { formatDuration } from "@recap/utils";
+import { formatDuration } from "@recap/lib";
 
 import { useCustomScrollbar } from "@/features/ai-recap/lib/useCustomScrollbar";
 import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";

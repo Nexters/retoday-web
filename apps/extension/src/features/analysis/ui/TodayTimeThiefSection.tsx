@@ -1,5 +1,5 @@
 import { useLocale } from "@recap/i18n";
-import { formatDate } from "@recap/utils";
+import { formatDate } from "@recap/lib";
 
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
