@@ -1,4 +1,5 @@
 export * from "./domains/analysis";
+export * from "./domains/auth";
 export * from "./domains/recap";
 export * from "./domains/user";
 export * from "./errors/APIError";

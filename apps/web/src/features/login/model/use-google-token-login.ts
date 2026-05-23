@@ -6,7 +6,7 @@ import { catchAPIError } from "@recap/api";
 import { authAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
 
-type BackendLoginResponse = {
+type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
@@ -65,7 +65,7 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
             const data = (await authAPIService.googleOauthLogin({
               oAuthToken: googleAccessToken,
               provider: "GOOGLE",
-            })) as BackendLoginResponse;
+            })) as LoginResponse;
 
             if (!data?.accessToken || !data?.refreshToken) return;
 

@@ -1,7 +1,7 @@
 import browser from "webextension-polyfill";
 
 import { authAPIService } from "@/entities/auth/api";
-import type { BackendLoginResponse } from "@/entities/auth/model/auth.type";
+import type { LoginResponse } from "@/entities/auth/model/auth.type";
 import {
   addBrowserSession,
   clearBrowserSession,
@@ -108,7 +108,7 @@ browser.runtime.onMessage.addListener(
             provider: "GOOGLE",
           })
           .then((data: unknown) => {
-            tokenStore.set(data as BackendLoginResponse);
+            tokenStore.set(data as LoginResponse);
             void analytics.fireEvent("login", { method: "google" });
             chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
           });

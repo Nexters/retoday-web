@@ -1,9 +1,4 @@
-export type GoogleOAuthLoginDTO = {
-  oAuthToken: string;
-  provider: "GOOGLE";
-};
-
-export type BackendLoginResponse = {
+export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
 };
