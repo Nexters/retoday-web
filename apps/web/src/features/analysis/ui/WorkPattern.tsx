@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
+import type { WorkPatternDayType } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 
 import { useGetWorkPattern } from "@/features/analysis/api/analysis-query";
-import type { WorkPatternDayType } from "@/features/analysis/model/get-work-pattern.schema";
 import AfterNoonIcon from "@/shared/assets/icons/afternoon.svg";
 import EveningIcon from "@/shared/assets/icons/evening.svg";
 import MorningIcon from "@/shared/assets/icons/morning.svg";

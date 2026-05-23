@@ -1,7 +1,7 @@
 import { useQuery } from "@recap/react-query";
 
 import { recapAPIService } from "@/features/ai-recap/api";
-import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-key.const";
+import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-keys";
 import {
   hasRecapContent,
   normalizeRecap,
@@ -17,20 +17,17 @@ export const useGetAiRecap = (
 ) => {
   const query = useQuery({
     queryKey: AI_RECAP_KEYS.detail(["ai-recap", date]),
-    queryFn: () => recapAPIService.getRecap({ date }),
+    queryFn: async () => {
+      const envelope = await recapAPIService.getRecap({ date });
+      return envelope.data;
+    },
     enabled: options.enabled,
+    select: (data) =>
+      data && hasRecapContent(data) ? normalizeRecap(data, date) : null,
   });
-
-  const rawRecap = query.data?.data ?? null;
-
-  const recap =
-    rawRecap && hasRecapContent(rawRecap)
-      ? normalizeRecap(rawRecap, date)
-      : null;
 
   return {
     ...query,
-    recap,
-    hasRecap: Boolean(recap),
+    hasRecap: Boolean(query.data),
   };
 };

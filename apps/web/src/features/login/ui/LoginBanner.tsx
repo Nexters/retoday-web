@@ -5,7 +5,7 @@ import { useQueryClient } from "@recap/react-query";
 
 import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
-import { USER_KEYS } from "@/features/settings/api/query-key.const";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
 
 const LoginBanner = () => {
   const { t } = useLocale("settings");

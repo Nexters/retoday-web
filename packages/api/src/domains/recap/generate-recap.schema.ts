@@ -1,25 +1,26 @@
-import { CreateResponseSchema, dateStringSchema } from "@recap/api";
 import { z } from "zod";
 
-const RecapSectionSchema = z.object({
+import { CreateResponseSchema, dateStringSchema } from "../../schema";
+
+export const RecapSectionSchema = z.object({
   title: z.string(),
   content: z.string(),
 });
 
-const RecapTimelineSchema = z.object({
+export const RecapTimelineSchema = z.object({
   startedAt: z.string(),
   endedAt: z.string(),
   title: z.string(),
   durationMinutes: z.number(),
 });
 
-const RecapTopicSchema = z.object({
+export const RecapTopicSchema = z.object({
   keyword: z.string(),
   title: z.string(),
   content: z.string(),
 });
 
-const RecapSchema = z.object({
+export const RecapSchema = z.object({
   id: z.number().optional(),
   userId: z.number().optional(),
   recapDate: z.string().optional(),
@@ -34,3 +35,11 @@ const RecapSchema = z.object({
 });
 
 export const GetRecapResponseSchema = CreateResponseSchema(RecapSchema);
+
+export type RecapData = z.infer<typeof RecapSchema>;
+
+export type AiRecapSection = z.infer<typeof RecapSectionSchema>;
+export type AiRecapTimeline = z.infer<typeof RecapTimelineSchema>;
+export type AiRecapTopic = z.infer<typeof RecapTopicSchema>;
+/** Alias for UI code that historically expected a shaped recap payload. */
+export type AiRecapResponse = RecapData;

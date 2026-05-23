@@ -8,7 +8,7 @@ import { cn } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
 import { userAPIService } from "@/features/settings/api";
-import { USER_KEYS } from "@/features/settings/api/query-key.const";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
 
 type ExcludedDomainSectionProps = {
   disabled?: boolean;

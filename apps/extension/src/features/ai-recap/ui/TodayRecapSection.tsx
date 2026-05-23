@@ -1,7 +1,7 @@
+import type { AiRecapResponse } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { formatDuration, formatTimeRange } from "@recap/lib";
 
-import type { AiRecapResponse } from "@/features/ai-recap/model/ai-recap.type";
 import RecapImg from "@/shared/assets/imgs/recap-img.png";
 import { Divider } from "@/shared/ui";
 

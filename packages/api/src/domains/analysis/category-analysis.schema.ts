@@ -1,5 +1,6 @@
-import { CreateResponseSchema, dateStringSchema } from "@recap/api";
 import { z } from "zod";
+
+import { CreateResponseSchema, dateStringSchema } from "../../schema";
 
 const CategoryWebsiteAnalysisSchema = z.object({
   domain: z.string(),
@@ -21,3 +22,5 @@ export const GetCategoryAnalysesSchema = z.object({
 export const GetCategoryAnalysesResponseSchema = CreateResponseSchema(
   GetCategoryAnalysesSchema,
 );
+
+export type AnalysisCategoryData = z.infer<typeof GetCategoryAnalysesSchema>;

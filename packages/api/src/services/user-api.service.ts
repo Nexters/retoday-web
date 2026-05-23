@@ -1,6 +1,5 @@
-import type { RestAPIProtocol } from "@recap/api";
-
-import { GetUserProfileSchema } from "@/features/settings/model/get-user-profile.schema";
+import { GetUserProfileSchema } from "../domains/user/user-profile.schema";
+import type { RestAPIProtocol } from "../rest/types";
 
 export class UserAPIService {
   constructor(private fetch: RestAPIProtocol) {}

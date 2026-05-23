@@ -1,5 +1,6 @@
-import { CreateResponseSchema, dateStringSchema } from "@recap/api";
 import { z } from "zod";
+
+import { CreateResponseSchema, dateStringSchema } from "../../schema";
 
 const ScreenTimePeriodEnum = z.enum(["DAILY", "WEEKLY"]);
 
@@ -30,3 +31,5 @@ export const GetScreenTimeQuerySchema = z.object({
 });
 
 export type GetScreenTimeQueryType = z.infer<typeof GetScreenTimeQuerySchema>;
+
+export type AnalysisScreenTimeData = z.infer<typeof GetScreenTimeSchema>;

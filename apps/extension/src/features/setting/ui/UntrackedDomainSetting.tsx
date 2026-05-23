@@ -3,7 +3,7 @@ import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button, Input } from "@recap/ui";
 
-import { USER_KEYS } from "@/features/setting/api/query-key.const";
+import { USER_KEYS } from "@/features/setting/api/query-keys";
 import {
   useGetUserProfile,
   usePostExcludeDomain,
