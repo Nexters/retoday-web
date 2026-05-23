@@ -15,7 +15,7 @@
   "dependencies": {
     "@next/third-parties": "^16.1.0",
     "@recap/analytics": "workspace:*",
-    "@recap/hooks": "workspace:*",
+    "@recap/lib": "workspace:*",
     "@recap/i18n": "workspace:*",
     "@recap/react-query": "workspace:*",
     "@tanstack/react-query": "^5.0.0",
@@ -32,7 +32,6 @@
     "@recap/tokens": "workspace:*",
     "@recap/typescript-config": "workspace:*",
     "@recap/ui": "workspace:*",
-    "@recap/utils": "workspace:*",
     "@svgr/webpack": "^8.1.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.15.3",

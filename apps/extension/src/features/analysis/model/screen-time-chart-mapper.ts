@@ -1,4 +1,3 @@
-import type { WeeklyBarDatum } from "@recap/ui";
 import {
   type DateFormatterOptions,
   dayjs,
@@ -6,7 +5,8 @@ import {
   formatTwoDigitNumber,
   formatWeekdayShort,
   resolveDateFormatterOptions,
-} from "@recap/utils";
+} from "@recap/lib";
+import type { WeeklyBarDatum } from "@recap/ui";
 
 import {
   ANALYSIS_PERIOD,

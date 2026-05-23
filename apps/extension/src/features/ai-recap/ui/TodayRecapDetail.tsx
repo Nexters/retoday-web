@@ -1,4 +1,5 @@
-import type { AiRecapSection } from "@/features/ai-recap/model/ai-recap.type";
+import type { AiRecapSection } from "@recap/api";
+
 import { Divider } from "@/shared/ui";
 
 const TodayRecapDetail = ({ sections }: { sections: AiRecapSection[] }) => {

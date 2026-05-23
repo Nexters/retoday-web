@@ -1,55 +1,36 @@
+import type {
+  GetCategoryAnalysesSchema,
+  GetScreenTimeSchema,
+  GetWebsiteAnalysesSchema,
+  ScreenTimePeriodType,
+  TopVisitedSiteSchema,
+} from "@recap/api";
+import type { z } from "zod";
+
 export const ANALYSIS_PERIOD = {
   DAILY: "DAILY",
   WEEKLY: "WEEKLY",
 } as const;
-export type AnalysisPeriod =
-  (typeof ANALYSIS_PERIOD)[keyof typeof ANALYSIS_PERIOD];
 
-// screen time analysis
-export type AnalysisScreenTime = {
-  startedAt: string;
-  endedAt: string;
-  stayDuration: number;
-};
-export type AnalysisScreenTimeResponse = {
-  period: AnalysisPeriod;
-  startedAt: string;
-  endedAt: string;
-  totalStayDuration: number;
-  screenTimes: AnalysisScreenTime[];
-};
+export type AnalysisPeriod = ScreenTimePeriodType;
 
-// category analysis
-export type AnalysisWebsite = {
-  domain: string;
-  faviconUrl: string;
-  stayDuration: number;
-};
-export type AnalysisCategoryItem = {
-  categoryName: string;
-  stayDuration: number;
-  websiteAnalyses: AnalysisWebsite[];
-};
-export type AnalysisCategoryResponse = {
-  date: string;
-  categoryAnalyses: AnalysisCategoryItem[];
-};
+/** Screen-time API payload (`users/me/screen-times`). */
+export type AnalysisScreenTimeResponse = z.infer<typeof GetScreenTimeSchema>;
 
-// frequency analysis
-export type AnalysisFrequencyItem = {
-  domain: string;
-  faviconUrl: string;
-  visitCount: number;
-  stayDuration: number;
-};
-export type FrequencyVisitedSitesResponse = {
-  date: string;
-  websiteAnalyses: AnalysisFrequencyItem[];
-};
+export type AnalysisCategoryResponse = z.infer<
+  typeof GetCategoryAnalysesSchema
+>;
 
-export type LongestWebSiteResponse = {
-  date: string;
-  domain: string;
-  faviconUrl: string;
-  stayDuration: number;
-};
+export type AnalysisCategoryItem =
+  AnalysisCategoryResponse["categoryAnalyses"][number];
+
+export type AnalysisWebsite = AnalysisCategoryItem["websiteAnalyses"][number];
+
+export type FrequencyVisitedSitesResponse = z.infer<
+  typeof GetWebsiteAnalysesSchema
+>;
+
+export type AnalysisFrequencyItem =
+  FrequencyVisitedSitesResponse["websiteAnalyses"][number];
+
+export type LongestWebSiteResponse = z.infer<typeof TopVisitedSiteSchema>;

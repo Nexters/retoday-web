@@ -1,9 +1,8 @@
-import type { Envelope } from "@recap/api";
+import type { Envelope, UserProfileType } from "@recap/api";
 import { useQuery } from "@recap/react-query";
 
 import { userAPIService } from "@/features/settings/api";
-import { USER_KEYS } from "@/features/settings/api/query-key.const";
-import type { UserProfileType } from "@/features/settings/model/get-user-profile.schema";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
 
 type UserProfileResponse = Envelope<UserProfileType>;
 

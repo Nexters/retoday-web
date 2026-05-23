@@ -1,7 +1,7 @@
 "use client";
 
+import { DATE_FORMAT, formatDate } from "@recap/lib";
 import { DatePicker, DatePickerContent, DatePickerTrigger } from "@recap/ui";
-import { DATE_FORMAT, formatDate } from "@recap/utils";
 
 import ArrowDownIcon from "@/shared/assets/icons/arrow-down.svg";
 import { RoundButton } from "@/shared/ui";

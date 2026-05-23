@@ -1,4 +1,4 @@
-import { dayjs, formatDuration } from "@recap/utils";
+import { dayjs, formatDuration } from "@recap/lib";
 
 /**
  * 초 단위 길이를 분으로 환산한 뒤 반올림합니다.

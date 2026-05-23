@@ -1,15 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { catchAPIError } from "@recap/api";
+import { catchAPIError, type UserProfileType } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 
 import { authWithTokenAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
 import { useAuth } from "@/entities/auth/ui";
-import { USER_KEYS } from "@/features/settings/api/query-key.const";
-import type { UserProfileType } from "@/features/settings/model/get-user-profile.schema";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 import MailIcon from "@/shared/assets/icons/mail.svg";
 import DefaultImg from "@/shared/assets/img/recap-1.png";

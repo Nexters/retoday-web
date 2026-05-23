@@ -1,25 +1,13 @@
 "use client";
 
 import { useLocale } from "@recap/i18n";
-import { useQueryClient } from "@recap/react-query";
 
-import { useAuth } from "@/entities/auth/ui";
 import LoginButton from "@/features/login/ui/LoginButton";
-import { USER_KEYS } from "@/features/settings/api/query-key.const";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
 import LanguageSection from "@/features/settings/ui/LanguageSection";
 
 const SettingsUnloginPage = () => {
   const { t } = useLocale("settings");
-  const { refreshAuth } = useAuth();
-  const queryClient = useQueryClient();
-
-  const handleLoginSuccess = async () => {
-    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
-    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
-
-    refreshAuth();
-  };
 
   return (
     <>
@@ -38,7 +26,7 @@ const SettingsUnloginPage = () => {
             </p>
           </div>
 
-          <LoginButton onLoginSuccess={handleLoginSuccess} />
+          <LoginButton />
         </div>
       </div>
 

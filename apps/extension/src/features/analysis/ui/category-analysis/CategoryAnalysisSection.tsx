@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useLocale } from "@recap/i18n";
-import { formatDate, formatDuration } from "@recap/utils";
+import { formatDate, formatDuration } from "@recap/lib";
 
 import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
 import BubbleRanking from "@/features/analysis/ui/category-analysis/BubbleRanking";

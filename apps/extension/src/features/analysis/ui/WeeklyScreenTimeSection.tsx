@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocale } from "@recap/i18n";
-import { formatDate, formatDuration } from "@recap/utils";
+import { formatDate, formatDuration } from "@recap/lib";
 
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import {

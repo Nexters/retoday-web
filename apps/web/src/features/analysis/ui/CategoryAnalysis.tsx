@@ -39,7 +39,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
   const { data, isLoading } = useGetAnalysisCategoryAnalysis(date);
 
   const served = useMemo(() => {
-    const categories: CategoryItem[] = data?.data?.categoryAnalyses ?? [];
+    const categories: CategoryItem[] = data?.categoryAnalyses ?? [];
     const sorted = [...categories].sort(
       (a, b) => (b.stayDuration ?? 0) - (a.stayDuration ?? 0),
     );

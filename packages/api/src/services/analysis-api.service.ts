@@ -1,17 +1,16 @@
-import type { RestAPIProtocol } from "@recap/api";
-
-import type { DateQueryType } from "@/features/analysis/model/enum.schema";
-import { GetCategoryAnalysesResponseSchema } from "@/features/analysis/model/get-category-analysis.schema";
+import { GetCategoryAnalysesResponseSchema } from "../domains/analysis/category-analysis.schema";
+import type { DateQueryType } from "../domains/analysis/enum.schema";
 import {
   type GetWebsiteAnalysesQueryType,
   GetWebsiteAnalysesResponseSchema,
-} from "@/features/analysis/model/get-frequently-visited-websites.schema";
-import { TopVisitedSiteResponseSchema } from "@/features/analysis/model/get-longest-stayed-website.schema";
+} from "../domains/analysis/frequently-visited-websites.schema";
+import { TopVisitedSiteResponseSchema } from "../domains/analysis/longest-stayed-website.schema";
 import {
   type GetScreenTimeQueryType,
   GetScreenTimeResponseSchema,
-} from "@/features/analysis/model/get-screen-time.schema";
-import { GetWorkPatternResponseSchema } from "@/features/analysis/model/get-work-pattern.schema";
+} from "../domains/analysis/screen-time.schema";
+import { GetWorkPatternResponseSchema } from "../domains/analysis/work-pattern.schema";
+import type { RestAPIProtocol } from "../rest/types";
 
 export class AnalysisAPIService {
   constructor(private fetch: RestAPIProtocol) {}

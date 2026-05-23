@@ -1,5 +1,6 @@
-import { CreateResponseSchema, dateStringSchema } from "@recap/api";
 import { z } from "zod";
+
+import { CreateResponseSchema, dateStringSchema } from "../../schema";
 
 export const WorkPatternDayEnum = z.enum([
   "DAWN",
@@ -7,6 +8,7 @@ export const WorkPatternDayEnum = z.enum([
   "DAYTIME",
   "EVENING",
 ]);
+
 export type WorkPatternDayType = z.infer<typeof WorkPatternDayEnum>;
 
 const WorkPatternCountSchema = z
@@ -25,3 +27,5 @@ export const GetWorkPatternSchema = z.object({
 
 export const GetWorkPatternResponseSchema =
   CreateResponseSchema(GetWorkPatternSchema);
+
+export type AnalysisWorkPatternData = z.infer<typeof GetWorkPatternSchema>;

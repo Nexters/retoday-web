@@ -21,7 +21,7 @@ const AiRecapPage = ({ date }: { date: string }) => (
 
 const LoggedInRecap = ({ date }: { date: string }) => {
   const {
-    recap,
+    data: recap,
     hasRecap,
     isError,
     isLoading,

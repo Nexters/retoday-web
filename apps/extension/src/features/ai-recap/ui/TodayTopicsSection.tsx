@@ -1,6 +1,5 @@
+import type { AiRecapTopic } from "@recap/api";
 import { useLocale } from "@recap/i18n";
-
-import type { AiRecapTopic } from "@/features/ai-recap/model/ai-recap.type";
 
 const TodayTopicsSection = ({ topics }: { topics: AiRecapTopic[] }) => {
   const { t } = useLocale("ai-recap");

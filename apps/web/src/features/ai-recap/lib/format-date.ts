@@ -1,5 +1,5 @@
 import type { TFunction } from "@recap/i18n";
-import { formatDuration } from "@recap/utils";
+import { formatDuration } from "@recap/lib";
 
 export const formatScreenTime = (tc: TFunction, totalMinutes: number) => {
   if (totalMinutes <= 0) return "-";

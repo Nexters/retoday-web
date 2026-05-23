@@ -1,4 +1,4 @@
-import { formatDate } from "@recap/utils";
+import { formatDate } from "@recap/lib";
 
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
 import {

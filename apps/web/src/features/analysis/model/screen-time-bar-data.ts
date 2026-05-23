@@ -1,10 +1,9 @@
+import type { ScreenTimeType } from "@recap/api";
 import type { TFunction } from "@recap/i18n";
+import { formatTwoDigitNumber } from "@recap/lib";
 import type { WeeklyBarDatum } from "@recap/ui";
-import { formatTwoDigitNumber } from "@recap/utils";
 
 import { secondsToMinute } from "@/shared/lib/date/format-date";
-
-import type { ScreenTimeType } from "./get-screen-time.schema";
 
 export const SCREEN_TIME_BAR_WEEKDAY_KEYS = [
   "sun",
