@@ -5,6 +5,7 @@ export * from "./button";
 export * from "./date-picker";
 export * from "./divider";
 export * from "./flex";
+export * from "./grid";
 export * from "./input";
 export * from "./item";
 export * from "./select";
@@ -22,4 +23,9 @@ export {
   GAP_Y_SEMANTIC,
   type GapSize,
 } from "./utils/gap-scale";
+export {
+  type GridColumnCount,
+  type GridTemplateColsBreakpoints,
+  gridTemplateColsClass,
+} from "./utils/grid-template-cols";
 export * from "./weekly-bar-chart";
