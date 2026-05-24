@@ -2,6 +2,7 @@ export * from "./accordion";
 export * from "./badge";
 export * from "./button";
 export * from "./date-picker";
+export * from "./divider";
 export * from "./flex";
 export * from "./input";
 export * from "./item";
