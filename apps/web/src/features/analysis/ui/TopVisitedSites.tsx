@@ -1,91 +1,81 @@
 "use client";
 
-import { useMemo } from "react";
-import Image from "next/image";
 import { useLocale } from "@recap/i18n";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Item,
+  ItemActions,
+  ItemContent,
+  ItemGroup,
+  ItemTitle,
+} from "@recap/ui";
 
-import { useGetFrequencyVisitedSites } from "@/features/analysis/api/analysis-query";
+import { useTopVisitedSiteList } from "@/features/analysis/model/use-top-visited-site-list";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
-
-type WebsiteAnalysis = {
-  domain: string;
-  faviconUrl: string | null;
-  visitCount: number;
-  stayDuration: number;
-};
-
-const toDisplayUrl = (domain: string) => {
-  const trimmed = domain.trim();
-  if (!trimmed) return "-";
-  if (trimmed.startsWith("http://") || trimmed.startsWith("https://"))
-    return trimmed;
-  return `https://${trimmed}`;
-};
+import { toHttpsUrl } from "@/shared/lib/url";
 
 const TopVisitedSites = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useGetFrequencyVisitedSites(date, 10);
+  const { data, isLoading } = useTopVisitedSiteList(date);
 
-  const served = useMemo(() => {
-    const list: WebsiteAnalysis[] = data?.websiteAnalyses ?? [];
-
-    const top = [...list]
-      .sort((a, b) => (b.stayDuration ?? 0) - (a.stayDuration ?? 0))
-      .slice(0, 10);
-
-    return top.map((it) => ({
-      ...it,
-      displayUrl: toDisplayUrl(it.domain),
-      durationText: formatSecondsToMinutes(it.stayDuration ?? 0, tc),
-    }));
-  }, [data, tc]);
-
-  const isEmpty = !isLoading && served.length === 0;
+  const isEmpty = !isLoading && data.length === 0;
 
   return (
-    <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
-      <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-        {t("frequentSites.title")}
-      </h2>
+    <Card className="gap-0 rounded-[1.25rem] bg-white p-5 shadow-none md:p-6 xl:p-10">
+      <CardHeader className="gap-0 p-0">
+        <CardTitle className="text-heading-rg whitespace-nowrap text-gray-800">
+          {t("frequentSites.title")}
+        </CardTitle>
+      </CardHeader>
 
-      <div className="mt-5 flex flex-col gap-2 md:mt-6">
+      <CardContent className="mt-5 p-0 md:mt-6">
         {isEmpty ? (
           <div className="text-body-1 text-gray-500">
             {t("frequentSites.emptyState")}
           </div>
         ) : (
-          served.map((it, idx) => (
-            <div
-              className="bg-gray-75 flex items-center justify-between rounded-full p-2"
-              key={`${it.domain}-${idx}`}
-            >
-              <div className="flex min-w-0 items-center gap-3">
-                <div className="relative size-6 overflow-hidden rounded-full bg-gray-200">
-                  {it.faviconUrl ? (
-                    <Image
-                      src={it.faviconUrl}
-                      alt={`${it.domain} favicon`}
-                      fill
-                      sizes="24px"
-                      className="object-contain"
-                    />
-                  ) : null}
-                </div>
+          <ItemGroup className="gap-2">
+            {data.map((item, idx) => (
+              <Item
+                key={`${item.domain}-${idx}`}
+                className="bg-gray-75 flex-nowrap items-center justify-between gap-2 rounded-full border-0 p-2 shadow-none"
+              >
+                <ItemContent className="min-w-0 flex-1 flex-row items-center gap-3">
+                  <Avatar aria-hidden className="size-6 shrink-0">
+                    {item.faviconUrl && (
+                      <AvatarImage
+                        src={item?.faviconUrl}
+                        alt=""
+                        className="object-contain"
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
+                    <AvatarFallback />
+                  </Avatar>
 
-                <p className="text-body-1 truncate text-gray-500">
-                  {it.displayUrl}
-                </p>
-              </div>
+                  <ItemTitle className="text-body-1 truncate font-normal text-gray-500">
+                    {toHttpsUrl(item.domain)}
+                  </ItemTitle>
+                </ItemContent>
 
-              <p className="text-body-1 whitespace-nowrap text-gray-900">
-                {it.durationText}
-              </p>
-            </div>
-          ))
+                <ItemActions className="ml-2 shrink-0 gap-0">
+                  <span className="text-body-1 whitespace-nowrap text-gray-900">
+                    {formatSecondsToMinutes(item.stayDuration ?? 0, tc)}
+                  </span>
+                </ItemActions>
+              </Item>
+            ))}
+          </ItemGroup>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
