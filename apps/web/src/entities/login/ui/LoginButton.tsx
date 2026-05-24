@@ -3,7 +3,7 @@
 import { useCallback } from "react";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
-import { cn } from "@recap/ui";
+import { Button, cn } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
 import { useGoogleTokenLogin } from "@/entities/login/model/use-google-token-login";
@@ -26,18 +26,17 @@ const LoginButton = ({ className }: { className?: string }) => {
   });
 
   return (
-    <button
+    <Button
+      type="button"
+      variant="secondary"
+      size="md"
       onClick={login}
       disabled={!ready}
-      className={cn(
-        "flex items-center gap-2 rounded-xl border border-solid border-gray-300 bg-white px-4 py-2 text-gray-800",
-        !ready && "cursor-not-allowed opacity-60",
-        className,
-      )}
+      className={cn("flex gap-2 px-4 py-2", className)}
     >
       {t("account.login")}
       <RightIcon />
-    </button>
+    </Button>
   );
 };
 
