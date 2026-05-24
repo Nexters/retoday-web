@@ -3,6 +3,7 @@
 import type { StaticImageData } from "next/image";
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
+import { Grid } from "@recap/ui";
 
 import LoginBanner from "@/entities/login/ui/LoginBanner";
 import EmptyRecapImg1 from "@/shared/assets/img/empty-reacp-1.png";
@@ -62,7 +63,11 @@ const AiRecapUnloginPage = () => {
           {t("preview.recapProvidedInThisFormat")}
         </p>
 
-        <div className="mt-6 grid grid-cols-1 gap-4 md:mt-9 md:grid-cols-2 md:gap-9">
+        <Grid
+          cols={{ base: 1, md: 2 }}
+          gap="none"
+          className="mt-6 gap-4 md:mt-9 md:gap-9"
+        >
           <div>
             <PreviewImage src={EmptyRecapImg1} alt="" />
             <p className="text-body-1 md:text-headline-sb mt-3 text-gray-600 md:mt-4">
@@ -76,7 +81,7 @@ const AiRecapUnloginPage = () => {
               {t("preview.checkTopicsTimeline")}
             </p>
           </div>
-        </div>
+        </Grid>
       </div>
     </div>
   );
