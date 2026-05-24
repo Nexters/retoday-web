@@ -3,32 +3,38 @@
 import { useMemo } from "react";
 import type { WorkPatternDayType } from "@recap/api";
 import { useLocale } from "@recap/i18n";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  ItemGroup,
+} from "@recap/ui";
 
-import { useGetWorkPattern } from "@/features/analysis/api/analysis-query";
-import AfterNoonIcon from "@/shared/assets/icons/afternoon.svg";
-import EveningIcon from "@/shared/assets/icons/evening.svg";
-import MorningIcon from "@/shared/assets/icons/morning.svg";
-import NightIcon from "@/shared/assets/icons/night.svg";
+import { getMockWorkPatternData } from "@/features/analysis/model/mock/analysis-query-ui-mock";
+import WorkPatternRow from "@/features/analysis/ui/WorkPatternRow";
 
 type WorkPatternItem = {
   key: WorkPatternDayType;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  pattern: WorkPatternDayType;
   value: number;
 };
 
 const ITEMS_META: Array<{
   key: WorkPatternDayType;
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
+  pattern: WorkPatternDayType;
 }> = [
-  { key: "MORNING", Icon: MorningIcon },
-  { key: "DAYTIME", Icon: AfterNoonIcon },
-  { key: "EVENING", Icon: EveningIcon },
-  { key: "DAWN", Icon: NightIcon },
+  { key: "MORNING", pattern: "MORNING" },
+  { key: "DAYTIME", pattern: "DAYTIME" },
+  { key: "EVENING", pattern: "EVENING" },
+  { key: "DAWN", pattern: "DAWN" },
 ];
 
 const WorkPattern = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
-  const { data, isLoading, isError } = useGetWorkPattern(date);
+  //const { data, isLoading, isError } = useGetWorkPattern(date);
+  const data = getMockWorkPatternData(date);
 
   const served = useMemo(() => {
     const counts = data?.counts ?? {};
@@ -39,13 +45,13 @@ const WorkPattern = ({ date }: { date: string }) => {
 
     const total = values.reduce((a, b) => a + b, 0);
 
-    const items: WorkPatternItem[] = ITEMS_META.map(({ key, Icon }) => {
+    const items: WorkPatternItem[] = ITEMS_META.map(({ key, pattern }) => {
       const raw =
         (counts as Partial<Record<WorkPatternDayType, number>>)[key] ?? 0;
 
       const normalized = raw <= 1 ? raw : total > 0 ? raw / total : 0;
 
-      return { key, Icon, value: normalized };
+      return { key, pattern, value: normalized };
     });
 
     const best = items.reduce((prev, cur) =>
@@ -69,60 +75,26 @@ const WorkPattern = ({ date }: { date: string }) => {
   }, [data, t]);
 
   return (
-    <div className="rounded-[1.25rem] bg-white p-5 md:p-6 xl:p-10">
-      <h2 className="text-heading-rg whitespace-nowrap text-gray-800">
-        {t("workPattern.title")}
-      </h2>
+    <Card className="gap-0 rounded-[1.25rem] bg-white p-5 shadow-none md:p-6 xl:p-10">
+      <CardHeader className="gap-0 p-0">
+        <CardTitle className="text-heading-rg whitespace-nowrap text-gray-800">
+          {t("workPattern.title")}
+        </CardTitle>
 
-      <h3 className="text-title-1 mt-2 whitespace-nowrap text-gray-900">
-        {isLoading ? "-" : isError || served.isEmpty ? "-" : served.title}
-      </h3>
+        <CardDescription className="text-title-1 m-0 mt-2 whitespace-nowrap text-gray-900">
+          {served.isEmpty ? "-" : served.title}
+        </CardDescription>
+      </CardHeader>
 
-      <div className="mt-6 flex flex-col gap-4 md:mt-7 md:gap-5 xl:mt-8">
-        {served.items.map((it) => (
-          <PatternRow key={it.key} Icon={it.Icon} value={it.value} />
-        ))}
-      </div>
-    </div>
+      <CardContent className="mt-6 p-0 md:mt-7 xl:mt-8">
+        <ItemGroup className="gap-4 md:gap-5">
+          {served.items.map((it) => (
+            <WorkPatternRow key={it.key} pattern={it.key} value={it.value} />
+          ))}
+        </ItemGroup>
+      </CardContent>
+    </Card>
   );
 };
 
 export default WorkPattern;
-
-const PatternRow = ({
-  Icon,
-  value,
-}: {
-  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  value: number;
-}) => {
-  const clamped = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
-  const pct = Math.round(clamped * 100);
-
-  return (
-    <div className="flex items-center gap-5">
-      <div className="flex size-7 items-center justify-center">
-        <Icon className="h-7 w-7" />
-      </div>
-
-      <div className="relative h-7 w-full overflow-hidden rounded-lg">
-        <div
-          className="bg-gradient-02 absolute inset-y-0 left-0"
-          style={{
-            width: `${pct}%`,
-          }}
-        />
-
-        <div
-          className="absolute inset-y-0 right-0"
-          style={{
-            width: `${100 - pct}%`,
-            backgroundImage:
-              "repeating-linear-gradient(135deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 8px)",
-            backgroundColor: "rgba(234, 246, 251, 0.6)",
-          }}
-        />
-      </div>
-    </div>
-  );
-};
