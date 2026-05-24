@@ -16,15 +16,37 @@ export const toggleGroupItemClassName = cn(
   "data-[state=on]:bg-gray-900 data-[state=on]:text-white data-[state=on]:text-subtitle-2-sb",
 );
 
-export type ToggleGroupProps = React.ComponentPropsWithoutRef<
+type ToggleGroupPrimitiveProps = React.ComponentPropsWithoutRef<
   typeof ToggleGroupPrimitive
 >;
 
-function ToggleGroup({ className, ...props }: ToggleGroupProps) {
+export type ToggleGroupProps<T extends string = string> = Omit<
+  ToggleGroupPrimitiveProps,
+  "type" | "value" | "defaultValue" | "onValueChange"
+> &
+  (
+    | {
+        type: "single";
+        value?: T;
+        defaultValue?: T;
+        onValueChange?: (value: T) => void;
+      }
+    | {
+        type: "multiple";
+        value?: T[];
+        defaultValue?: T[];
+        onValueChange?: (value: T[]) => void;
+      }
+  );
+
+function ToggleGroup<T extends string = string>({
+  className,
+  ...props
+}: ToggleGroupProps<T>) {
   return (
     <ToggleGroupPrimitive
       className={cn(toggleGroupRootClassName, className)}
-      {...props}
+      {...(props as ToggleGroupPrimitiveProps)}
     />
   );
 }
