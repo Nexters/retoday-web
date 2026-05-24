@@ -4,6 +4,7 @@ export * from "./button";
 export * from "./date-picker";
 export * from "./flex";
 export * from "./input";
+export * from "./item";
 export * from "./select";
 export * from "./skeleton";
 export * from "./stack";
