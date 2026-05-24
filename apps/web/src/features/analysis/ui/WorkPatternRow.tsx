@@ -19,14 +19,14 @@ const WORK_PATTERN_ICONS: Record<
 
 const WorkPatternRow = ({
   pattern,
-  value,
+  ratio,
 }: {
   pattern: WorkPatternDayType;
-  value: number;
+  ratio: number;
 }) => {
   const PatternIcon = WORK_PATTERN_ICONS[pattern];
 
-  const clamped = Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
+  const clamped = Number.isFinite(ratio) ? Math.max(0, Math.min(1, ratio)) : 0;
   const pct = Math.round(clamped * 100);
 
   return (
