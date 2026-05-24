@@ -2,7 +2,15 @@
 
 import { useState } from "react";
 import { type LanguageType, useLocale } from "@recap/i18n";
-import { cn } from "@recap/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  cn,
+  Flex,
+} from "@recap/ui";
 
 import { LanguageSelect, useLanguageStore } from "@/entities/language";
 
@@ -24,40 +32,53 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
   };
 
   return (
-    <div
+    <Card
       className={cn(
-        "rounded-[1.25rem] bg-white px-9 py-8 md:px-6 md:py-6 xl:px-9 xl:py-8",
+        "flex w-full flex-col flex-nowrap items-stretch gap-6 px-9 py-8 md:px-6 md:py-6 xl:px-9 xl:py-8",
         disabled && "pointer-events-none opacity-50",
       )}
     >
-      <h2 className="text-heading-rg text-gray-800">
-        {t("languageChange.title")}
-      </h2>
+      <CardHeader className="shrink-0 p-0">
+        <CardTitle className="text-heading-rg text-gray-800">
+          {t("languageChange.title")}
+        </CardTitle>
+      </CardHeader>
 
-      <div className="mt-6 flex flex-col items-stretch gap-6 md:flex-row md:items-center md:gap-4">
-        <div className="w-full min-w-0 md:flex-1">
-          <LanguageSelect
-            key={localize}
-            className="h-auto min-h-[52px] w-full rounded-xl border-gray-200 py-4"
-            defaultValue={localize}
-            onValueChange={setSelectedLanguage}
-            disabled={disabled}
-          />
-        </div>
-
-        <button
-          type="button"
-          className={cn(
-            "text-subtitle-1-md rounded-xl px-6 py-4 whitespace-nowrap text-gray-100",
-            selectedLanguage === localize ? "bg-gray-500" : "bg-gray-800",
-          )}
-          onClick={handleApply}
-          disabled={disabled}
+      <CardContent className="flex min-h-0 min-w-0 flex-1 flex-col p-0 pt-0">
+        <Flex
+          direction="column"
+          gap="none"
+          className="w-full gap-6 md:flex-row md:items-center md:gap-4"
         >
-          {t("languageChange.apply")}
-        </button>
-      </div>
-    </div>
+          <div className="w-full min-w-0 md:flex-1">
+            <LanguageSelect
+              key={localize}
+              className="h-auto min-h-[52px] w-full rounded-xl border-gray-200 py-4"
+              defaultValue={localize}
+              onValueChange={setSelectedLanguage}
+              disabled={disabled}
+            />
+          </div>
+
+          <div className="w-full shrink-0 md:w-auto">
+            <Button
+              type="button"
+              variant="default"
+              size="md"
+              className={cn(
+                "px-6 md:w-auto! md:justify-start!",
+                selectedLanguage === localize &&
+                  "bg-gray-500 hover:bg-gray-600",
+              )}
+              onClick={handleApply}
+              disabled={disabled}
+            >
+              {t("languageChange.apply")}
+            </Button>
+          </div>
+        </Flex>
+      </CardContent>
+    </Card>
   );
 };
 
