@@ -71,6 +71,19 @@ const Item = React.forwardRef<HTMLDivElement, ItemProps>(
 );
 Item.displayName = "Item";
 
+const ItemGroup = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<"div">
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    data-slot="item-group"
+    className={cn("flex w-full min-w-0 flex-col", className)}
+    {...props}
+  />
+));
+ItemGroup.displayName = "ItemGroup";
+
 export interface ItemMediaProps
   extends
     React.ComponentPropsWithoutRef<"div">,
@@ -146,6 +159,7 @@ export {
   ItemActions,
   ItemContent,
   ItemDescription,
+  ItemGroup,
   ItemMedia,
   itemMediaVariants,
   ItemTitle,
