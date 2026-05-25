@@ -2,8 +2,8 @@
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
+import AiTimeline from "@/features/ai-recap/ui/AiTimeline";
 import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
-import Timeline from "@/features/ai-recap/ui/Timeline";
 import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
 import AiRecapUnloginPage from "@/pages/ai-recap/ui/AiRecapUnloginPage";
 
@@ -37,7 +37,7 @@ const LoggedInRecap = ({ date }: { date: string }) => {
   return (
     <>
       <RecapSummary recap={recap} />
-      <Timeline recap={recap} />
+      <AiTimeline recap={recap} />
       <TopVisitedTopics recap={recap} />
     </>
   );

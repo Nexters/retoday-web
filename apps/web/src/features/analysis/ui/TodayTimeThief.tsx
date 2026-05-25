@@ -42,7 +42,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
 
         <TimeThiefPill
           title={isLoading ? "-" : (getHostFromUrl(data?.domain ?? "") ?? "")}
-          faviconUrl={data?.faviconUrl}
+          faviconUrl={data?.faviconUrl ?? null}
         />
       </CardHeader>
 
