@@ -7,11 +7,20 @@ type RefreshResponse = { accessToken: string; refreshToken: string };
 
 let refreshPromise: Promise<RefreshResponse> | null = null;
 
-async function refreshTokens(baseURL: string): Promise<RefreshResponse> {
+function buildApiUrl(baseURL: string, apiBaseURL: string, path: string) {
+  const normalizedPath = path.replace(/^\/+/, "");
+  const prefix = apiBaseURL ? `/${apiBaseURL}` : "";
+  return `${baseURL}${prefix}/${normalizedPath}`;
+}
+
+async function refreshTokens(
+  baseURL: string,
+  apiBaseURL: string,
+): Promise<RefreshResponse> {
   const refreshToken = tokenStore.getRefresh();
   if (!refreshToken) throw new Error("No refresh token");
 
-  const res = await fetch(`${baseURL}/api/v1/auth/refresh`, {
+  const res = await fetch(buildApiUrl(baseURL, apiBaseURL, "auth/refresh"), {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify({ refreshToken }),
@@ -28,7 +37,15 @@ function isRefreshUrl(url: string) {
   return url.includes("/auth/refresh");
 }
 
-export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
+type CreateAuthedRestAPIOptions = {
+  apiBaseURL?: string;
+};
+
+export function createAuthedRestAPI(
+  baseURL: string,
+  options?: CreateAuthedRestAPIOptions,
+): RestAPIProtocol {
+  const apiBaseURL = options?.apiBaseURL ?? "v1";
   const instance = new RestAPIInstance(baseURL, {
     withCredentials: false,
     headers: { Accept: "application/json" },
@@ -50,7 +67,7 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
       if (!refreshPromise) {
         refreshPromise = (async () => {
           try {
-            const tokens = await refreshTokens(baseURL);
+            const tokens = await refreshTokens(baseURL, apiBaseURL);
             tokenStore.set(tokens);
             return tokens;
           } finally {
@@ -76,5 +93,5 @@ export function createAuthedRestAPI(baseURL: string): RestAPIProtocol {
     },
   });
 
-  return new RestAPI(instance, { APIbaseURL: "api/v1" });
+  return new RestAPI(instance, { APIbaseURL: apiBaseURL });
 }

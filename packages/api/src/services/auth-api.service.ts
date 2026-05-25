@@ -6,7 +6,7 @@ export class AuthAPIService {
 
   googleOauthLogin(data: GoogleOAuthLoginDTO) {
     return this.fetch.post({
-      url: "login",
+      url: "auth/login",
       data,
     });
   }
