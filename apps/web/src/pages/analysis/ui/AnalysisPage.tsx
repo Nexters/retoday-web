@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useLocale } from "@recap/i18n";
+import { Grid, Stack } from "@recap/ui";
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
@@ -30,15 +31,19 @@ const AnalysisLoggedInSection = ({ date }: { date: string }) => {
 
   return (
     <>
-      <div className="flex flex-col gap-4 md:gap-5 xl:gap-7">
+      <Stack gap="none" className="gap-4 md:gap-5 xl:gap-7">
         <ScreenTime date={date} />
         <CategoryAnalysis date={date} />
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5 xl:gap-7">
+        <Grid
+          cols={{ base: 1, md: 2 }}
+          gap="none"
+          className="gap-4 md:gap-5 xl:gap-7"
+        >
           <WorkPattern date={date} />
           <TodayTimeThief date={date} />
-        </div>
+        </Grid>
         <TopVisitedSites date={date} />
-      </div>
+      </Stack>
       <Link
         href="/settings"
         className="text-subtitle-1-md mt-7 flex items-center justify-end gap-1 p-2 text-[#4378ff]"

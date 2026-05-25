@@ -84,6 +84,23 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = "CardDescription";
 
+export type CardActionProps = React.ComponentPropsWithoutRef<"div">;
+
+const CardAction = React.forwardRef<HTMLDivElement, CardActionProps>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      data-slot="card-action"
+      className={cn(
+        "flex shrink-0 flex-wrap items-center justify-end gap-2 self-start",
+        className,
+      )}
+      {...props}
+    />
+  ),
+);
+CardAction.displayName = "CardAction";
+
 export type CardContentProps = React.ComponentPropsWithoutRef<"div">;
 
 const CardContent = React.forwardRef<HTMLDivElement, CardContentProps>(
@@ -117,6 +134,7 @@ CardFooter.displayName = "CardFooter";
 
 export {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardFooter,

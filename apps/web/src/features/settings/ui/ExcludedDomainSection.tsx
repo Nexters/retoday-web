@@ -4,7 +4,20 @@ import { useState } from "react";
 import { catchAPIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
-import { cn } from "@recap/ui";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  cn,
+  Flex,
+  Input,
+  Item,
+  ItemActions,
+  ItemGroup,
+} from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
 import { userAPIService } from "@/features/settings/api";
@@ -56,60 +69,83 @@ const ExcludedDomainSection = ({
   };
 
   return (
-    <div
+    <Card
       className={cn(
-        "rounded-[1.25rem] bg-white px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8",
+        "flex w-full flex-col flex-nowrap items-stretch gap-0 px-5 py-5 md:px-6 md:py-6 xl:px-9 xl:py-8",
         disabled && "pointer-events-none opacity-50",
       )}
     >
-      <h2 className="text-heading-rg text-gray-800">
-        {t("untrackedDomains.title")}
-      </h2>
+      <CardHeader className="flex shrink-0 flex-col gap-2 p-0">
+        <CardTitle className="text-heading-rg text-gray-800">
+          {t("untrackedDomains.title")}
+        </CardTitle>
 
-      <p className="text-body-1 mt-2 text-gray-900">
-        {t("untrackedDomains.description")}
-      </p>
+        <CardDescription className="text-body-1 mt-0 text-gray-900">
+          {t("untrackedDomains.description")}
+        </CardDescription>
+      </CardHeader>
 
-      <div className="mt-6 space-y-1">
-        {domains.map((excludedDomain, index) => (
-          <div
-            className="bg-gray-75 flex items-center justify-between rounded-full px-4 py-2"
-            key={index}
-          >
-            <p className="text-body-1 text-gray-500">{excludedDomain}</p>
-
-            <button
-              className="text-body-1 text-[#ff4242]"
-              onClick={() => handleDeleteDomain(excludedDomain)}
+      {domains.length > 0 && (
+        <ItemGroup role="list" className="mt-6 gap-1">
+          {domains.map((excludedDomain) => (
+            <Item
+              key={excludedDomain}
+              role="listitem"
+              className="bg-gray-75 flex w-full flex-nowrap items-center justify-between gap-4 rounded-full p-0 px-4 py-2"
             >
-              {t("untrackedDomains.delete")}
-            </button>
-          </div>
-        ))}
-      </div>
+              <span className="text-body-1 min-w-0 flex-1 truncate text-gray-500">
+                {excludedDomain}
+              </span>
 
-      <div className="mt-6 flex flex-col items-stretch gap-3 md:flex-row md:items-center md:gap-4">
-        <input
-          className="text-body-2 w-full rounded-xl border border-solid border-gray-200 px-3 py-4 text-gray-900 placeholder:text-gray-500"
-          type="text"
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-          placeholder={t("untrackedDomains.domainInputPlaceholder")}
-          disabled={disabled}
-        />
+              <ItemActions className="shrink-0">
+                <Button
+                  type="button"
+                  variant="subtle"
+                  size="sm"
+                  className="text-body-1 h-auto rounded-none border-0 bg-transparent p-0 text-[#ff4242] shadow-none hover:bg-transparent hover:text-[#e03333]"
+                  onClick={() => handleDeleteDomain(excludedDomain)}
+                >
+                  {t("untrackedDomains.delete")}
+                </Button>
+              </ItemActions>
+            </Item>
+          ))}
+        </ItemGroup>
+      )}
 
-        <button
-          className={cn(
-            "text-subtitle-1-md rounded-xl px-6 py-4 whitespace-nowrap text-gray-100",
-            domain.length === 0 ? "bg-gray-500" : "bg-gray-800",
-          )}
-          onClick={handleAdd}
-          disabled={disabled}
+      <CardContent className="mt-6 flex min-h-0 min-w-0 flex-1 flex-col p-0 pt-0">
+        <Flex
+          direction="column"
+          gap="none"
+          className="w-full gap-3 md:flex-row md:items-center md:gap-4"
         >
-          {t("untrackedDomains.add")}
-        </button>
-      </div>
-    </div>
+          <div className="w-full min-w-0 md:flex-1">
+            <Input
+              type="text"
+              value={domain}
+              onChange={(e) => setDomain(e.target.value)}
+              placeholder={t("untrackedDomains.domainInputPlaceholder")}
+              className="px-3 py-4"
+            />
+          </div>
+
+          <div className="w-full shrink-0 md:w-auto">
+            <Button
+              type="button"
+              variant="default"
+              size="md"
+              className={cn(
+                "px-6 md:w-auto! md:justify-start!",
+                domain.length === 0 && "bg-gray-500 hover:bg-gray-600",
+              )}
+              onClick={handleAdd}
+            >
+              {t("untrackedDomains.add")}
+            </Button>
+          </div>
+        </Flex>
+      </CardContent>
+    </Card>
   );
 };
 

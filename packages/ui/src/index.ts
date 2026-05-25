@@ -9,6 +9,7 @@ export * from "./flex";
 export * from "./grid";
 export * from "./input";
 export * from "./item";
+export * from "./progress";
 export * from "./select";
 export * from "./skeleton";
 export * from "./stack";
