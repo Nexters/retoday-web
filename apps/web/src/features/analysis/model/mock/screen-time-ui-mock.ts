@@ -1,5 +1,10 @@
 import type { AnalysisScreenTimeData, ScreenTimePeriodType } from "@recap/api";
+import { GetScreenTimeSchema } from "@recap/api";
 import { dayjs } from "@recap/lib";
+
+import { getSafeQueryDate } from "@/shared/lib/date/safe-query-date";
+
+const ISO_DATETIME_FORMAT = "YYYY-MM-DDTHH:mm:ss";
 
 /**
  * `.env.local`에 `NEXT_PUBLIC_SCREEN_TIME_UI_MOCK=true` 를 넣으면
@@ -9,16 +14,32 @@ export function isScreenTimeUIMockEnabled(): boolean {
   return process.env.NEXT_PUBLIC_SCREEN_TIME_UI_MOCK === "true";
 }
 
+const resolveAnchor = (anchorDate: string) => {
+  const safeDate = getSafeQueryDate(anchorDate || null);
+  return dayjs(safeDate).startOf("day");
+};
+
+const toIsoDuration = (seconds: number): string => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+
+  let duration = "PT";
+  if (h > 0) duration += `${h}H`;
+  if (m > 0) duration += `${m}M`;
+  if (s > 0 || duration === "PT") duration += `${s}S`;
+
+  return duration;
+};
+
 /** `GetScreenTimeSchema` 형태와 동일한 목 응답 (날짜는 `anchorDate` 기준). */
 export function getMockAnalysisScreenTimeData(
   period: ScreenTimePeriodType,
   anchorDate: string,
 ): AnalysisScreenTimeData {
-  const anchor = dayjs(anchorDate);
+  const dayStart = resolveAnchor(anchorDate);
 
   if (period === "DAILY") {
-    const dayStart = anchor.startOf("day");
-
     const blocks = [
       { h: 8, m: 0, durSeconds: 45 * 60 },
       { h: 9, m: 30, durSeconds: 30 * 60 },
@@ -29,12 +50,12 @@ export function getMockAnalysisScreenTimeData(
 
     const screenTimes = blocks.map(({ h, m, durSeconds }) => {
       const start = dayStart.hour(h).minute(m).second(0).millisecond(0);
-      const startedAt = start.toDate();
-      const endedAt = start.add(durSeconds, "second").toDate();
+      const end = start.add(durSeconds, "second");
+
       return {
-        startedAt,
-        endedAt,
-        stayDuration: durSeconds,
+        startedAt: start.format(ISO_DATETIME_FORMAT),
+        endedAt: end.format(ISO_DATETIME_FORMAT),
+        stayDuration: toIsoDuration(durSeconds),
       };
     });
 
@@ -43,18 +64,13 @@ export function getMockAnalysisScreenTimeData(
       0,
     );
 
-    return {
-      period: "DAILY",
-      startedAt: dayStart.toDate(),
-      endedAt: dayStart.endOf("day").toDate(),
-      totalStayDuration,
+    return GetScreenTimeSchema.parse({
+      totalStayDuration: toIsoDuration(totalStayDuration),
       screenTimes,
-    };
+    });
   }
 
-  const dow = anchor.day();
-  const weekStartSunday = anchor.subtract(dow, "day").startOf("day");
-  const weekEndSaturday = weekStartSunday.add(6, "day").endOf("day");
+  const weekStartSunday = dayStart.subtract(dayStart.day(), "day");
 
   const weekBlocks = [
     { dayOffset: 0, h: 10, durSeconds: 120 * 60 },
@@ -73,27 +89,22 @@ export function getMockAnalysisScreenTimeData(
       .minute(0)
       .second(0)
       .millisecond(0);
-
-    const startedAt = start.toDate();
-    const endedAt = start.add(durSeconds, "second").toDate();
+    const end = start.add(durSeconds, "second");
 
     return {
-      startedAt,
-      endedAt,
-      stayDuration: durSeconds,
+      startedAt: start.format(ISO_DATETIME_FORMAT),
+      endedAt: end.format(ISO_DATETIME_FORMAT),
+      stayDuration: toIsoDuration(durSeconds),
     };
   });
 
-  const totalStayDuration = screenTimes.reduce(
-    (acc, st) => acc + st.stayDuration,
+  const totalStayDuration = weekBlocks.reduce(
+    (acc, { durSeconds }) => acc + durSeconds,
     0,
   );
 
-  return {
-    period: "WEEKLY",
-    startedAt: weekStartSunday.toDate(),
-    endedAt: weekEndSaturday.toDate(),
-    totalStayDuration,
+  return GetScreenTimeSchema.parse({
+    totalStayDuration: toIsoDuration(totalStayDuration),
     screenTimes,
-  };
+  });
 }

@@ -14,6 +14,7 @@ import { ANALYSIS_KEYS } from "@/features/analysis/api/query-keys";
 const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
   period: ScreenTimePeriodType,
   date: string,
+  timeZone: string,
   options?: Omit<
     UseQueryOptions<AnalysisScreenTimeData, Error, TData>,
     "queryKey" | "queryFn"
@@ -25,6 +26,7 @@ const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
       const envelope = await analysisAPIService.getScreenTime({
         date,
         period,
+        timeZone,
       });
       return envelope.data;
     },
