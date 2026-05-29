@@ -2,8 +2,8 @@ import {
   type DateFormatterOptions,
   dayjs,
   formatDate,
-  formatTwoDigitNumber,
   formatWeekdayShort,
+  padNumber,
   resolveDateFormatterOptions,
 } from "@recap/lib";
 import type { WeeklyBarDatum } from "@recap/ui";
@@ -86,8 +86,8 @@ function transformScreenTimeToChartData(
         key: `today-${startHour}`,
         label: String(startHour),
         subLabel: t("screenTime.dailyTimeSlotSubLabel", {
-          start: formatTwoDigitNumber(startHour),
-          end: formatTwoDigitNumber(startHour + 2),
+          start: padNumber(startHour),
+          end: padNumber(startHour + 2),
         }),
         totalMinutes: 0,
         avgMinutes: 0,
