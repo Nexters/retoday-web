@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
+import { CURRENT_TIMEZONE } from "@recap/lib";
 import {
   Card,
   CardAction,
@@ -19,10 +20,11 @@ import { getHostFromUrl } from "@/shared/lib/url";
 const TodayTimeThief = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useGetLongestWebSite(date);
+  const { data, isLoading } = useGetLongestWebSite({
+    date,
+    timeZone: CURRENT_TIMEZONE,
+  });
 
-  // const data = getMockLongestWebSiteData(date);
-  // const isLoading = false;
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
       <CardHeader className="gap-3.5 p-5 pb-0 md:p-6 md:pb-0 xl:p-10 xl:pb-0">

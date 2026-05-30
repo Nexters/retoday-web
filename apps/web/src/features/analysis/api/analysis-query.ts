@@ -5,6 +5,7 @@ import type {
   DateTimeZoneQueryType,
   FrequencyVisitedSitesData,
   GetScreenTimeQueryType,
+  GetWebsiteAnalysesQueryType,
   LongestWebSiteData,
 } from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
@@ -44,20 +45,21 @@ const useGetAnalysisCategoryAnalysis = (dateQuery: DateTimeZoneQueryType) => {
 };
 
 const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesData>(
-  date: string,
-  limit: number,
+  dateQuery: GetWebsiteAnalysesQueryType,
   options?: Omit<
     UseQueryOptions<FrequencyVisitedSitesData, Error, TData>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery<FrequencyVisitedSitesData, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail(["frequency-visited-sites", date, limit]),
+    queryKey: ANALYSIS_KEYS.detail([
+      "frequency-visited-sites",
+      dateQuery.date,
+      dateQuery.limit,
+    ]),
     queryFn: async () => {
-      const envelope = await analysisAPIService.getFrequentlyVisitedWebSite({
-        date,
-        limit,
-      });
+      const envelope =
+        await analysisAPIService.getFrequentlyVisitedWebSite(dateQuery);
       return envelope.data;
     },
     ...options,
