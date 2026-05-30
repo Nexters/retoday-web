@@ -18,7 +18,7 @@ export const useGetAiRecap = <TData = AiRecapQueryData>(
 ) => {
   return useQuery<AiRecapQueryData, Error, TData>({
     ...options,
-    queryKey: AI_RECAP_KEYS.detail(["ai-recap", date]),
+    queryKey: AI_RECAP_KEYS.detail([date]),
     queryFn: async () => {
       const envelope = await recapAPIService.getRecap({ date });
       return envelope.data;

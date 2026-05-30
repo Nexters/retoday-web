@@ -18,5 +18,6 @@
   },
   "datePicker": {
     "placeholder": "日付を選択"
-  }
+  },
+  "refresh": "更新"
 }

@@ -50,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang={DEFAULT_LANGUAGE}
-      className={`${ibmPlexSansKR.variable} flex min-h-screen justify-center bg-gray-100`}
+      className={`${ibmPlexSansKR.className} flex min-h-screen justify-center bg-gray-100`}
       suppressHydrationWarning
     >
       <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
