@@ -2,7 +2,6 @@ import { z } from "zod";
 
 export const DateQuerySchema = z.object({
   date: z.string(),
-  timeZone: z.string(),
 });
 
 export const DateTimeZoneQuerySchema = z.object({
