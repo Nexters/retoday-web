@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import { CreateResponseSchema } from "../../schema";
 
 export const WorkPatternDayEnum = z.enum([
   "DAWN",
@@ -21,7 +21,6 @@ const WorkPatternCountSchema = z
   .partial();
 
 export const GetWorkPatternSchema = z.object({
-  date: dateStringSchema,
   counts: WorkPatternCountSchema,
 });
 
