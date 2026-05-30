@@ -8,7 +8,7 @@ const UserProfileSchema = z.object({
   lastName: z.string(),
   imageUrl: z.string(),
   timeZone: z.string().optional(),
-  recapPeriod: z.string().optional(),
+  recapPeriod: z.string().nullable().optional(),
   excludedDomains: z.array(z.string()),
 });
 

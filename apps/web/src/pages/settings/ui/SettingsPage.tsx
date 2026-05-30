@@ -20,16 +20,18 @@ const SettingsPage = () => (
 );
 
 const LoggedInSettings = () => {
-  const { profile, isLoading, isError } = useGetUserProfile();
+  const { data, isLoading, isError } = useGetUserProfile({
+    select: (data) => data?.data,
+  });
 
   if (isLoading) return <SettingsLoadingPage />;
-  if (isError || !profile) return <SettingsUnloginPage />;
+  if (isError || !data) return <SettingsUnloginPage />;
 
   return (
     <>
-      <UserProfile data={profile} />
+      <UserProfile profile={data} />
       <LanguageSection />
-      <ExcludedDomainSection domains={profile.excludedDomains} />
+      <ExcludedDomainSection domains={data.excludedDomains} />
     </>
   );
 };
