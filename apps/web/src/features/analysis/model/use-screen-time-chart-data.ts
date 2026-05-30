@@ -18,7 +18,6 @@ const useScreenTimeChartData = (mode: ScreenTimePeriodType, date: string) => {
     period: mode,
     timeZone: CURRENT_TIMEZONE,
   });
-  //const data = getMockAnalysisScreenTimeData(mode, date);
 
   return useMemo(() => {
     if (!data) {
