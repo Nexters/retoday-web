@@ -2,9 +2,10 @@ import type {
   AnalysisCategoryData,
   AnalysisScreenTimeData,
   AnalysisWorkPatternData,
+  DateTimeZoneQueryType,
   FrequencyVisitedSitesData,
+  GetScreenTimeQueryType,
   LongestWebSiteData,
-  ScreenTimePeriodType,
 } from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
@@ -12,33 +13,31 @@ import { analysisAPIService } from "@/features/analysis/api";
 import { ANALYSIS_KEYS } from "@/features/analysis/api/query-keys";
 
 const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
-  period: ScreenTimePeriodType,
-  date: string,
-  timeZone: string,
+  dateQuery: GetScreenTimeQueryType,
   options?: Omit<
     UseQueryOptions<AnalysisScreenTimeData, Error, TData>,
     "queryKey" | "queryFn"
   >,
 ) => {
   return useQuery<AnalysisScreenTimeData, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail(["screen-time", period, date]),
+    queryKey: ANALYSIS_KEYS.detail([
+      "screen-time",
+      dateQuery.period,
+      dateQuery.date,
+    ]),
     queryFn: async () => {
-      const envelope = await analysisAPIService.getScreenTime({
-        date,
-        period,
-        timeZone,
-      });
+      const envelope = await analysisAPIService.getScreenTime(dateQuery);
       return envelope.data;
     },
     ...options,
   });
 };
 
-const useGetAnalysisCategoryAnalysis = (date: string) => {
+const useGetAnalysisCategoryAnalysis = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<AnalysisCategoryData>({
-    queryKey: ANALYSIS_KEYS.detail(["category-analysis", date]),
+    queryKey: ANALYSIS_KEYS.detail(["category-analysis", dateQuery.date]),
     queryFn: async () => {
-      const envelope = await analysisAPIService.getCategoryAnalysis({ date });
+      const envelope = await analysisAPIService.getCategoryAnalysis(dateQuery);
       return envelope.data;
     },
   });
@@ -65,23 +64,22 @@ const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesData>(
   });
 };
 
-const useGetLongestWebSite = (date: string) => {
+const useGetLongestWebSite = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<LongestWebSiteData>({
-    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", date]),
+    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", dateQuery.date]),
     queryFn: async () => {
-      const envelope = await analysisAPIService.getLongestStayedWebsite({
-        date,
-      });
+      const envelope =
+        await analysisAPIService.getLongestStayedWebsite(dateQuery);
       return envelope.data;
     },
   });
 };
 
-const useGetWorkPattern = (date: string) => {
+const useGetWorkPattern = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<AnalysisWorkPatternData>({
-    queryKey: ANALYSIS_KEYS.detail(["work-pattern", date]),
+    queryKey: ANALYSIS_KEYS.detail(["work-pattern", dateQuery.date]),
     queryFn: async () => {
-      const envelope = await analysisAPIService.getWorkPattern({ date });
+      const envelope = await analysisAPIService.getWorkPattern(dateQuery);
       return envelope.data;
     },
   });
