@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { catchAPIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import {
@@ -20,8 +19,11 @@ import {
 } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
-import { userAPIService } from "@/features/settings/api";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
+import {
+  useDeleteExcludeDomain,
+  usePostExcludeDomain,
+} from "@/features/settings/api/user-query";
 
 type ExcludedDomainSectionProps = {
   disabled?: boolean;
@@ -38,33 +40,34 @@ const ExcludedDomainSection = ({
   const { refreshAuth } = useAuth();
   const queryClient = useQueryClient();
 
-  const refetchProfile = async () => {
-    refreshAuth();
-    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
-    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
+  const { mutate: addMutate } = usePostExcludeDomain({
+    onSuccess: () => {
+      refreshAuth();
+      queryClient.invalidateQueries({
+        queryKey: USER_KEYS.details(),
+      });
+    },
+  });
+  const { mutate: deleteMutate } = useDeleteExcludeDomain({
+    onSuccess: () => {
+      refreshAuth();
+      queryClient.invalidateQueries({
+        queryKey: USER_KEYS.details(),
+      });
+    },
+  });
+
+  const handleAddDomain = (domain: string) => {
+    addMutate({ domain });
   };
 
-  const handleAddDomain = async (domain: string) => {
-    try {
-      await userAPIService.addExcludedDomain({ domain });
-      await refetchProfile();
-    } catch (err) {
-      catchAPIError(err);
-    }
+  const handleDeleteDomain = (domain: string) => {
+    deleteMutate({ domain });
   };
 
-  const handleDeleteDomain = async (domain: string) => {
-    try {
-      await userAPIService.deleteExcludedDomain({ domain });
-      await refetchProfile();
-    } catch (err) {
-      catchAPIError(err);
-    }
-  };
-
-  const handleAdd = async () => {
+  const handleAdd = () => {
     if (!domain) return;
-    await handleAddDomain(domain);
+    handleAddDomain(domain);
     setDomain("");
   };
 
