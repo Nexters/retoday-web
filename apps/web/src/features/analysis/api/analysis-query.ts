@@ -21,11 +21,7 @@ const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
   >,
 ) => {
   return useQuery<AnalysisScreenTimeData, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail([
-      "screen-time",
-      dateQuery.period,
-      dateQuery.date,
-    ]),
+    queryKey: ANALYSIS_KEYS.screenTime([dateQuery.period, dateQuery.date]),
     queryFn: async () => {
       const envelope = await analysisAPIService.getScreenTime(dateQuery);
       return envelope.data;
@@ -36,7 +32,7 @@ const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
 
 const useGetAnalysisCategoryAnalysis = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<AnalysisCategoryData>({
-    queryKey: ANALYSIS_KEYS.detail(["category-analysis", dateQuery.date]),
+    queryKey: ANALYSIS_KEYS.categoryAnalysis([dateQuery.date]),
     queryFn: async () => {
       const envelope = await analysisAPIService.getCategoryAnalysis(dateQuery);
       return envelope.data;
@@ -52,8 +48,7 @@ const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesData>(
   >,
 ) => {
   return useQuery<FrequencyVisitedSitesData, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail([
-      "frequency-visited-sites",
+    queryKey: ANALYSIS_KEYS.frequentlyVisitedSites([
       dateQuery.date,
       dateQuery.limit,
     ]),
@@ -68,7 +63,7 @@ const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesData>(
 
 const useGetLongestWebSite = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<LongestWebSiteData>({
-    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", dateQuery.date]),
+    queryKey: ANALYSIS_KEYS.longestStayedWebsite([dateQuery.date]),
     queryFn: async () => {
       const envelope =
         await analysisAPIService.getLongestStayedWebsite(dateQuery);
@@ -79,7 +74,7 @@ const useGetLongestWebSite = (dateQuery: DateTimeZoneQueryType) => {
 
 const useGetWorkPattern = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<AnalysisWorkPatternData>({
-    queryKey: ANALYSIS_KEYS.detail(["work-pattern", dateQuery.date]),
+    queryKey: ANALYSIS_KEYS.workPattern([dateQuery.date]),
     queryFn: async () => {
       const envelope = await analysisAPIService.getWorkPattern(dateQuery);
       return envelope.data;
