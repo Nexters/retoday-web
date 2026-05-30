@@ -10,5 +10,5 @@ export const toTimelineChartData = (
     title: timeline.title,
     startedAt: timeline.startedAt,
     endedAt: timeline.endedAt,
-    durationLabel: formatDurationLabel(timeline.durationMinutes * 60),
+    durationLabel: formatDurationLabel(timeline.duration),
   }));

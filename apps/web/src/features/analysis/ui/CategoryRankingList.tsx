@@ -13,6 +13,7 @@ import {
   ItemTitle,
 } from "@recap/ui";
 
+import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
 import { ALL_CATEGORIES_TOGGLE_VALUE } from "@/features/analysis/ui/CategoryAnalysis";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
@@ -31,7 +32,7 @@ const CategoryRankingList = ({
   const categoryList = useMemo(() => {
     if (selectedCategory === ALL_CATEGORIES_TOGGLE_VALUE)
       return categories.slice(0, 5);
-    return [categories.find((c) => c.categoryName === selectedCategory)];
+    return [categories.find((c) => c.category === selectedCategory)];
   }, [selectedCategory, categories]);
 
   const isEmpty = categories.length === 0;
@@ -49,9 +50,9 @@ const CategoryRankingList = ({
           {t("category.emptyState")}
         </div>
       ) : (
-        categoryList?.map((category, idx) => (
+        categoryList?.map((categoryItem, idx) => (
           <Item
-            key={category?.categoryName}
+            key={categoryItem?.category}
             role="listitem"
             className={cn(
               "min-w-0 flex-nowrap items-center justify-between gap-2 rounded-none border-0 bg-transparent p-0 py-4 shadow-none",
@@ -65,17 +66,17 @@ const CategoryRankingList = ({
               </span>
 
               <ItemTitle className="text-subtitle-1-sb truncate text-gray-900">
-                {category?.categoryName}
+                {categoryItem ? t(CATEGORY_LABEL[categoryItem.category]) : "-"}
               </ItemTitle>
               <span className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
-                {category?.stayDuration
-                  ? formatSecondsToMinutes(category?.stayDuration, tc)
+                {categoryItem?.stayDuration
+                  ? formatSecondsToMinutes(categoryItem?.stayDuration, tc)
                   : "-"}
               </span>
             </ItemContent>
 
             <ItemActions className="ml-2 shrink-0 gap-0">
-              {category?.websiteAnalyses.map((site, sIdx) => (
+              {categoryItem?.websiteAnalyses.map((site, sIdx) => (
                 <div
                   key={`${site.domain}-${sIdx}`}
                   className={cn(sIdx !== 0 && "-ml-1")}

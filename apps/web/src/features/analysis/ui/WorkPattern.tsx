@@ -36,7 +36,7 @@ const WorkPattern = ({ date }: { date: string }) => {
         <CardDescription className="text-title-1 m-0 mt-2 whitespace-nowrap text-gray-900">
           {isEmpty && topPattern?.pattern
             ? "-"
-            : t(WORK_PATTERN_LABEL[topPattern!.pattern])}
+            : t(WORK_PATTERN_LABEL[topPattern?.pattern as WorkPatternDayType])}
         </CardDescription>
       </CardHeader>
 

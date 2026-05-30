@@ -1,5 +1,5 @@
 import { GetCategoryAnalysesResponseSchema } from "../domains/analysis/category-analysis.schema";
-import type { DateQueryType } from "../domains/analysis/enum.schema";
+import type { DateTimeZoneQueryType } from "../domains/analysis/enum.schema";
 import {
   type GetWebsiteAnalysesQueryType,
   GetWebsiteAnalysesResponseSchema,
@@ -25,7 +25,7 @@ export class AnalysisAPIService {
     });
   }
 
-  getWorkPattern(query?: DateQueryType) {
+  getWorkPattern(query?: DateTimeZoneQueryType) {
     return this.fetch.get({
       url: "users/me/work-pattern",
       query: {
@@ -45,7 +45,7 @@ export class AnalysisAPIService {
     });
   }
 
-  getLongestStayedWebsite(query?: DateQueryType) {
+  getLongestStayedWebsite(query?: DateTimeZoneQueryType) {
     return this.fetch.get({
       url: "users/me/longest-stayed-website",
       query: {
@@ -55,7 +55,7 @@ export class AnalysisAPIService {
     });
   }
 
-  getCategoryAnalysis(query?: DateQueryType) {
+  getCategoryAnalysis(query?: DateTimeZoneQueryType) {
     return this.fetch.get({
       url: "users/me/category-analyses",
       query: {

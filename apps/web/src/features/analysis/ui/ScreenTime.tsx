@@ -25,12 +25,12 @@ import {
   ToggleGroupItem,
 } from "@/shared/ui";
 
-const ScreenTime = ({ date: _date }: { date: string }) => {
+const ScreenTime = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
 
-  const { chartData, duration } = useScreenTimeChartData(mode);
+  const { chartData, duration } = useScreenTimeChartData(mode, date);
   const isEmpty = duration <= 0;
 
   const modeConfig = SCREEN_TIME_MODE_CONFIG[mode];

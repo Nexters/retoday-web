@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import {
+  CreateResponseSchema,
+  dateStringSchema,
+  isoDurationStringSchema,
+} from "../../schema";
 
 export const RecapSectionSchema = z.object({
   title: z.string(),
@@ -11,7 +15,7 @@ export const RecapTimelineSchema = z.object({
   startedAt: z.string(),
   endedAt: z.string(),
   title: z.string(),
-  durationMinutes: z.number(),
+  duration: isoDurationStringSchema,
 });
 
 export const RecapTopicSchema = z.object({
@@ -20,15 +24,20 @@ export const RecapTopicSchema = z.object({
   content: z.string(),
 });
 
-export const RecapSchema = z.object({
-  id: z.number().optional(),
+export const RecapDetailSchema = z.object({
+  id: z.number(),
   userId: z.number().optional(),
-  recapDate: z.string().optional(),
+  date: z.string().optional(),
   title: z.string().optional(),
   summary: z.string().optional(),
-  imageUrl: z.string().nullable().optional(),
+  image: z.string().nullable().optional(),
+  aiProvider: z.string().optional(),
   startedAt: dateStringSchema.optional(),
   closedAt: dateStringSchema.optional(),
+});
+
+export const RecapSchema = z.object({
+  recap: RecapDetailSchema.optional(),
   sections: z.array(RecapSectionSchema).optional(),
   timelines: z.array(RecapTimelineSchema).optional(),
   topics: z.array(RecapTopicSchema).optional(),

@@ -1,12 +1,11 @@
 import { useMemo } from "react";
+import { CURRENT_TIMEZONE } from "@recap/lib";
 
 import { useGetWorkPattern } from "@/features/analysis/api/analysis-query";
 import { toWorkPatternRatioData } from "@/features/analysis/model/work-pattern-ratio-data";
 
 const useWorkPatternList = (date: string) => {
-  const { data } = useGetWorkPattern(date);
-
-  //const data = getMockWorkPatternData(date);
+  const { data } = useGetWorkPattern({ date, timeZone: CURRENT_TIMEZONE });
 
   return useMemo(() => {
     if (!data) {

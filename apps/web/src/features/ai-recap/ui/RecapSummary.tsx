@@ -31,14 +31,15 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
   const { t } = useLocale("ai-recap");
   const { t: tc } = useLocale("common");
 
-  const sections = recap.sections;
-  const totalMinutes = recap.timelines.reduce(
-    (sum, timeline) => sum + timeline.durationMinutes,
+  const detail = recap.recap;
+  const sections = recap.sections ?? [];
+  const totalSeconds = recap.timelines?.reduce(
+    (sum, timeline) => sum + timeline.duration,
     0,
   );
 
-  const title = recap.title.trim() || "-";
-  const summary = recap.summary.trim() || "-";
+  const title = detail?.title?.trim() || "-";
+  const summary = detail?.summary?.trim() || "-";
 
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
@@ -62,7 +63,7 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
                 {t("todayRecap.totalScreenTimeLabel")}
               </CardDescription>
               <p className="text-heading-rg m-0 text-gray-900">
-                {formatScreenTime(tc, totalMinutes)}
+                {formatScreenTime(tc, totalSeconds ?? 0)}
               </p>
             </Stack>
 
@@ -73,7 +74,7 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
                 {t("todayRecap.measurementTimeLabel")}
               </CardDescription>
               <p className="text-heading-rg m-0 text-gray-900">
-                {formatMeasuredRange(tc, recap.startedAt, recap.closedAt)}
+                {formatMeasuredRange(tc, detail?.startedAt, detail?.closedAt)}
               </p>
             </Stack>
           </Flex>
@@ -129,7 +130,7 @@ const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
         )}
 
         <Image
-          src={recap.imageUrl ?? RecapImg}
+          src={detail?.image ?? RecapImg}
           alt="recapImg"
           width={464}
           height={420}

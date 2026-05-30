@@ -1,12 +1,11 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schema";
 
 export const TopVisitedSiteSchema = z.object({
-  date: dateStringSchema,
   domain: z.string().nullable(),
   faviconUrl: z.string().nullable(),
-  stayDuration: z.number(),
+  stayDuration: isoDurationStringSchema,
 });
 
 export const TopVisitedSiteResponseSchema =

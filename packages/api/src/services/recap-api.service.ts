@@ -7,7 +7,7 @@ export class RecapAPIService {
 
   getRecap(query?: DateQueryType) {
     return this.fetch.get({
-      url: "recaps",
+      url: "users/me/recaps",
       query: {
         ...query,
       },

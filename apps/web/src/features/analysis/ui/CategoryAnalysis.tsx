@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useLocale } from "@recap/i18n";
 import { Card, CardContent } from "@recap/ui";
 
-// import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
+import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
 import { useCategoryAnalysis } from "@/features/analysis/model/use-category-analysis";
 import CategoryBubbleCloud from "@/features/analysis/ui/CategoryBubbleCloud";
 import CategoryHeader from "@/features/analysis/ui/CategoryHeader";
@@ -40,8 +40,8 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
           </ToggleGroupItem>
 
           {data?.categories.map((c) => (
-            <ToggleGroupItem key={c.categoryName} value={c.categoryName}>
-              {c.categoryName}
+            <ToggleGroupItem key={c.category} value={c.category}>
+              {t(CATEGORY_LABEL[c.category])}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>

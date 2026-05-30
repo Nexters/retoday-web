@@ -1,16 +1,15 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schema";
 
 const WebsiteAnalysisSchema = z.object({
   domain: z.string(),
   faviconUrl: z.string().nullable(),
   visitCount: z.number(),
-  stayDuration: z.number(),
+  stayDuration: isoDurationStringSchema,
 });
 
 export const GetWebsiteAnalysesSchema = z.object({
-  date: dateStringSchema,
   websiteAnalyses: z.array(WebsiteAnalysisSchema),
 });
 
@@ -21,6 +20,7 @@ export const GetWebsiteAnalysesResponseSchema = CreateResponseSchema(
 export const GetWebsiteAnalysesQuerySchema = z.object({
   date: z.string(),
   limit: z.number(),
+  timeZone: z.string(),
 });
 
 export type GetWebsiteAnalysesQueryType = z.infer<

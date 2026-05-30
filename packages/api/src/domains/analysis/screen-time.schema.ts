@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import {
+  CreateResponseSchema,
+  dateStringSchema,
+  isoDurationStringSchema,
+} from "../../schema";
 
 const ScreenTimePeriodEnum = z.enum(["DAILY", "WEEKLY"]);
 
@@ -9,16 +13,13 @@ export type ScreenTimePeriodType = z.infer<typeof ScreenTimePeriodEnum>;
 const ScreenTimeSchema = z.object({
   startedAt: dateStringSchema,
   endedAt: dateStringSchema,
-  stayDuration: z.number(),
+  stayDuration: isoDurationStringSchema,
 });
 
 export type ScreenTimeType = z.infer<typeof ScreenTimeSchema>;
 
 export const GetScreenTimeSchema = z.object({
-  period: ScreenTimePeriodEnum,
-  startedAt: dateStringSchema,
-  endedAt: dateStringSchema,
-  totalStayDuration: z.number(),
+  totalStayDuration: isoDurationStringSchema,
   screenTimes: z.array(ScreenTimeSchema),
 });
 
@@ -28,6 +29,7 @@ export const GetScreenTimeResponseSchema =
 export const GetScreenTimeQuerySchema = z.object({
   date: z.string(),
   period: ScreenTimePeriodEnum,
+  timeZone: z.string(),
 });
 
 export type GetScreenTimeQueryType = z.infer<typeof GetScreenTimeQuerySchema>;

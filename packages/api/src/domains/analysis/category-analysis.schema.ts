@@ -1,21 +1,39 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, dateStringSchema } from "../../schema";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schema";
+
+const CategoryEnum = z.enum([
+  "STUDY",
+  "SHOPPING",
+  "GAMING",
+  "CONTENT",
+  "COMMUNITY",
+  "NEWS",
+  "FINANCE",
+  "LIFE",
+  "BROWSING",
+  "DESIGN",
+  "DEVELOPMENT",
+  "AI",
+  "ETC",
+]);
+
+export type CategoryType = z.infer<typeof CategoryEnum>;
 
 const CategoryWebsiteAnalysisSchema = z.object({
   domain: z.string(),
   faviconUrl: z.string().nullable(),
-  stayDuration: z.number(),
+  stayDuration: isoDurationStringSchema,
 });
 
 const CategoryAnalysisItemSchema = z.object({
-  categoryName: z.string(),
-  stayDuration: z.number(),
+  category: CategoryEnum,
+  stayDuration: isoDurationStringSchema,
   websiteAnalyses: z.array(CategoryWebsiteAnalysisSchema),
 });
 
 export const GetCategoryAnalysesSchema = z.object({
-  date: dateStringSchema,
+  totalStayDuration: isoDurationStringSchema,
   categoryAnalyses: z.array(CategoryAnalysisItemSchema),
 });
 
