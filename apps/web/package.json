@@ -15,6 +15,7 @@
   "dependencies": {
     "@next/third-parties": "^16.1.0",
     "@recap/analytics": "workspace:*",
+    "@recap/features": "workspace:*",
     "@recap/lib": "workspace:*",
     "@recap/i18n": "workspace:*",
     "@recap/react-query": "workspace:*",
