@@ -7,24 +7,28 @@ type RawRecap = NonNullable<
 
 const hasRecapContent = (raw: RawRecap) =>
   Boolean(
-    raw.title?.trim() ||
-    raw.summary?.trim() ||
+    raw.recap?.title?.trim() ||
+    raw.recap?.summary?.trim() ||
     raw.sections?.length ||
     raw.timelines?.length ||
     raw.topics?.length,
   );
 
 const normalizeRecap = (raw: RawRecap, date: string): NormalizedRecap => ({
-  id: raw.id ?? 0,
-  userId: raw.userId ?? 0,
-  recapDate: raw.recapDate ?? date,
-  title: raw.title ?? "-",
-  summary: raw.summary ?? "-",
-  imageUrl: raw.imageUrl ?? null,
-  startedAt: raw.startedAt ?? new Date(0),
-  closedAt: raw.closedAt ?? new Date(0),
+  recap: {
+    id: raw.recap?.id ?? 0,
+    userId: raw.recap?.userId,
+    date: raw.recap?.date ?? date,
+    title: raw.recap?.title ?? "-",
+    summary: raw.recap?.summary ?? "-",
+    image: raw.recap?.image ?? null,
+    aiProvider: raw.recap?.aiProvider,
+    startedAt: raw.recap?.startedAt,
+    closedAt: raw.recap?.closedAt,
+  },
   sections: raw.sections ?? [],
   timelines: raw.timelines ?? [],
   topics: raw.topics ?? [],
 });
+
 export { hasRecapContent, normalizeRecap };

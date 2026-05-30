@@ -27,11 +27,13 @@ const TOPIC_PLACEHOLDER_COUNT = 3;
 const TopVisitedTopics = ({ recap }: { recap: NormalizedRecap }) => {
   const { t } = useLocale("ai-recap");
 
+  const topics = recap.topics ?? [];
+
   const topKeywords = useMemo(
-    () => recap.topics.slice(0, 3).map((topic) => topic.keyword),
-    [recap.topics],
+    () => topics.slice(0, 3).map((topic) => topic.keyword),
+    [topics],
   );
-  const topicCards = useMemo(() => recap.topics.slice(0, 3), [recap.topics]);
+  const topicCards = useMemo(() => topics.slice(0, 3), [topics]);
   const isEmpty = topicCards.length === 0;
 
   return (

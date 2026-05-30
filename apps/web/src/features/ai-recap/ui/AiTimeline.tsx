@@ -22,7 +22,7 @@ const AiTimeline = ({ recap }: { recap: NormalizedRecap }) => {
 
   const timelineData = useMemo(
     () =>
-      toTimelineChartData(recap.timelines, (seconds) =>
+      toTimelineChartData(recap.timelines ?? [], (seconds) =>
         formatDuration(seconds, tc),
       ),
     [recap.timelines, tc],

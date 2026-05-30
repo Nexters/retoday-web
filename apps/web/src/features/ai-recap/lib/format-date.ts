@@ -1,9 +1,9 @@
 import type { TFunction } from "@recap/i18n";
 import { formatDuration } from "@recap/lib";
 
-export const formatScreenTime = (tc: TFunction, totalMinutes: number) => {
-  if (totalMinutes <= 0) return "-";
-  return formatDuration(totalMinutes * 60, tc);
+export const formatScreenTime = (tc: TFunction, totalSeconds: number) => {
+  if (totalSeconds <= 0) return "-";
+  return formatDuration(totalSeconds, tc);
 };
 
 export const formatMeridiemTime = (t: TFunction, value: Date) => {
@@ -23,9 +23,11 @@ export const formatMeridiemTime = (t: TFunction, value: Date) => {
 
 export const formatMeasuredRange = (
   t: TFunction,
-  startedAt: Date,
-  closedAt: Date,
+  startedAt?: Date,
+  closedAt?: Date,
 ) => {
+  if (!startedAt || !closedAt) return "-";
+
   const started = formatMeridiemTime(t, startedAt);
   const closed = formatMeridiemTime(t, closedAt);
 
