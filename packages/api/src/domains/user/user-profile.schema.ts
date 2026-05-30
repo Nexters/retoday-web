@@ -3,7 +3,6 @@ import { z } from "zod";
 import { CreateResponseSchema } from "../../schema";
 
 const UserProfileSchema = z.object({
-  id: z.number().optional(),
   email: z.string(),
   firstName: z.string(),
   lastName: z.string(),
