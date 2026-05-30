@@ -4,63 +4,77 @@ import type {
   FrequencyVisitedSitesData,
   LongestWebSiteData,
 } from "@recap/api";
+import { GetCategoryAnalysesSchema } from "@recap/api";
 import { dayjs } from "@recap/lib";
 
 const mockDateFor = (anchorDate: string) =>
   dayjs(anchorDate).startOf("day").toDate();
 
+const toIsoDuration = (seconds: number): string => {
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = Math.floor(seconds % 60);
+
+  let duration = "PT";
+  if (h > 0) duration += `${h}H`;
+  if (m > 0) duration += `${m}M`;
+  if (s > 0 || duration === "PT") duration += `${s}S`;
+
+  return duration;
+};
+
 /** `GetCategoryAnalysesSchema` 형태 목 */
 export function getMockAnalysisCategoryData(
-  date: string,
+  _date: string,
 ): AnalysisCategoryData {
-  return {
-    date: mockDateFor(date),
+  return GetCategoryAnalysesSchema.parse({
+    totalStayDuration: toIsoDuration(36_900),
     categoryAnalyses: [
       {
-        categoryName: "쇼핑",
-        stayDuration: 12_600,
+        category: "SHOPPING",
+        stayDuration: toIsoDuration(12_600),
         websiteAnalyses: [
           {
             domain: "shopping.example.com",
             faviconUrl: null,
-            stayDuration: 7200,
+            stayDuration: toIsoDuration(7200),
           },
           {
             domain: "deals.example.com",
             faviconUrl: null,
-            stayDuration: 5400,
+            stayDuration: toIsoDuration(5400),
           },
         ],
       },
       {
-        categoryName: "개발·도구",
-        stayDuration: 18_900,
+        category: "DEVELOPMENT",
+        stayDuration: toIsoDuration(18_900),
         websiteAnalyses: [
           {
             domain: "github.com",
             faviconUrl: null,
-            stayDuration: 8100,
+            stayDuration: toIsoDuration(8100),
           },
           {
             domain: "docs.example.dev",
             faviconUrl: null,
-            stayDuration: 10_800,
+            stayDuration: toIsoDuration(10_800),
           },
         ],
       },
       {
-        categoryName: "영상·스트리밍",
-        stayDuration: 5400,
+        category: "STREAMING",
+        stayDuration: toIsoDuration(5400),
         websiteAnalyses: [
           {
             domain: "video.example.tv",
             faviconUrl: null,
-            stayDuration: 5400,
+            stayDuration: toIsoDuration(5400),
           },
         ],
       },
     ],
-  };
+  });
 }
 
 /** `TopVisitedSiteSchema` 형태 목 */

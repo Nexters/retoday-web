@@ -13,7 +13,11 @@ import { secondsToMinute } from "@/shared/lib/date/format-date";
 const useScreenTimeChartData = (mode: ScreenTimePeriodType, date: string) => {
   const { t } = useLocale("analysis");
 
-  const { data } = useGetAnalysisScreenTime(mode, date, CURRENT_TIMEZONE);
+  const { data } = useGetAnalysisScreenTime({
+    date,
+    period: mode,
+    timeZone: CURRENT_TIMEZONE,
+  });
   //const data = getMockAnalysisScreenTimeData(mode, date);
 
   return useMemo(() => {
