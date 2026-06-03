@@ -30,7 +30,7 @@ const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
   });
 };
 
-const useGetAnalysisCategoryAnalysis = (dateQuery: DateTimeZoneQueryType) => {
+const useGetAnalysisCategory = (dateQuery: DateTimeZoneQueryType) => {
   return useQuery<AnalysisCategoryData>({
     queryKey: ANALYSIS_KEYS.categoryAnalysis([dateQuery.date]),
     queryFn: async () => {
@@ -83,7 +83,7 @@ const useGetWorkPattern = (dateQuery: DateTimeZoneQueryType) => {
 };
 
 export {
-  useGetAnalysisCategoryAnalysis,
+  useGetAnalysisCategory,
   useGetAnalysisScreenTime,
   useGetFrequencyVisitedSites,
   useGetLongestWebSite,

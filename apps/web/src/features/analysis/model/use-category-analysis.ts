@@ -1,9 +1,9 @@
 import { CURRENT_TIMEZONE } from "@recap/lib";
 
-import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
+import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
 
 const useCategoryAnalysis = (date: string) => {
-  const { data, isLoading } = useGetAnalysisCategoryAnalysis({
+  const { data, isLoading } = useGetAnalysisCategory({
     date,
     timeZone: CURRENT_TIMEZONE,
   });
