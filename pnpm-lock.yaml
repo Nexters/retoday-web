@@ -351,6 +351,9 @@ importers:
       '@recap/api':
         specifier: workspace:*
         version: link:../api
+      '@recap/lib':
+        specifier: workspace:*
+        version: link:../lib
       react:
         specifier: ^19.0.0
         version: 19.2.0
