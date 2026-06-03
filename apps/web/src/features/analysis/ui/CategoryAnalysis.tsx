@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { toCategoryAnalysisState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
+import { CURRENT_TIMEZONE } from "@recap/lib";
 import { Card, CardContent } from "@recap/ui";
 
+import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
 import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
-import { useCategoryAnalysis } from "@/features/analysis/model/use-category-analysis";
 import CategoryBubbleCloud from "@/features/analysis/ui/CategoryBubbleCloud";
 import CategoryHeader from "@/features/analysis/ui/CategoryHeader";
 import CategoryRankingList from "@/features/analysis/ui/CategoryRankingList";
@@ -16,7 +18,12 @@ export const ALL_CATEGORIES_TOGGLE_VALUE = "__ALL__";
 const CategoryAnalysis = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
 
-  const { data } = useCategoryAnalysis(date);
+  const { data } = useGetAnalysisCategory(
+    { date, timeZone: CURRENT_TIMEZONE },
+    { select: toCategoryAnalysisState },
+  );
+
+  const categories = data?.categories ?? [];
 
   const [selectedCategory, setSelectedCategory] = useState(
     ALL_CATEGORIES_TOGGLE_VALUE,
@@ -24,10 +31,10 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
   return (
     <Card className="gap-0 rounded-[1.25rem] bg-white p-5 shadow-none md:p-6 xl:p-10">
-      <CategoryHeader categories={data?.categories ?? []} />
+      <CategoryHeader categories={categories} />
 
       <CardContent className="p-0">
-        <CategoryBubbleCloud categories={data?.categories ?? []} />
+        <CategoryBubbleCloud categories={categories} />
 
         <ToggleGroup<string>
           type="single"
@@ -39,7 +46,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
             {t("category.filterAll")}
           </ToggleGroupItem>
 
-          {data?.categories.map((c) => (
+          {categories.map((c) => (
             <ToggleGroupItem key={c.category} value={c.category}>
               {t(CATEGORY_LABEL[c.category])}
             </ToggleGroupItem>
@@ -48,7 +55,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
         <CategoryRankingList
           selectedCategory={selectedCategory ?? null}
-          categories={data?.categories ?? []}
+          categories={categories}
         />
       </CardContent>
     </Card>

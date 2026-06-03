@@ -30,13 +30,20 @@ const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
   });
 };
 
-const useGetAnalysisCategory = (dateQuery: DateTimeZoneQueryType) => {
-  return useQuery<AnalysisCategoryData>({
+const useGetAnalysisCategory = <TData = AnalysisCategoryData>(
+  dateQuery: DateTimeZoneQueryType,
+  options?: Omit<
+    UseQueryOptions<AnalysisCategoryData, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<AnalysisCategoryData, Error, TData>({
     queryKey: ANALYSIS_KEYS.categoryAnalysis([dateQuery.date]),
     queryFn: async () => {
       const envelope = await analysisAPIService.getCategoryAnalysis(dateQuery);
       return envelope.data;
     },
+    ...options,
   });
 };
 
