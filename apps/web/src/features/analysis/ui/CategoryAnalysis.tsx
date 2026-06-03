@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { toCategoryAnalysisState } from "@recap/features";
+import { CATEGORY_LABEL_KEYS, toCategoryAnalysisState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import { CURRENT_TIMEZONE } from "@recap/lib";
 import { Card, CardContent } from "@recap/ui";
 
 import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
-import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
 import CategoryBubbleCloud from "@/features/analysis/ui/CategoryBubbleCloud";
 import CategoryHeader from "@/features/analysis/ui/CategoryHeader";
 import CategoryRankingList from "@/features/analysis/ui/CategoryRankingList";
@@ -48,7 +47,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
 
           {categories.map((c) => (
             <ToggleGroupItem key={c.category} value={c.category}>
-              {t(CATEGORY_LABEL[c.category])}
+              {t(CATEGORY_LABEL_KEYS[c.category])}
             </ToggleGroupItem>
           ))}
         </ToggleGroup>

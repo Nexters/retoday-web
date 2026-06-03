@@ -1,10 +1,10 @@
 "use client";
 
 import type { AnalysisCategoryData } from "@recap/api";
+import { CATEGORY_LABEL_KEYS } from "@recap/features";
 import { Trans, useLocale } from "@recap/i18n";
 import { CardDescription, CardHeader, CardTitle } from "@recap/ui";
 
-import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type CategoryHeaderProps = {
@@ -29,7 +29,7 @@ const CategoryHeader = ({ categories }: CategoryHeaderProps) => {
           i18nKey="category.shoppingFocusSummary"
           values={{
             category: topCategory?.category
-              ? t(CATEGORY_LABEL[topCategory.category])
+              ? t(CATEGORY_LABEL_KEYS[topCategory.category])
               : "-",
             time_spent: topCategory
               ? formatSecondsToMinutes(topCategory.stayDuration, tc)
