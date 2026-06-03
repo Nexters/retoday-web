@@ -10,6 +10,9 @@
     "lint": "eslint . --max-warnings 0",
     "check-types": "tsc --noEmit"
   },
+  "dependencies": {
+    "@recap/api": "workspace:*"
+  },
   "peerDependencies": {
     "react": "^19.0.0"
   },

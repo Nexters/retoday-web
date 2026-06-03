@@ -348,6 +348,9 @@ importers:
 
   packages/features:
     dependencies:
+      '@recap/api':
+        specifier: workspace:*
+        version: link:../api
       react:
         specifier: ^19.0.0
         version: 19.2.0
