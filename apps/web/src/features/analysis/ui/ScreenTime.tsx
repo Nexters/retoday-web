@@ -3,8 +3,9 @@
 import { useState } from "react";
 import Image from "next/image";
 import type { ScreenTimePeriodType } from "@recap/api";
+import { toScreenTimeChartState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
-import { formatDuration } from "@recap/lib";
+import { CURRENT_TIMEZONE, formatDuration } from "@recap/lib";
 import {
   Card,
   CardAction,
@@ -14,11 +15,11 @@ import {
   CardTitle,
 } from "@recap/ui";
 
+import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
 } from "@/features/analysis/lib/screen-time-config.const";
-import { useScreenTimeChartData } from "@/features/analysis/model/use-screen-time-chart-data";
 import {
   ScreenTimeWeeklyBarChart,
   ToggleGroup,
@@ -30,24 +31,20 @@ const ScreenTime = ({ date }: { date: string }) => {
   const { t: tc } = useLocale("common");
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
 
-  const { chartData, duration } = useScreenTimeChartData(mode, date);
-  const isEmpty = duration <= 0;
-
-  const modeConfig = SCREEN_TIME_MODE_CONFIG[mode];
-
-  const renderPeriodToggle = () => (
-    <ToggleGroup<ScreenTimePeriodType>
-      type="single"
-      value={mode}
-      onValueChange={setMode}
-    >
-      {SCREEN_TIME_PERIOD_LIST.map(({ value, labelKey }) => (
-        <ToggleGroupItem key={value} value={value}>
-          {t(labelKey)}
-        </ToggleGroupItem>
-      ))}
-    </ToggleGroup>
+  const { data } = useGetAnalysisScreenTime(
+    {
+      date,
+      period: mode,
+      timeZone: CURRENT_TIMEZONE,
+    },
+    {
+      select: (screenTimeData) =>
+        toScreenTimeChartState({ data: screenTimeData, mode, date, t }),
+    },
   );
+
+  const isEmpty = data?.duration && data.duration <= 0;
+  const modeConfig = SCREEN_TIME_MODE_CONFIG[mode];
 
   return (
     <Card className="flex w-full min-w-0 flex-col flex-nowrap items-stretch gap-0 rounded-[1.25rem] bg-white p-0 shadow-none xl:flex-row xl:flex-nowrap">
@@ -58,28 +55,48 @@ const ScreenTime = ({ date }: { date: string }) => {
           </CardTitle>
 
           <CardDescription className="text-title-1 m-0 mt-2 whitespace-nowrap text-gray-900">
-            {isEmpty ? "-" : formatDuration(duration, tc)}
+            {isEmpty ? "-" : formatDuration(data?.duration ?? 0, tc)}
           </CardDescription>
         </div>
 
         <CardAction className="hidden w-auto shrink-0 md:flex xl:hidden">
-          {renderPeriodToggle()}
+          <ToggleGroup<ScreenTimePeriodType>
+            type="single"
+            value={mode}
+            onValueChange={setMode}
+          >
+            {SCREEN_TIME_PERIOD_LIST.map(({ value, labelKey }) => (
+              <ToggleGroupItem key={value} value={value}>
+                {t(labelKey)}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </CardAction>
       </CardHeader>
 
       <CardContent className="flex min-h-0 w-full min-w-0 flex-1 flex-col flex-nowrap gap-0 px-5 pt-0 pb-3 md:px-6 md:pb-4 xl:flex-1 xl:grow xl:basis-0 xl:px-6 xl:pt-10 xl:pb-3">
         <CardAction className="flex w-full min-w-0 justify-end gap-2 md:hidden xl:flex xl:justify-start">
-          {renderPeriodToggle()}
+          <ToggleGroup<ScreenTimePeriodType>
+            type="single"
+            value={mode}
+            onValueChange={setMode}
+          >
+            {SCREEN_TIME_PERIOD_LIST.map(({ value, labelKey }) => (
+              <ToggleGroupItem key={value} value={value}>
+                {t(labelKey)}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
         </CardAction>
 
         <div className="relative mt-6 w-full min-w-0 md:mt-7 xl:mt-12">
           <ScreenTimeWeeklyBarChart
             className="w-full min-w-0"
-            data={chartData}
+            data={data?.chartData ?? []}
             height={140}
             minBarHeight={10}
             striped={!isEmpty}
-            isEmpty={isEmpty}
+            isEmpty={isEmpty || false}
           />
 
           {isEmpty && (
