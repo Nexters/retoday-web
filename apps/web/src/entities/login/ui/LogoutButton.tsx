@@ -8,12 +8,14 @@ import { tokenStore } from "@/entities/auth/model/token-store";
 import { useAuth } from "@/entities/auth/ui";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
+import { useAnalytics } from "@/shared/lib/analytics";
 
 const LogoutButton = () => {
   const { t } = useLocale("settings");
 
   const { refreshAuth } = useAuth();
   const queryClient = useQueryClient();
+  const analytics = useAnalytics();
 
   const handleLogout = async () => {
     try {
@@ -25,11 +27,17 @@ const LogoutButton = () => {
         tokenStore.set({ accessToken: "", refreshToken: "" });
       }
 
+      analytics.identify(null);
+      analytics.track("logout", {});
       refreshAuth();
       await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
       await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
     } catch (err) {
       catchAPIError(err);
+      analytics.track("web_error", {
+        where: "logout",
+        message: err instanceof Error ? err.message : undefined,
+      });
     }
   };
 
