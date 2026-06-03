@@ -12,3 +12,17 @@ export type CategoryBubbleTranslateFn = (
   key: string,
   options?: Record<string, unknown>,
 ) => string;
+
+/** Extension `BubbleRanking` item shape derived from {@link toCategoryBubbleData}. */
+export type CategoryBubbleRankingItem = {
+  label: string;
+  description?: string;
+};
+
+export type CategoryBubbleRankingItems = [
+  CategoryBubbleRankingItem,
+  CategoryBubbleRankingItem,
+  CategoryBubbleRankingItem,
+  CategoryBubbleRankingItem,
+  CategoryBubbleRankingItem,
+];
