@@ -16,7 +16,7 @@ const WeeklyScreenTimeSectionSkeleton = () => {
 
       <div className="h-6" />
 
-      <div className="mt-20 h-[100px]" />
+      <div className="mt-6 h-[140px]" />
     </div>
   );
 };
