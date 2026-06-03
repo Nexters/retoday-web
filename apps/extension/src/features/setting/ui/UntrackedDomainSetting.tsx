@@ -4,18 +4,18 @@ import { useQueryClient } from "@recap/react-query";
 import { Button, Input } from "@recap/ui";
 
 import { USER_KEYS } from "@/features/setting/api/query-keys";
-import {
-  useGetUserProfile,
-  usePostExcludeDomain,
-} from "@/features/setting/api/user-query";
+import { usePostExcludeDomain } from "@/features/setting/api/user-query";
 import DomainItem from "@/features/setting/ui/DomainItem";
 import { domainStore } from "@/shared/lib/domain-store";
 
-const UntrackedDomainSetting = () => {
+type UntrackedDomainSettingProps = {
+  domains: string[];
+};
+
+const UntrackedDomainSetting = ({ domains }: UntrackedDomainSettingProps) => {
   const { t } = useLocale("settings");
-  const { data: userProfile } = useGetUserProfile();
   const queryClient = useQueryClient();
-  const [doaminValue, setDoaminValue] = useState<string>("");
+  const [domainValue, setDomainValue] = useState("");
   const { mutate } = usePostExcludeDomain({
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -25,12 +25,15 @@ const UntrackedDomainSetting = () => {
   });
 
   const handleAddDomain = () => {
+    const trimmed = domainValue.trim();
+    if (!trimmed) return;
+
     mutate(
-      { domain: doaminValue.trim() },
+      { domain: trimmed },
       {
         onSuccess: () => {
-          domainStore.addExcludedDomain(doaminValue.trim());
-          setDoaminValue("");
+          domainStore.addExcludedDomain(trimmed);
+          setDomainValue("");
         },
       },
     );
@@ -46,18 +49,18 @@ const UntrackedDomainSetting = () => {
       </p>
 
       <div className="mt-4 flex flex-col gap-1">
-        {userProfile?.excludedDomains.map((domain) => (
+        {domains.map((domain) => (
           <DomainItem key={domain} domain={domain} />
         ))}
       </div>
       <Input
         className="mt-4"
-        value={doaminValue}
-        onChange={(e) => setDoaminValue(e.target.value)}
+        value={domainValue}
+        onChange={(e) => setDomainValue(e.target.value)}
         placeholder={t("untrackedDomains.domainInputPlaceholder")}
       />
       <Button
-        disabled={!doaminValue.trim().length}
+        disabled={!domainValue.trim().length}
         className="mt-2"
         variant="secondary"
         onClick={handleAddDomain}
