@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { AiRecapTimeline } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { formatDuration } from "@recap/lib";
 import {
@@ -12,20 +13,19 @@ import {
   Stack,
 } from "@recap/ui";
 
-import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
-import { toTimelineChartData } from "@/features/ai-recap/model/timeline-chart-data";
+import { toTimeLineChartState } from "@/features/ai-recap/model/to-time-line-chart-state";
 import TimeLine from "@/shared/ui/TimeLine";
 
-const AiTimeline = ({ recap }: { recap: NormalizedRecap }) => {
+const AiTimeline = ({ timelines }: { timelines: AiRecapTimeline[] }) => {
   const { t } = useLocale("ai-recap");
   const { t: tc } = useLocale("common");
 
   const timelineData = useMemo(
     () =>
-      toTimelineChartData(recap.timelines ?? [], (seconds) =>
+      toTimeLineChartState(timelines ?? [], (seconds) =>
         formatDuration(seconds, tc),
       ),
-    [recap.timelines, tc],
+    [timelines, tc],
   );
 
   return (

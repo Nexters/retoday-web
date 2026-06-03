@@ -1,6 +1,8 @@
+import type { RecapData } from "@recap/api";
 import { formatDate } from "@recap/lib";
 
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
+import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
 import {
   AiRecapEmptyView,
   AiRecapViewSkeleton,
@@ -15,23 +17,28 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 const AiRecapContent = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
 
-  const { data, isLoading } = useGetAiRecap(
-    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-  );
+  const {
+    data: recap,
+    isLoading,
+    isError,
+  } = useGetAiRecap(formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH), {
+    select: (data): RecapData | null =>
+      data && hasRecapContent(data) ? data : null,
+  });
 
   if (isLoading) {
     return <AiRecapViewSkeleton />;
   }
-  if (Object.keys(data ?? {}).length === 0) {
+  if (isError || !recap) {
     return <AiRecapEmptyView />;
   }
 
   return (
     <>
-      <TodayRecapSection {...data} />
-      <TodayRecapDetail sections={data?.sections ?? []} />
+      <TodayRecapSection recap={recap} />
+      <TodayRecapDetail sections={recap.sections ?? []} />
       <Divider />
-      <TodayTopicsSection topics={data?.topics ?? []} />
+      <TodayTopicsSection topics={recap.topics ?? []} />
     </>
   );
 };

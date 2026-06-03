@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@recap/api": "workspace:*",
+    "@recap/features": "workspace:*",
     "@recap/react-query": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

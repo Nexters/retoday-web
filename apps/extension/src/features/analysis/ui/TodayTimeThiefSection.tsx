@@ -1,5 +1,5 @@
 import { useLocale } from "@recap/i18n";
-import { formatDate } from "@recap/lib";
+import { CURRENT_TIMEZONE, formatDate } from "@recap/lib";
 
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
@@ -10,13 +10,16 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 const TodayTimeThiefSection = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("analysis");
-  const { data, isLoading } = useGetLongestWebSite(
-    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-  );
+
+  const { data, isLoading } = useGetLongestWebSite({
+    date: formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+    timeZone: CURRENT_TIMEZONE,
+  });
 
   if (isLoading) {
     return <TodayTimeThiefSectionSkeleton />;
   }
+
   return (
     <div className="bg-white px-5 py-8">
       <div className="flex items-center justify-between">
@@ -25,10 +28,10 @@ const TodayTimeThiefSection = () => {
         </h2>
 
         <div className="bg-blue-75 text-label-1 flex items-center gap-2 w-fit rounded-xl px-3 py-1 text-gray-900">
-          {data?.faviconUrl ? (
+          {data?.faviconUrl != null ? (
             <img
               src={data.faviconUrl}
-              alt={data.domain}
+              alt={data.domain ?? ""}
               className="size-[14px] rounded-full object-cover"
             />
           ) : (
@@ -50,7 +53,7 @@ const TodayTimeThiefSection = () => {
           {data?.faviconUrl ? (
             <img
               src={data.faviconUrl}
-              alt={data.domain}
+              alt={data.domain ?? ""}
               className="absolute top-[60%] left-[70%] -translate-x-1/2 -translate-y-1/2 size-[120px] rounded-full object-cover"
             />
           ) : (

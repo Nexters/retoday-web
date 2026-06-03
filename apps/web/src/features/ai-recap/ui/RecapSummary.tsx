@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import type { RecapData } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import {
   Card,
@@ -23,11 +24,10 @@ import {
   formatMeasuredRange,
   formatScreenTime,
 } from "@/features/ai-recap/lib/format-date";
-import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 import AIRecapIcon from "@/shared/assets/icons/recap-ai.svg";
 import RecapImg from "@/shared/assets/img/recap-1.png";
 
-const RecapSummary = ({ recap }: { recap: NormalizedRecap }) => {
+const RecapSummary = ({ recap }: { recap: RecapData }) => {
   const { t } = useLocale("ai-recap");
   const { t: tc } = useLocale("common");
 

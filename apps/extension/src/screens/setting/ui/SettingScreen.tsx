@@ -1,3 +1,4 @@
+import { useGetUserProfile } from "@/features/setting/api/user-query";
 import {
   LangeChangedSetting,
   ProfileCard,
@@ -6,15 +7,19 @@ import {
 import { Divider } from "@/shared/ui";
 
 const SettingScreen = () => {
+  const { data: profile } = useGetUserProfile({
+    select: (data) => data?.data,
+  });
+
   return (
     <>
-      <ProfileCard />
+      <ProfileCard profile={profile} />
       <Divider />
       <LangeChangedSetting />
       <Divider />
       {/* <RecapIntervalSetting />
       <Divider /> */}
-      <UntrackedDomainSetting />
+      <UntrackedDomainSetting domains={profile?.excludedDomains ?? []} />
     </>
   );
 };

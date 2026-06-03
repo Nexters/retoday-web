@@ -1,8 +1,9 @@
-import type { RecapTimeline } from "@/features/ai-recap/model/recap.type";
+import type { AiRecapTimeline } from "@recap/api";
+
 import type { TimelineDatum } from "@/shared/ui/TimeLine";
 
-export const toTimelineChartData = (
-  timelines: RecapTimeline[],
+export const toTimeLineChartState = (
+  timelines: AiRecapTimeline[],
   formatDurationLabel: (durationSeconds: number) => string,
 ): TimelineDatum[] =>
   timelines.map((timeline, index) => ({

@@ -3,27 +3,30 @@ import {
   useMutation,
   type UseMutationOptions,
   useQuery,
+  type UseQueryOptions,
 } from "@recap/react-query";
 
 import { userAPIService } from "@/features/setting/api";
 import { USER_KEYS } from "@/features/setting/api/query-keys";
 
-type UserProfileEnvelope = Envelope<UserProfileType>;
+type UserProfileResponse = Envelope<UserProfileType>;
 
-const useGetUserProfile = () => {
-  const query = useQuery<UserProfileEnvelope>({
+type UserProfileQueryKey = ReturnType<typeof USER_KEYS.details>;
+
+type UseGetUserProfileOptions<TData = UserProfileResponse> = Omit<
+  UseQueryOptions<UserProfileResponse, Error, TData, UserProfileQueryKey>,
+  "queryKey" | "queryFn" | "retry"
+>;
+
+export const useGetUserProfile = <TData = UserProfileResponse>(
+  options: UseGetUserProfileOptions<TData> = {},
+) => {
+  return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
+    ...options,
     queryKey: USER_KEYS.details(),
     queryFn: () => userAPIService.getUserProfile(),
+    retry: false,
   });
-
-  const profile = query.data?.data ?? null;
-
-  return {
-    ...query,
-    /** Unwrapped profile for existing UI expecting flat user fields */
-    data: profile,
-    profile,
-  };
 };
 
 const usePostExcludeDomain = (
@@ -48,4 +51,4 @@ const useDeleteExcludeDomain = (
   });
 };
 
-export { useDeleteExcludeDomain, useGetUserProfile, usePostExcludeDomain };
+export { useDeleteExcludeDomain, usePostExcludeDomain };

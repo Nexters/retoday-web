@@ -1,10 +1,10 @@
-import { useMemo } from "react";
+import { CATEGORY_LABEL_KEYS, toCategoryAnalysisState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
-import { formatDate, formatDuration } from "@recap/lib";
+import { CURRENT_TIMEZONE, formatDate, formatDuration } from "@recap/lib";
 
-import { useGetAnalysisCategoryAnalysis } from "@/features/analysis/api/analysis-query";
-import BubbleRanking from "@/features/analysis/ui/category-analysis/BubbleRanking";
+import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
 import CategoryAnalysisItem from "@/features/analysis/ui/category-analysis/CategoryAnalysisItem";
+import CategoryBubbleCloud from "@/features/analysis/ui/category-analysis/CategoryBubbleCloud";
 import CategoryTitle from "@/features/analysis/ui/category-analysis/CategoryTitle";
 import CategoryAnalysisSectionSkeleton from "@/features/analysis/ui/CategoryAnalysisSectionSkeleton";
 import { DATE_FORMAT } from "@/shared/config/date-format.const";
@@ -13,42 +13,41 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const CategoryAnalysisSection = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
-  const { t } = useLocale();
-  const { data, isLoading } = useGetAnalysisCategoryAnalysis(
-    formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+  const { t } = useLocale("analysis");
+  const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
+
+  const { data, isLoading } = useGetAnalysisCategory(
+    { date, timeZone: CURRENT_TIMEZONE },
+    { select: toCategoryAnalysisState },
   );
 
-  const sortedCategoryAnalyses = useMemo(() => {
-    return [...(data?.categoryAnalyses ?? [])]
-      .sort((a, b) => b.stayDuration - a.stayDuration)
-      .map((item) => ({
-        label: item.categoryName,
-        description: formatDuration(item.stayDuration, t),
-      }));
-  }, [data, t]);
+  const categories = data?.categories ?? [];
 
   if (isLoading) {
     return <CategoryAnalysisSectionSkeleton />;
   }
+
+  const topCategory = categories[0];
+
   return (
     <div className="bg-white pt-8 px-5 pb-11">
       <CategoryTitle
-        categoryName={sortedCategoryAnalyses?.[0]?.label ?? "-"}
-        time={sortedCategoryAnalyses?.[0]?.description ?? "-"}
+        categoryName={
+          topCategory ? t(CATEGORY_LABEL_KEYS[topCategory.category]) : "-"
+        }
+        time={topCategory ? formatDuration(topCategory.stayDuration, t) : "-"}
       />
 
       <div className="mt-6">
-        <BubbleRanking items={sortedCategoryAnalyses} height={230} />
+        <CategoryBubbleCloud categories={categories} />
       </div>
 
       <div className="mt-4">
-        {data?.categoryAnalyses.map((item, idx) => (
-          <>
-            <CategoryAnalysisItem key={idx} count={idx + 1} {...item} />
-            {idx !== data?.categoryAnalyses.length - 1 && (
-              <Divider className="h-0.5" />
-            )}
-          </>
+        {categories.map((item, idx) => (
+          <div key={item.category}>
+            <CategoryAnalysisItem count={idx + 1} {...item} />
+            {idx !== categories.length - 1 && <Divider className="h-0.5" />}
+          </div>
         ))}
       </div>
     </div>

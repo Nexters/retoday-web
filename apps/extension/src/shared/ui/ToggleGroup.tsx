@@ -5,10 +5,41 @@ import {
   ToggleGroupItem as BaseToggleGroupItem,
 } from "@recap/ui";
 
-type ToggleGroupProps = React.ComponentPropsWithoutRef<typeof BaseToggleGroup>;
-const ToggleGroup = ({ className, ...props }: ToggleGroupProps) => {
-  return <BaseToggleGroup className={cn(className)} {...props} />;
-};
+type ToggleGroupPrimitiveProps = React.ComponentPropsWithoutRef<
+  typeof BaseToggleGroup
+>;
+
+export type ToggleGroupProps<T extends string = string> = Omit<
+  ToggleGroupPrimitiveProps,
+  "type" | "value" | "defaultValue" | "onValueChange"
+> &
+  (
+    | {
+        type: "single";
+        value?: T;
+        defaultValue?: T;
+        onValueChange?: (value: T) => void;
+      }
+    | {
+        type: "multiple";
+        value?: T[];
+        defaultValue?: T[];
+        onValueChange?: (value: T[]) => void;
+      }
+  );
+
+function ToggleGroup<T extends string = string>({
+  className,
+  ...props
+}: ToggleGroupProps<T>) {
+  return (
+    <BaseToggleGroup
+      className={cn(className)}
+      {...(props as ToggleGroupPrimitiveProps)}
+    />
+  );
+}
+ToggleGroup.displayName = "ToggleGroup";
 
 type ToggleGroupItemProps = React.ComponentPropsWithoutRef<
   typeof BaseToggleGroupItem

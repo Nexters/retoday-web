@@ -2,7 +2,8 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
-import type { AnalysisCategoryData } from "@recap/api";
+import type { CategoryAnalysisItem } from "@recap/api";
+import { CATEGORY_LABEL_KEYS } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import {
   cn,
@@ -13,13 +14,12 @@ import {
   ItemTitle,
 } from "@recap/ui";
 
-import { CATEGORY_LABEL } from "@/features/analysis/config/category.const";
 import { ALL_CATEGORIES_TOGGLE_VALUE } from "@/features/analysis/ui/CategoryAnalysis";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type CategoryRankingListProps = {
   selectedCategory: string | null;
-  categories: AnalysisCategoryData["categoryAnalyses"];
+  categories: CategoryAnalysisItem[];
 };
 
 const CategoryRankingList = ({
@@ -66,7 +66,9 @@ const CategoryRankingList = ({
               </span>
 
               <ItemTitle className="text-subtitle-1-sb truncate text-gray-900">
-                {categoryItem ? t(CATEGORY_LABEL[categoryItem.category]) : "-"}
+                {categoryItem
+                  ? t(CATEGORY_LABEL_KEYS[categoryItem.category])
+                  : "-"}
               </ItemTitle>
               <span className="text-subtitle-2-rg whitespace-nowrap text-gray-800">
                 {categoryItem?.stayDuration

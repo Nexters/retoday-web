@@ -1,6 +1,6 @@
 import type { CategoryType } from "@recap/api";
 
-export const CATEGORY_LABEL = {
+export const CATEGORY_LABEL_KEYS = {
   STUDY: "category.study",
   SHOPPING: "category.shopping",
   GAMING: "category.gaming",
