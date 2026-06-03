@@ -1,3 +1,4 @@
+export { default as BubbleRanking } from "./BubbleRanking";
 export { default as DatePicker } from "./DatePicker";
 export { default as Divider } from "./Divider";
 export * from "./GNBTabs";

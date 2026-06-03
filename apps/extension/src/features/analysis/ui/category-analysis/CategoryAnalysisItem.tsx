@@ -1,4 +1,6 @@
 import { useState } from "react";
+import type { CategoryAnalysisItem as CategoryAnalysisItemType } from "@recap/api";
+import { CATEGORY_LABEL_KEYS } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import { formatDuration } from "@recap/lib";
 import {
@@ -10,18 +12,22 @@ import {
   Badge,
 } from "@recap/ui";
 
-import type { AnalysisCategoryItem } from "@/features/analysis/model/analysis.type";
 import CategoryLink from "@/features/analysis/ui/CategoryLink";
 import Icon from "@/shared/ui/Icon";
 
+type CategoryAnalysisItemProps = CategoryAnalysisItemType & {
+  count: number;
+};
+
 const CategoryAnalysisItem = ({
-  categoryName,
+  category,
   stayDuration,
   websiteAnalyses,
   count,
-}: AnalysisCategoryItem & { count: number }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+}: CategoryAnalysisItemProps) => {
+  const [isOpen, setIsOpen] = useState(false);
   const { t } = useLocale("analysis");
+
   return (
     <Accordion
       type="single"
@@ -38,7 +44,7 @@ const CategoryAnalysisItem = ({
                   {count}
                 </Badge>
                 <p className="text-subtitle-2-sb text-gray-900">
-                  {categoryName}
+                  {t(CATEGORY_LABEL_KEYS[category])}
                 </p>
                 <p className="text-subtitle-2-rg text-gray-800">
                   {formatDuration(stayDuration, t)}
@@ -53,7 +59,7 @@ const CategoryAnalysisItem = ({
         </AccordionHeader>
         <AccordionContent className="flex flex-col gap-1">
           {websiteAnalyses.map((website, idx) => (
-            <CategoryLink key={idx} {...website} />
+            <CategoryLink key={`${website.domain}-${idx}`} {...website} />
           ))}
           <div className="flex items-center justify-center py-3">
             <p className="text-caption-1 text-gray-500 w-full text-center">
