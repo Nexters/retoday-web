@@ -1,6 +1,6 @@
 "use client";
 
-import type { AnalysisCategoryData } from "@recap/api";
+import type { CategoryAnalysisItem } from "@recap/api";
 import { CATEGORY_LABEL_KEYS } from "@recap/features";
 import { Trans, useLocale } from "@recap/i18n";
 import { CardDescription, CardHeader, CardTitle } from "@recap/ui";
@@ -8,7 +8,7 @@ import { CardDescription, CardHeader, CardTitle } from "@recap/ui";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type CategoryHeaderProps = {
-  categories: AnalysisCategoryData["categoryAnalyses"];
+  categories: CategoryAnalysisItem[];
 };
 
 const CategoryHeader = ({ categories }: CategoryHeaderProps) => {

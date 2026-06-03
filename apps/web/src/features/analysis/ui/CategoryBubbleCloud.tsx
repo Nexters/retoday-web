@@ -1,14 +1,14 @@
 "use client";
 
 import { useMemo } from "react";
-import type { AnalysisCategoryData } from "@recap/api";
+import type { CategoryAnalysisItem } from "@recap/api";
 import { toCategoryBubbleData } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 
 import BubbleCloudFalling from "@/shared/ui/BubbleCloud";
 
 type CategoryBubbleCloudProps = {
-  categories: AnalysisCategoryData["categoryAnalyses"];
+  categories: CategoryAnalysisItem[];
 };
 
 const CategoryBubbleCloud = ({ categories }: CategoryBubbleCloudProps) => {

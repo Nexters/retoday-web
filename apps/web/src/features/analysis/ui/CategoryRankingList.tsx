@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Image from "next/image";
-import type { AnalysisCategoryData } from "@recap/api";
+import type { CategoryAnalysisItem } from "@recap/api";
 import { CATEGORY_LABEL_KEYS } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import {
@@ -19,7 +19,7 @@ import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 
 type CategoryRankingListProps = {
   selectedCategory: string | null;
-  categories: AnalysisCategoryData["categoryAnalyses"];
+  categories: CategoryAnalysisItem[];
 };
 
 const CategoryRankingList = ({
