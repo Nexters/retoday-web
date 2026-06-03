@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
+import type { AiRecapTopic } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import {
   Card,
@@ -13,7 +14,6 @@ import {
   ItemGroup,
 } from "@recap/ui";
 
-import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
 import TopicCardItem from "@/features/ai-recap/ui/TopicCardItem";
 
 const KEYWORD_STYLES = [
@@ -24,10 +24,8 @@ const KEYWORD_STYLES = [
 
 const TOPIC_PLACEHOLDER_COUNT = 3;
 
-const TopVisitedTopics = ({ recap }: { recap: NormalizedRecap }) => {
+const TopVisitedTopics = ({ topics }: { topics: AiRecapTopic[] }) => {
   const { t } = useLocale("ai-recap");
-
-  const topics = recap.topics ?? [];
 
   const topKeywords = useMemo(
     () => topics.slice(0, 3).map((topic) => topic.keyword),

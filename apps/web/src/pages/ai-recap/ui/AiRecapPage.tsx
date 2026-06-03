@@ -1,12 +1,10 @@
 "use client";
 
+import type { RecapData } from "@recap/api";
+
 import { AuthConsumer } from "@/entities/auth/ui";
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
-import {
-  hasRecapContent,
-  normalizeRecap,
-} from "@/features/ai-recap/lib/recap-mapper";
-import type { NormalizedRecap } from "@/features/ai-recap/model/recap.type";
+import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
 import AiTimeline from "@/features/ai-recap/ui/AiTimeline";
 import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
 import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
@@ -34,8 +32,8 @@ const LoggedInRecap = ({ date }: { date: string }) => {
     isFetchedAfterMount,
   } = useGetAiRecap(date, {
     retry: 0,
-    select: (data): NormalizedRecap | null =>
-      data && hasRecapContent(data) ? normalizeRecap(data, date) : null,
+    select: (data): RecapData | null =>
+      data && hasRecapContent(data) ? data : null,
   });
 
   const shouldShowLoading = isLoading || (isFetching && !isFetchedAfterMount);
@@ -46,8 +44,8 @@ const LoggedInRecap = ({ date }: { date: string }) => {
   return (
     <>
       <RecapSummary recap={recap} />
-      <AiTimeline recap={recap} />
-      <TopVisitedTopics recap={recap} />
+      <AiTimeline timelines={recap?.timelines ?? []} />
+      <TopVisitedTopics topics={recap?.topics ?? []} />
     </>
   );
 };
