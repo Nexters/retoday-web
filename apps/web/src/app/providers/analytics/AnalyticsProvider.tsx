@@ -1,9 +1,11 @@
 "use client";
 
-import { type ReactNode, useMemo } from "react";
+import { type ReactNode, Suspense, useMemo } from "react";
 import type { AnalyticsClient } from "@recap/analytics";
 
 import { AnalyticsContext, gtagAnalytics } from "@/shared/lib/analytics";
+
+import AnalyticsPageTracker from "./AnalyticsPageTracker";
 
 const AnalyticsProvider = ({
   children,
@@ -16,6 +18,9 @@ const AnalyticsProvider = ({
 
   return (
     <AnalyticsContext.Provider value={value}>
+      <Suspense fallback={null}>
+        <AnalyticsPageTracker />
+      </Suspense>
       {children}
     </AnalyticsContext.Provider>
   );

@@ -5,6 +5,7 @@ import { catchAPIError } from "@recap/api";
 
 import { authAPIService } from "@/entities/auth/api";
 import { tokenStore } from "@/entities/auth/model/token-store";
+import { useAnalytics } from "@/shared/lib/analytics";
 
 type LoginResponse = {
   accessToken: string;
@@ -17,6 +18,7 @@ type UseGoogleTokenLoginOptions = {
 
 export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
   const { onLoginSuccess } = options ?? {};
+  const { track } = useAnalytics();
 
   const [ready, setReady] = useState(false);
 
@@ -74,9 +76,14 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
               refreshToken: data.refreshToken,
             });
 
+            track("login", { method: "google" });
             await onLoginSuccess?.();
           } catch (e: unknown) {
             catchAPIError(e);
+            track("web_error", {
+              where: "google_token_login",
+              message: e instanceof Error ? e.message : undefined,
+            });
           }
         },
       });

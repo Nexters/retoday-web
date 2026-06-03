@@ -1,8 +1,8 @@
 import type {
   AnalyticsClient,
   AnalyticsEventMap,
-  AnalyticsEventName,
   AnalyticsParams,
+  AnalyticsTrackEventName,
 } from "@recap/analytics";
 
 import { isDev } from "@/shared/config";
@@ -36,7 +36,10 @@ export const gtagAnalytics: AnalyticsClient = {
     send("config", analyticsMeasurementId, config);
   },
 
-  track<E extends AnalyticsEventName>(name: E, params: AnalyticsEventMap[E]) {
+  track<E extends AnalyticsTrackEventName>(
+    name: E,
+    params: AnalyticsEventMap[E],
+  ) {
     send("event", name, params);
   },
 
