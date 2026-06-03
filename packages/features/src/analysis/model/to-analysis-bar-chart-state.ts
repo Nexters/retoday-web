@@ -6,7 +6,7 @@ import type {
   AnalysisBarChartTranslateFn,
 } from "./analysis-bar-chart.type";
 
-const secondsToMinute = (seconds: number): number => {
+export const secondsToMinute = (seconds: number): number => {
   if (!Number.isFinite(seconds) || seconds <= 0) {
     return 0;
   }
@@ -87,5 +87,3 @@ export const toWeeklyAnalysisBarChartState = (
   });
   return blocks;
 };
-
-export { secondsToMinute };

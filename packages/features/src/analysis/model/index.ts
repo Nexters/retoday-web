@@ -8,3 +8,8 @@ export {
   toDailyAnalysisBarChartState,
   toWeeklyAnalysisBarChartState,
 } from "./to-analysis-bar-chart-state";
+export type {
+  ScreenTimeChartState,
+  ToScreenTimeChartStateInput,
+} from "./to-screen-time-chart-state";
+export { toScreenTimeChartState } from "./to-screen-time-chart-state";
