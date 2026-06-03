@@ -1,7 +1,7 @@
-import type { AnalysisCategoryData } from "@recap/api";
+import type { AnalysisCategoryData, CategoryAnalysisItem } from "@recap/api";
 
 export type CategoryAnalysisState = {
-  categories: AnalysisCategoryData["categoryAnalyses"];
+  categories: CategoryAnalysisItem[];
 };
 
 export const toCategoryAnalysisState = (

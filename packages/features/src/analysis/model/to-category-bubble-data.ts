@@ -1,5 +1,6 @@
-import type { AnalysisCategoryData } from "@recap/api";
-import { CATEGORY_LABEL_KEYS } from "src/analysis/config/category.const";
+import type { CategoryAnalysisItem } from "@recap/api";
+
+import { CATEGORY_LABEL_KEYS } from "../config/category.const";
 
 import type {
   CategoryBubbleDatum,
@@ -13,7 +14,7 @@ const TINY_BUBBLES: CategoryBubbleDatum[] = [
 ];
 
 export const toCategoryBubbleData = (
-  categories: AnalysisCategoryData["categoryAnalyses"],
+  categories: CategoryAnalysisItem[],
   t: CategoryBubbleTranslateFn,
 ): CategoryBubbleDatum[] => {
   const top = categories.slice(0, 5);
