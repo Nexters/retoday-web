@@ -26,11 +26,17 @@ const CategoryWebsiteAnalysisSchema = z.object({
   stayDuration: isoDurationStringSchema,
 });
 
+export type CategoryWebsiteAnalysis = z.infer<
+  typeof CategoryWebsiteAnalysisSchema
+>;
+
 const CategoryAnalysisItemSchema = z.object({
   category: CategoryEnum,
   stayDuration: isoDurationStringSchema,
   websiteAnalyses: z.array(CategoryWebsiteAnalysisSchema),
 });
+
+export type CategoryAnalysisItem = z.infer<typeof CategoryAnalysisItemSchema>;
 
 export const GetCategoryAnalysesSchema = z.object({
   totalStayDuration: isoDurationStringSchema,
