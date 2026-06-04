@@ -11,6 +11,32 @@ export const RecapSectionSchema = z.object({
   content: z.string(),
 });
 
+const RecapImageEnum = z.enum([
+  "STUDY",
+  "SHOPPING",
+  "GAMING",
+  "CONTENT",
+  "COMMUNITY",
+  "NEWS",
+  "FINANCE",
+  "LIFE",
+  "BROWSING",
+  "DESIGN",
+  "AI",
+  "DEVELOPMENT",
+  "SCREEN_TIME_OVER_12H",
+  "SCREEN_TIME_UNDER_1H",
+  "CATEGORY_OVER_5",
+  "CATEGORY_ONLY_1",
+  "START_AFTER_9PM",
+  "START_BEFORE_9AM",
+  "RANDOM_1",
+  "RANDOM_2",
+  "RANDOM_3",
+]);
+
+export type RecapImageType = z.infer<typeof RecapImageEnum>;
+
 export const RecapTimelineSchema = z.object({
   startedAt: z.string(),
   endedAt: z.string(),
@@ -30,7 +56,7 @@ export const RecapDetailSchema = z.object({
   date: z.string().optional(),
   title: z.string().optional(),
   summary: z.string().optional(),
-  image: z.string().nullable().optional(),
+  image: RecapImageEnum.nullable().optional(),
   aiProvider: z.string().optional(),
   startedAt: dateStringSchema.optional(),
   closedAt: dateStringSchema.optional(),
