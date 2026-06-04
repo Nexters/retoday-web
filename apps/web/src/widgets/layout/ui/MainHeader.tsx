@@ -1,5 +1,6 @@
 "use client";
 
+import FeedbackButton from "@/features/feedback/ui/FeedbackButton";
 import { NAVIGATION_TAB } from "@/shared/config";
 import { useGnbNavigation } from "@/widgets/layout/model/use-gnb-navigation";
 
@@ -14,12 +15,15 @@ const MainHeader = () => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4">
       <TabNavigation />
-      {!isSettings && (
-        <div className="ml-auto flex items-center gap-2">
-          <RefreshButton />
-          <DateSelector />
-        </div>
-      )}
+      <div className="ml-auto flex items-center gap-2">
+        {!isSettings && (
+          <>
+            <RefreshButton />
+            <DateSelector />
+          </>
+        )}
+        <FeedbackButton />
+      </div>
     </div>
   );
 };
