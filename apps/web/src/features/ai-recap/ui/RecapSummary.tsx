@@ -26,6 +26,7 @@ import {
 } from "@/features/ai-recap/lib/format-date";
 import AIRecapIcon from "@/shared/assets/icons/recap-ai.svg";
 import RecapImg from "@/shared/assets/img/recap-1.png";
+import { AI_RECAP_IMAGE } from "@/shared/config/recap.const";
 
 const RecapSummary = ({ recap }: { recap: RecapData }) => {
   const { t } = useLocale("ai-recap");
@@ -130,7 +131,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
         )}
 
         <Image
-          src={detail?.image ?? RecapImg}
+          src={(detail?.image && AI_RECAP_IMAGE[detail.image]) ?? RecapImg}
           alt="recapImg"
           width={464}
           height={420}

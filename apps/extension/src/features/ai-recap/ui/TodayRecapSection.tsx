@@ -3,6 +3,7 @@ import { useLocale } from "@recap/i18n";
 import { formatDuration, formatTimeRange } from "@recap/lib";
 
 import RecapImg from "@/shared/assets/imgs/recap-img.png";
+import { AI_RECAP_IMAGE } from "@/shared/config/recap.const";
 import { Divider } from "@/shared/ui";
 
 const TodayRecapSection = ({ recap }: { recap: RecapData }) => {
@@ -28,7 +29,7 @@ const TodayRecapSection = ({ recap }: { recap: RecapData }) => {
       <div className="flex justify-center mt-4">
         <div className="flex flex-col w-full max-w-md max-h-[600px]">
           <img
-            src={detail?.image ?? RecapImg}
+            src={(detail?.image && AI_RECAP_IMAGE[detail.image]) ?? RecapImg}
             className="h-auto rounded-t-[0.75rem] w-full object-contain"
           />
           <div className="flex items-center w-full bg-gray-75 rounded-b-[0.75rem]">
