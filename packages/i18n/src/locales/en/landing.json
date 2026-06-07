@@ -19,5 +19,11 @@
   "datePicker": {
     "placeholder": "Select date"
   },
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "sendFeedback": "Send feedback",
+  "feedback": {
+    "contentLabel": "Message",
+    "placeholder": "Feel free to share any inconveniences or suggestions.\nEvery bit of feedback helps us improve!\ne.g.) Something was inconvenient. / I need this feature.",
+    "submit": "Submit"
+  }
 }

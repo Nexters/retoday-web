@@ -19,5 +19,11 @@
   "datePicker": {
     "placeholder": "日付を選択"
   },
-  "refresh": "更新"
+  "refresh": "更新",
+  "sendFeedback": "ご意見を送る",
+  "feedback": {
+    "contentLabel": "お問い合わせ内容",
+    "placeholder": "ご不便な点やご意見を自由にお書きください。\n小さなご意見もサービス改善に大いに役立ちます！\n例）〇〇が不便です。 / こんな機能が欲しいです。",
+    "submit": "送信する"
+  }
 }
