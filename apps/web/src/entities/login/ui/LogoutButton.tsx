@@ -1,10 +1,8 @@
-import { catchAPIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button } from "@recap/ui";
 
-import { authWithTokenAPIService } from "@/entities/auth/api";
-import { tokenStore } from "@/entities/auth/model/token-store";
+import { logoutSession } from "@/entities/auth/api/auth-session-client";
 import { useAuth } from "@/entities/auth/ui";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
@@ -19,21 +17,14 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     try {
-      await authWithTokenAPIService.logout();
-
-      if ("clear" in tokenStore && typeof tokenStore.clear === "function") {
-        tokenStore.clear();
-      } else {
-        tokenStore.set({ accessToken: "", refreshToken: "" });
-      }
+      await logoutSession();
 
       analytics.identify(null);
       analytics.track("logout", {});
-      refreshAuth();
+      await refreshAuth();
       await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
       await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
     } catch (err) {
-      catchAPIError(err);
       analytics.track("web_error", {
         where: "logout",
         message: err instanceof Error ? err.message : undefined,
