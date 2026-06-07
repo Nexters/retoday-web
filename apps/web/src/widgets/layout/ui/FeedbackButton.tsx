@@ -16,41 +16,28 @@ import {
   TextArea,
 } from "@recap/ui";
 
+import { usePostFeedback } from "@/entities/feedback/api/feedback-query";
 import { RoundButton } from "@/shared/ui";
 
 const FeedbackButton = () => {
   const { t } = useLocale("landing");
   const [isOpen, { close, set }] = useDisclosure(false);
   const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = async () => {
-    if (!content.trim()) return;
-
-    setIsSubmitting(true);
-
-    try {
-      const res = await fetch("/api/feedback", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          content,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        console.error(data.message);
-        return;
-      }
-
+  const { mutate, isPending } = usePostFeedback({
+    onSuccess: () => {
       setContent("");
       close();
-    } finally {
-      setIsSubmitting(false);
-    }
+    },
+    onError: (error) => {
+      console.error(error.message);
+    },
+  });
+
+  const handleSubmit = () => {
+    if (!content.trim()) return;
+
+    mutate({ content });
   };
 
   return (
@@ -84,7 +71,7 @@ const FeedbackButton = () => {
           <Button
             type="button"
             onClick={handleSubmit}
-            disabled={isSubmitting || !content.trim()}
+            disabled={isPending || !content.trim()}
           >
             {t("feedback.submit")}
           </Button>
