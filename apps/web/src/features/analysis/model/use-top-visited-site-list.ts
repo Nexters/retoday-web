@@ -1,12 +1,11 @@
-import { CURRENT_TIMEZONE } from "@recap/lib";
-
 import { useGetFrequencyVisitedSites } from "@/features/analysis/api/analysis-query";
+import { CURRENT_LOCATION } from "@/shared/config/location";
 
 const useTopVisitedSiteList = (date: string) => {
   const { data, isLoading } = useGetFrequencyVisitedSites({
     date,
     limit: 10,
-    timeZone: CURRENT_TIMEZONE,
+    timeZone: CURRENT_LOCATION,
   });
 
   return {

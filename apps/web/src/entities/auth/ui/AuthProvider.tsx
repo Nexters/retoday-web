@@ -8,21 +8,35 @@ import {
   useState,
 } from "react";
 
-import { tokenStore } from "@/entities/auth/model/token-store";
+import { fetchSession } from "@/entities/auth/api/auth-session-client";
 
 import { AuthContext, type AuthValue } from "./auth-context";
 
-const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isReady, setIsReady] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+type AuthProviderProps = {
+  children: ReactNode;
+  initialIsLoggedIn?: boolean;
+};
 
-  const refreshAuth = useCallback(() => {
-    setIsLoggedIn(Boolean(tokenStore.getAccess()));
-    setIsReady(true);
+const AuthProvider = ({
+  children,
+  initialIsLoggedIn = false,
+}: AuthProviderProps) => {
+  const [isReady, setIsReady] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
+
+  const refreshAuth = useCallback(async () => {
+    try {
+      const session = await fetchSession();
+      setIsLoggedIn(session.isLoggedIn);
+    } catch {
+      setIsLoggedIn(false);
+    } finally {
+      setIsReady(true);
+    }
   }, []);
 
   useEffect(() => {
-    refreshAuth();
+    void refreshAuth();
   }, [refreshAuth]);
 
   const value = useMemo<AuthValue>(

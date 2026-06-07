@@ -3,14 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { catchAPIError } from "@recap/api";
 
-import { authAPIService } from "@/entities/auth/api";
-import { tokenStore } from "@/entities/auth/model/token-store";
+import { loginWithOAuth } from "@/entities/auth/api/auth-session-client";
 import { useAnalytics } from "@/shared/lib/analytics";
-
-type LoginResponse = {
-  accessToken: string;
-  refreshToken: string;
-};
 
 type UseGoogleTokenLoginOptions = {
   onLoginSuccess?: () => void | Promise<void>;
@@ -64,16 +58,9 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
             if (!googleAccessToken)
               throw new Error("Google access_token이 없어요.");
 
-            const data = (await authAPIService.googleOauthLogin({
+            await loginWithOAuth({
               oAuthToken: googleAccessToken,
               provider: "GOOGLE",
-            })) as LoginResponse;
-
-            if (!data?.accessToken || !data?.refreshToken) return;
-
-            tokenStore.set({
-              accessToken: data.accessToken,
-              refreshToken: data.refreshToken,
             });
 
             track("login", { method: "google" });
@@ -108,7 +95,7 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
     };
 
     document.head.appendChild(script);
-  }, [clientId, onLoginSuccess]);
+  }, [clientId, onLoginSuccess, track]);
 
   return { ready, login };
 }
