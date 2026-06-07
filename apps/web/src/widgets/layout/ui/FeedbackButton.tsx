@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useLocale } from "@recap/i18n";
+import { useDisclosure } from "@recap/lib";
 import {
   Button,
   cn,
@@ -19,6 +20,7 @@ import { RoundButton } from "@/shared/ui";
 
 const FeedbackButton = () => {
   const { t } = useLocale("landing");
+  const [isOpen, { close, set }] = useDisclosure(false);
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -45,13 +47,14 @@ const FeedbackButton = () => {
       }
 
       setContent("");
+      close();
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={set}>
       <DialogTrigger asChild>
         <RoundButton className="group" aria-haspopup="dialog">
           <div className="py-1.5 pr-1 pl-2.5">
