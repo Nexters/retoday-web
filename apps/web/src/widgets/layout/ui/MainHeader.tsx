@@ -1,10 +1,10 @@
 "use client";
 
-import FeedbackButton from "@/features/feedback/ui/FeedbackButton";
 import { NAVIGATION_TAB } from "@/shared/config";
 import { useGnbNavigation } from "@/widgets/layout/model/use-gnb-navigation";
 
 import DateSelector from "./DateSelector";
+import FeedbackButton from "./FeedbackButton";
 import RefreshButton from "./RefreshButton";
 import TabNavigation from "./TabNavigation";
 
