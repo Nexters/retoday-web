@@ -76,6 +76,7 @@ const useGetLongestWebSite = (dateQuery: DateTimeZoneQueryType) => {
         await analysisAPIService.getLongestStayedWebsite(dateQuery);
       return envelope.data;
     },
+    retry: 0,
   });
 };
 

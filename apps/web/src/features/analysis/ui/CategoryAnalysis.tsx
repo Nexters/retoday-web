@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { CATEGORY_LABEL_KEYS, toCategoryAnalysisState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
-import { CURRENT_TIMEZONE } from "@recap/lib";
 import { Card, CardContent } from "@recap/ui";
 
 import { useGetAnalysisCategory } from "@/features/analysis/api/analysis-query";
 import CategoryBubbleCloud from "@/features/analysis/ui/CategoryBubbleCloud";
 import CategoryHeader from "@/features/analysis/ui/CategoryHeader";
 import CategoryRankingList from "@/features/analysis/ui/CategoryRankingList";
+import { CURRENT_LOCATION } from "@/shared/config/location";
 import { ToggleGroup, ToggleGroupItem } from "@/shared/ui";
 
 export const ALL_CATEGORIES_TOGGLE_VALUE = "__ALL__";
@@ -18,7 +18,7 @@ const CategoryAnalysis = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
 
   const { data } = useGetAnalysisCategory(
-    { date, timeZone: CURRENT_TIMEZONE },
+    { date, timeZone: CURRENT_LOCATION },
     { select: toCategoryAnalysisState },
   );
 

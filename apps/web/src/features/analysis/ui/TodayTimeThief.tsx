@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useLocale } from "@recap/i18n";
-import { CURRENT_TIMEZONE } from "@recap/lib";
 import {
   Card,
   CardAction,
@@ -14,6 +13,7 @@ import {
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
+import { CURRENT_LOCATION } from "@/shared/config/location";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 import { getHostFromUrl } from "@/shared/lib/url";
 
@@ -22,7 +22,7 @@ const TodayTimeThief = ({ date }: { date: string }) => {
   const { t: tc } = useLocale("common");
   const { data, isLoading } = useGetLongestWebSite({
     date,
-    timeZone: CURRENT_TIMEZONE,
+    timeZone: CURRENT_LOCATION,
   });
 
   return (

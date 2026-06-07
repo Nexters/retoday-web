@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { ScreenTimePeriodType } from "@recap/api";
 import { toScreenTimeChartState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
-import { CURRENT_TIMEZONE, formatDuration } from "@recap/lib";
+import { formatDuration } from "@recap/lib";
 import {
   Card,
   CardAction,
@@ -20,6 +20,7 @@ import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
 } from "@/features/analysis/lib/screen-time-config.const";
+import { CURRENT_LOCATION } from "@/shared/config/location";
 import {
   ScreenTimeWeeklyBarChart,
   ToggleGroup,
@@ -35,7 +36,7 @@ const ScreenTime = ({ date }: { date: string }) => {
     {
       date,
       period: mode,
-      timeZone: CURRENT_TIMEZONE,
+      timeZone: CURRENT_LOCATION,
     },
     {
       select: (screenTimeData) =>
