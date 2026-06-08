@@ -4,12 +4,12 @@ import {
   WeeklyScreenTimeSection,
 } from "@/features/analysis/ui";
 import { Divider } from "@/shared/ui";
-import DateSelector from "@/widgets/date-selector/ui/DateSelector";
+import { SidePanelHeader } from "@/widgets/layout/ui";
 
 const AnalysisScreen = () => {
   return (
     <>
-      <DateSelector />
+      <SidePanelHeader />
       <WeeklyScreenTimeSection />
       <Divider />
       <CategoryAnalysisSection />

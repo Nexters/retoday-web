@@ -1,10 +1,10 @@
 import { AiRecapContent } from "@/features/ai-recap/ui";
-import DateSelector from "@/widgets/date-selector/ui/DateSelector";
+import { SidePanelHeader } from "@/widgets/layout/ui";
 
 const AiRecapScreen = () => {
   return (
     <>
-      <DateSelector />
+      <SidePanelHeader />
 
       <AiRecapContent />
     </>
