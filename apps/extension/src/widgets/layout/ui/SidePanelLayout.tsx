@@ -6,7 +6,12 @@ const SidePanelLayout = ({
   className,
 }: PropsWithChildren<{ className?: string }>) => {
   return (
-    <main className={cn("pt-12 pb-[7rem] w-full flex-1 ", className)}>
+    <main
+      className={cn(
+        "flex min-h-0 w-full flex-1 flex-col pt-12 pb-[7rem]",
+        className,
+      )}
+    >
       {children}
     </main>
   );
