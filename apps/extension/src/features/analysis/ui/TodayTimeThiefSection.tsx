@@ -11,10 +11,15 @@ const TodayTimeThiefSection = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("analysis");
 
-  const { data, isLoading } = useGetLongestWebSite({
-    date: formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-    timeZone: CURRENT_TIMEZONE,
-  });
+  const { data, isLoading } = useGetLongestWebSite(
+    {
+      date: formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+      timeZone: CURRENT_TIMEZONE,
+    },
+    {
+      retry: false,
+    },
+  );
 
   if (isLoading) {
     return <TodayTimeThiefSectionSkeleton />;

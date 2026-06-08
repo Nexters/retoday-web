@@ -19,11 +19,12 @@ const AiRecapContent = () => {
 
   const {
     data: recap,
-    isLoading,
     isError,
+    isLoading,
   } = useGetAiRecap(formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH), {
     select: (data): RecapData | null =>
       data && hasRecapContent(data) ? data : null,
+    retry: false,
   });
 
   if (isLoading) {
