@@ -1,78 +1,104 @@
+import type {
+  AnalysisCategoryData,
+  AnalysisScreenTimeData,
+  AnalysisWorkPatternData,
+  DateTimeZoneQueryType,
+  FrequencyVisitedSitesData,
+  GetScreenTimeQueryType,
+  GetWebsiteAnalysesQueryType,
+  LongestWebSiteData,
+} from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
 import { analysisAPIService } from "@/features/analysis/api";
-import type {
-  AnalysisCategoryResponse,
-  AnalysisPeriod,
-  AnalysisScreenTimeResponse,
-  FrequencyVisitedSitesResponse,
-  LongestWebSiteResponse,
-} from "@/features/analysis/model/analysis.type";
+import { ANALYSIS_KEYS } from "@/features/analysis/api/query-keys";
 
-import { ANALYSIS_KEYS } from "./query-key.const";
-
-const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeResponse>(
-  period: AnalysisPeriod,
-  date: string,
+export const useGetAnalysisScreenTime = <TData = AnalysisScreenTimeData>(
+  dateQuery: GetScreenTimeQueryType,
   options?: Omit<
-    UseQueryOptions<AnalysisScreenTimeResponse, Error, TData>,
+    UseQueryOptions<AnalysisScreenTimeData, Error, TData>,
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery<AnalysisScreenTimeResponse, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail(["screen-time", period, date]),
+  return useQuery<AnalysisScreenTimeData, Error, TData>({
+    queryKey: ANALYSIS_KEYS.screenTime([dateQuery.period, dateQuery.date]),
     queryFn: async () => {
-      const response = await analysisAPIService.getScreenTime(period, date);
-      return response as AnalysisScreenTimeResponse;
+      const envelope = await analysisAPIService.getScreenTime(dateQuery);
+      return envelope.data;
     },
     ...options,
   });
 };
 
-const useGetAnalysisCategoryAnalysis = (date: string) => {
-  return useQuery<AnalysisCategoryResponse>({
-    queryKey: ANALYSIS_KEYS.detail(["category-analysis", date]),
-    queryFn: async () => {
-      const response = await analysisAPIService.getCategoryAnalysis(date);
-      return response as AnalysisCategoryResponse;
-    },
-  });
-};
-
-const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesResponse>(
-  date: string,
-  limit: number,
+export const useGetAnalysisCategory = <TData = AnalysisCategoryData>(
+  dateQuery: DateTimeZoneQueryType,
   options?: Omit<
-    UseQueryOptions<FrequencyVisitedSitesResponse, Error, TData>,
+    UseQueryOptions<AnalysisCategoryData, Error, TData>,
     "queryKey" | "queryFn"
   >,
 ) => {
-  return useQuery<FrequencyVisitedSitesResponse, Error, TData>({
-    queryKey: ANALYSIS_KEYS.detail(["frequency-visited-sites", date, limit]),
+  return useQuery<AnalysisCategoryData, Error, TData>({
+    queryKey: ANALYSIS_KEYS.categoryAnalysis([dateQuery.date]),
     queryFn: async () => {
-      const response = await analysisAPIService.getFrequencyVisitedSites(
-        date,
-        limit,
-      );
-      return response as FrequencyVisitedSitesResponse;
+      const envelope = await analysisAPIService.getCategoryAnalysis(dateQuery);
+      return envelope.data;
     },
     ...options,
   });
 };
 
-const useGetLongestWebSite = (date: string) => {
-  return useQuery<LongestWebSiteResponse>({
-    queryKey: ANALYSIS_KEYS.detail(["longest-web-site", date]),
+export const useGetFrequencyVisitedSites = <TData = FrequencyVisitedSitesData>(
+  dateQuery: GetWebsiteAnalysesQueryType,
+  options?: Omit<
+    UseQueryOptions<FrequencyVisitedSitesData, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<FrequencyVisitedSitesData, Error, TData>({
+    queryKey: ANALYSIS_KEYS.frequentlyVisitedSites([
+      dateQuery.date,
+      dateQuery.limit,
+    ]),
     queryFn: async () => {
-      const response = await analysisAPIService.getLongestWebSite(date);
-      return response as LongestWebSiteResponse;
+      const envelope =
+        await analysisAPIService.getFrequentlyVisitedWebSite(dateQuery);
+      return envelope.data;
     },
+    ...options,
   });
 };
 
-export {
-  useGetAnalysisCategoryAnalysis,
-  useGetAnalysisScreenTime,
-  useGetFrequencyVisitedSites,
-  useGetLongestWebSite,
+export const useGetLongestWebSite = <TData = LongestWebSiteData>(
+  dateQuery: DateTimeZoneQueryType,
+  options?: Omit<
+    UseQueryOptions<LongestWebSiteData, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<LongestWebSiteData, Error, TData>({
+    queryKey: ANALYSIS_KEYS.longestStayedWebsite([dateQuery.date]),
+    queryFn: async () => {
+      const envelope =
+        await analysisAPIService.getLongestStayedWebsite(dateQuery);
+      return envelope.data;
+    },
+    ...options,
+  });
+};
+
+export const useGetWorkPattern = <TData = AnalysisWorkPatternData>(
+  dateQuery: DateTimeZoneQueryType,
+  options?: Omit<
+    UseQueryOptions<AnalysisWorkPatternData, Error, TData>,
+    "queryKey" | "queryFn"
+  >,
+) => {
+  return useQuery<AnalysisWorkPatternData, Error, TData>({
+    queryKey: ANALYSIS_KEYS.workPattern([dateQuery.date]),
+    queryFn: async () => {
+      const envelope = await analysisAPIService.getWorkPattern(dateQuery);
+      return envelope.data;
+    },
+    ...options,
+  });
 };

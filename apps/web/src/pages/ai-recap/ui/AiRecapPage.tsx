@@ -1,10 +1,14 @@
 "use client";
 
+import type { RecapData } from "@recap/api";
+
 import { AuthConsumer } from "@/entities/auth/ui";
-import { useRecap } from "@/features/ai-recap/api/use-get-ai-recap";
+import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
+import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
+import AiTimeline from "@/features/ai-recap/ui/AiTimeline";
 import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
-import Timeline from "@/features/ai-recap/ui/Timeline";
 import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
+import AiRecapEmptyPage from "@/pages/ai-recap/ui/AiRecapEmptyPage";
 import AiRecapUnloginPage from "@/pages/ai-recap/ui/AiRecapUnloginPage";
 
 import AiRecapLoadingPage from "./AiRecapLoadingPage";
@@ -21,24 +25,27 @@ const AiRecapPage = ({ date }: { date: string }) => (
 
 const LoggedInRecap = ({ date }: { date: string }) => {
   const {
-    recap,
-    hasRecap,
+    data: recap,
     isError,
     isLoading,
     isFetching,
     isFetchedAfterMount,
-  } = useRecap(date);
+  } = useGetAiRecap(date, {
+    retry: 0,
+    select: (data): RecapData | null =>
+      data && hasRecapContent(data) ? data : null,
+  });
 
   const shouldShowLoading = isLoading || (isFetching && !isFetchedAfterMount);
 
   if (shouldShowLoading) return <AiRecapLoadingPage />;
-  if (isError || !hasRecap || !recap) return <AiRecapUnloginPage />;
+  if (isError || !recap) return <AiRecapEmptyPage />;
 
   return (
     <>
       <RecapSummary recap={recap} />
-      <Timeline recap={recap} />
-      <TopVisitedTopics recap={recap} />
+      <AiTimeline timelines={recap?.timelines ?? []} />
+      <TopVisitedTopics topics={recap?.topics ?? []} />
     </>
   );
 };

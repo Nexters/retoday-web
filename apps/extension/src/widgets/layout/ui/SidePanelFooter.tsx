@@ -1,6 +1,6 @@
 import { useLocale } from "@recap/i18n";
+import { formatDate } from "@recap/lib";
 import { Button } from "@recap/ui";
-import { formatDate } from "@recap/utils";
 import browser from "webextension-polyfill";
 
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";

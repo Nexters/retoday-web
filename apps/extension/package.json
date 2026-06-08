@@ -14,6 +14,9 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@recap/api": "workspace:*",
+    "@recap/features": "workspace:*",
+    "@recap/react-query": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "webextension-polyfill": "^0.12.0",
@@ -21,16 +24,13 @@
   },
   "devDependencies": {
     "@crxjs/vite-plugin": "^2.3.0",
-    "@recap/api": "workspace:*",
-    "@recap/hooks": "workspace:*",
+    "@recap/lib": "workspace:*",
     "@recap/eslint-config": "workspace:*",
     "@recap/i18n": "workspace:*",
-    "@recap/react-query": "workspace:*",
     "@recap/tailwind-config": "workspace:*",
     "@recap/tokens": "workspace:*",
     "@recap/typescript-config": "workspace:*",
     "@recap/ui": "workspace:*",
-    "@recap/utils": "workspace:*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^22.15.3",
     "@types/react": "19.2.2",

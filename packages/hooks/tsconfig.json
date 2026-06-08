@@ -1,8 +1,0 @@
-{
-  "extends": "@recap/typescript-config/react-library",
-  "compilerOptions": {
-    "baseUrl": "."
-  },
-  "include": ["src", "**/*.ts", "**/*.tsx"],
-  "exclude": ["dist", "node_modules"]
-}

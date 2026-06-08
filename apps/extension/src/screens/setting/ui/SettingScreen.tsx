@@ -1,21 +1,29 @@
+import { useGetUserProfile } from "@/features/setting/api/user-query";
 import {
   LangeChangedSetting,
   ProfileCard,
   UntrackedDomainSetting,
 } from "@/features/setting/ui";
 import { Divider } from "@/shared/ui";
+import { ScrollPanel } from "@/shared/ui/ScrollPanel";
 
 const SettingScreen = () => {
+  const { data: profile } = useGetUserProfile({
+    select: (data) => data?.data,
+  });
+
   return (
-    <>
-      <ProfileCard />
-      <Divider />
-      <LangeChangedSetting />
-      <Divider />
-      {/* <RecapIntervalSetting />
+    <ScrollPanel>
+      <ScrollPanel.Body>
+        <ProfileCard profile={profile} />
+        <Divider />
+        <LangeChangedSetting />
+        <Divider />
+        {/* <RecapIntervalSetting />
       <Divider /> */}
-      <UntrackedDomainSetting />
-    </>
+        <UntrackedDomainSetting domains={profile?.excludedDomains ?? []} />
+      </ScrollPanel.Body>
+    </ScrollPanel>
   );
 };
 

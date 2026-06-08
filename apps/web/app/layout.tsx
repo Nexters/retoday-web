@@ -5,6 +5,7 @@ import { DEFAULT_LANGUAGE } from "@recap/i18n";
 
 import { LanguageProvider, ReactQueryProvider } from "@/app/providers";
 import { AnalyticsProvider, AnalyticsScripts } from "@/app/providers/analytics";
+import { getServerSession } from "@/entities/auth/model/get-server-session";
 import { AuthProvider } from "@/entities/auth/ui";
 import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
@@ -42,22 +43,24 @@ export const metadata: Metadata = {
   description: "re-today",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isLoggedIn: initialIsLoggedIn } = await getServerSession();
+
   return (
     <html
       lang={DEFAULT_LANGUAGE}
-      className={`${ibmPlexSansKR.variable} flex min-h-screen justify-center bg-gray-100`}
+      className={`${ibmPlexSansKR.className} flex min-h-screen justify-center bg-gray-100`}
       suppressHydrationWarning
     >
       <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
         <ReactQueryProvider>
           <LanguageProvider>
             <AnalyticsProvider>
-              <AuthProvider>
+              <AuthProvider initialIsLoggedIn={initialIsLoggedIn}>
                 <MainLayout>
                   <Suspense>
                     <MainHeader />

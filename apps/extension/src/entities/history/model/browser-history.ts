@@ -1,4 +1,4 @@
-import { calculateTimeDiff } from "@recap/utils";
+import { calculateTimeDiff } from "@recap/lib";
 
 import { historyAPIService } from "@/entities/history/api";
 import type { CreateHistoryDTO } from "@/entities/history/model/history.type";

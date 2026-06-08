@@ -18,5 +18,12 @@
   },
   "datePicker": {
     "placeholder": "날짜 선택"
+  },
+  "refresh": "새로고침",
+  "sendFeedback": "의견 보내기",
+  "feedback": {
+    "contentLabel": "문의 내용",
+    "placeholder": "불편했던 점이나 의견을 자유롭게 적어주세요.\n작은 의견 하나도 서비스 개선에 큰 도움이 됩니다!\neg) 00이 불편해요. / 이런 기능이 필요해요.",
+    "submit": "제출하기"
   }
 }

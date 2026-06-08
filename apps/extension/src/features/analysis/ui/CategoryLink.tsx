@@ -1,14 +1,13 @@
+import type { CategoryWebsiteAnalysis } from "@recap/api";
 import { useLocale } from "@recap/i18n";
-import { formatDuration } from "@recap/utils";
-
-import type { AnalysisWebsite } from "@/features/analysis/model/analysis.type";
+import { formatDuration } from "@recap/lib";
 
 const CategoryLink = ({
   domain,
   faviconUrl,
   stayDuration,
-}: AnalysisWebsite) => {
-  const { t } = useLocale();
+}: CategoryWebsiteAnalysis) => {
+  const { t } = useLocale("analysis");
 
   return (
     <div className="bg-gray-75 flex items-center justify-between rounded-full pl-2 pr-4 py-2">

@@ -12,7 +12,7 @@ export function SidePanel() {
     SIDE_PANEL_SCREEN_MAP[activeTab as keyof typeof SIDE_PANEL_SCREEN_MAP];
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       <TabNavigation />
       <SidePanelLayout>
         {isLoggedIn ? <MainScreen /> : <AuthScreen />}

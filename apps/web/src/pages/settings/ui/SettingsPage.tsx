@@ -1,7 +1,7 @@
 "use client";
 
 import { AuthConsumer } from "@/entities/auth/ui";
-import { useUserProfile } from "@/features/settings/api/use-get-user-profile";
+import { useGetUserProfile } from "@/features/settings/api/user-query";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
 import LanguageSection from "@/features/settings/ui/LanguageSection";
 import UserProfile from "@/features/settings/ui/UserProfile";
@@ -20,16 +20,18 @@ const SettingsPage = () => (
 );
 
 const LoggedInSettings = () => {
-  const { profile, isLoading, isError } = useUserProfile();
+  const { data, isLoading, isError } = useGetUserProfile({
+    select: (data) => data?.data,
+  });
 
   if (isLoading) return <SettingsLoadingPage />;
-  if (isError || !profile) return <SettingsUnloginPage />;
+  if (isError || !data) return <SettingsUnloginPage />;
 
   return (
     <>
-      <UserProfile data={profile} />
+      <UserProfile profile={data} />
       <LanguageSection />
-      <ExcludedDomainSection domains={profile.excludedDomains} />
+      <ExcludedDomainSection domains={data.excludedDomains} />
     </>
   );
 };

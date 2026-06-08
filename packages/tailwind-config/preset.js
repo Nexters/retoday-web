@@ -1,5 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 const preset = {
+  safelist: [
+    {
+      pattern: /^(sm:|md:|lg:|xl:)?grid-cols-(?:1[0-2]|[1-9])$/,
+    },
+  ],
   theme: {
     extend: {
       fontFamily: {

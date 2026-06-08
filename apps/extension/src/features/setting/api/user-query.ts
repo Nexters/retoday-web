@@ -1,20 +1,31 @@
+import type { Envelope, UserProfileType } from "@recap/api";
 import {
   useMutation,
   type UseMutationOptions,
   useQuery,
+  type UseQueryOptions,
 } from "@recap/react-query";
 
 import { userAPIService } from "@/features/setting/api";
-import { USER_KEYS } from "@/features/setting/api/query-key.const";
-import type { UserProfileResponse } from "@/features/setting/model/user.type";
+import { USER_KEYS } from "@/features/setting/api/query-keys";
 
-const useGetUserProfile = () => {
-  return useQuery<UserProfileResponse>({
-    queryKey: USER_KEYS.detail(["user-profile"]),
-    queryFn: async () => {
-      const response = await userAPIService.getUserProfile();
-      return response as UserProfileResponse;
-    },
+type UserProfileResponse = Envelope<UserProfileType>;
+
+type UserProfileQueryKey = ReturnType<typeof USER_KEYS.details>;
+
+type UseGetUserProfileOptions<TData = UserProfileResponse> = Omit<
+  UseQueryOptions<UserProfileResponse, Error, TData, UserProfileQueryKey>,
+  "queryKey" | "queryFn" | "retry"
+>;
+
+export const useGetUserProfile = <TData = UserProfileResponse>(
+  options: UseGetUserProfileOptions<TData> = {},
+) => {
+  return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
+    ...options,
+    queryKey: USER_KEYS.details(),
+    queryFn: () => userAPIService.getUserProfile(),
+    retry: false,
   });
 };
 
@@ -23,7 +34,7 @@ const usePostExcludeDomain = (
 ) => {
   return useMutation<void, Error, { domain: string }>({
     mutationFn: async (data) => {
-      await userAPIService.postExcludeDomain(data);
+      await userAPIService.addExcludedDomain(data);
     },
     ...options,
   });
@@ -34,9 +45,10 @@ const useDeleteExcludeDomain = (
 ) => {
   return useMutation<void, Error, { domain: string }>({
     mutationFn: async (data) => {
-      await userAPIService.deleteExcludeDomain(data);
+      await userAPIService.deleteExcludedDomain(data);
     },
     ...options,
   });
 };
-export { useDeleteExcludeDomain, useGetUserProfile, usePostExcludeDomain };
+
+export { useDeleteExcludeDomain, usePostExcludeDomain };

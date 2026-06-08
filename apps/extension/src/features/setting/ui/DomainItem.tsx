@@ -2,7 +2,7 @@ import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button } from "@recap/ui";
 
-import { USER_KEYS } from "@/features/setting/api/query-key.const";
+import { USER_KEYS } from "@/features/setting/api/query-keys";
 import { useDeleteExcludeDomain } from "@/features/setting/api/user-query";
 import { domainStore } from "@/shared/lib/domain-store";
 
@@ -13,7 +13,7 @@ const DomainItem = ({ domain }: { domain: string }) => {
   const { mutate } = useDeleteExcludeDomain({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: USER_KEYS.detail(["user-profile"]),
+        queryKey: USER_KEYS.details(),
       });
     },
   });

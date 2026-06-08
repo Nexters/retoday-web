@@ -1,3 +1,4 @@
+import { dayjs } from "@recap/lib";
 import { z } from "zod";
 
 export const MetaSchema = z
@@ -71,6 +72,32 @@ export const CreatePageResponseSchema = <T extends z.ZodTypeAny>(
     },
   };
 };
+
+export const isoDurationToSeconds = (value: string): number => {
+  if (!value || value === "P" || value === "PT") {
+    throw new Error(`Invalid ISO duration: ${value}`);
+  }
+
+  const seconds = dayjs.duration(value).asSeconds();
+
+  if (!Number.isFinite(seconds)) {
+    throw new Error(`Invalid ISO duration: ${value}`);
+  }
+
+  return seconds;
+};
+
+export const isoDurationStringSchema = z
+  .string()
+  .refine((val) => {
+    try {
+      isoDurationToSeconds(val);
+      return true;
+    } catch {
+      return false;
+    }
+  }, "Invalid ISO 8601 duration string")
+  .transform(isoDurationToSeconds);
 
 export const dateStringSchema = z
   .string()

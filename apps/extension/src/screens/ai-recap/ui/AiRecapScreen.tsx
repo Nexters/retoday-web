@@ -1,13 +1,18 @@
 import { AiRecapContent } from "@/features/ai-recap/ui";
-import DateSelector from "@/widgets/date-selector/ui/DateSelector";
+import { ScrollPanel } from "@/shared/ui/ScrollPanel";
+import { SidePanelHeader } from "@/widgets/layout/ui";
 
 const AiRecapScreen = () => {
   return (
-    <>
-      <DateSelector />
+    <ScrollPanel>
+      <ScrollPanel.Header>
+        <SidePanelHeader />
+      </ScrollPanel.Header>
 
-      <AiRecapContent />
-    </>
+      <ScrollPanel.Body>
+        <AiRecapContent />
+      </ScrollPanel.Body>
+    </ScrollPanel>
   );
 };
 
