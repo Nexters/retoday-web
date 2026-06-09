@@ -9,7 +9,7 @@ export function createManifest(env: Record<string, string>): ManifestV3Export {
     version,
     description: "Retoday Extension",
     ...(env.VITE_EXTENSION_KEY && { key: env.VITE_EXTENSION_KEY }),
-    permissions: ["tabs", "storage", "sidePanel", "identity"],
+    permissions: ["tabs", "storage", "sidePanel", "identity", "alarms"],
     action: {
       default_icon: {
         "128": "src/shared/assets/icons/favicon-128.png",
