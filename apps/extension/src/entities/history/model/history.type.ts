@@ -1,13 +1,11 @@
 export type CreateHistoryDTO = {
-  tabId: number;
   url: string;
   visitedAt: number;
   closedAt: number;
+  timeZone: string;
   title: string;
-  metadata: {
-    description: string;
-    faviconUrl: string;
-  };
+  description: string;
+  faviconUrl: string;
   isClosed: boolean;
   scrollDepth?: number;
 };

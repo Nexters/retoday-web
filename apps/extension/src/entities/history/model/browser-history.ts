@@ -3,6 +3,7 @@ import { calculateTimeDiff } from "@recap/lib";
 import { historyAPIService } from "@/entities/history/api";
 import type { CreateHistoryDTO } from "@/entities/history/model/history.type";
 import type { StorageSession } from "@/entities/history/model/storage.type";
+import { CURRENT_LOCATION } from "@/shared/config/location";
 import { extractDomainUrl } from "@/shared/lib/url";
 
 const browserHistory = {
@@ -17,9 +18,13 @@ const browserHistory = {
     }
     console.log("createClosedHistory");
     historyAPIService.createHistory({
-      ...session,
       url: extractDomainUrl(session.url),
+      visitedAt: session.visitedAt,
       closedAt,
+      timeZone: CURRENT_LOCATION,
+      title: session.title,
+      description: session.metadata.description,
+      faviconUrl: session.metadata.faviconUrl,
       isClosed: true,
     } as CreateHistoryDTO);
   },
@@ -32,8 +37,13 @@ const browserHistory = {
     }
     console.log("createHistory");
     historyAPIService.createHistory({
-      ...session,
       url: extractDomainUrl(session.url),
+      visitedAt: session.visitedAt,
+      closedAt: session.closedAt,
+      timeZone: CURRENT_LOCATION,
+      title: session.title,
+      description: session.metadata.description,
+      faviconUrl: session.metadata.faviconUrl,
       isClosed: false,
     } as CreateHistoryDTO);
   },
