@@ -27,6 +27,121 @@ chrome.sidePanel
   .setPanelBehavior({ openPanelOnActionClick: true })
   .catch((error: unknown) => console.error(error));
 
+const TEST_ALARM_NAME = "test-console-log-alarm";
+
+const TARGET_HOUR = 0;
+const TARGET_MINUTE = 0;
+
+const getNextAlarmTime = (hour: number, minute: number) => {
+  const now = new Date();
+  const target = new Date();
+
+  target.setHours(hour, minute, 0, 0);
+
+  if (target.getTime() <= now.getTime()) {
+    target.setDate(target.getDate() + 1);
+  }
+
+  return target.getTime();
+};
+
+const ensureTestAlarm = async () => {
+  await browser.alarms.clear(TEST_ALARM_NAME);
+
+  const scheduledTime = getNextAlarmTime(TARGET_HOUR, TARGET_MINUTE);
+
+  await browser.alarms.create(TEST_ALARM_NAME, {
+    when: scheduledTime,
+  });
+};
+
+const getCurrentActiveTab = async () => {
+  const [lastFocusedActiveTab] = await browser.tabs.query({
+    active: true,
+    lastFocusedWindow: true,
+  });
+
+  if (lastFocusedActiveTab?.id != null) {
+    return lastFocusedActiveTab;
+  }
+
+  const [anyActiveTab] = await browser.tabs.query({
+    active: true,
+  });
+
+  return anyActiveTab;
+};
+
+const runScheduledSessionRestart = async () => {
+  try {
+    const activeTab = await getCurrentActiveTab();
+
+    const activeTabId = activeTab?.id;
+
+    if (activeTabId == null) {
+      console.warn("[alarm] active tab id not found");
+      return;
+    }
+
+    const currentSession = await getBrowserSessionById(String(activeTabId));
+
+    if (!currentSession) {
+      console.warn("[alarm] current browser session not found", {
+        tabId: activeTabId,
+      });
+      return;
+    }
+
+    /**
+     * createClosedHistory는 session.closedAt이 있으면 return 하므로
+     * closedAt 없는 원본 session으로 호출
+     */
+    const sessionForClosedHistory = {
+      ...currentSession,
+      tabId: Number(activeTabId),
+    } as StorageSession;
+
+    browserHistory.createClosedHistory(sessionForClosedHistory);
+
+    /**
+     * 실제 현재 session close 처리
+     */
+    const closedSession = await closeBrowserSession();
+
+    const closedAt = closedSession?.closedAt ?? new Date().getTime() / 1000;
+
+    /**
+     * createHistory는 visitedAt, closedAt으로 시간 차이를 계산하므로
+     * closedAt이 있는 동일 session을 넘김
+     */
+    const sessionForHistory = {
+      ...currentSession,
+      ...(closedSession ?? {}),
+      tabId: Number(activeTabId),
+      closedAt,
+    } as StorageSession;
+
+    browserHistory.createHistory(sessionForHistory);
+
+    /**
+     * 같은 탭을 다시 start 상태로 전환
+     */
+    await visitBrowserSession(String(activeTabId));
+  } catch (error) {
+    console.error("[alarm] runScheduledSessionRestart failed", error);
+  }
+};
+
+browser.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name !== TEST_ALARM_NAME) return;
+
+  runScheduledSessionRestart().catch((error) => {
+    console.error("[alarm] unhandled restart error", error);
+  });
+});
+
+void ensureTestAlarm();
+
 browser.runtime.onInstalled.addListener((details) => {
   void analytics.fireEvent("extension_lifecycle", {
     reason: details.reason,
@@ -91,12 +206,10 @@ browser.runtime.onMessage.addListener(
       }
 
       await addBrowserSession(String(sender.tab?.id ?? ""), msg.data);
-      try {
-        const host = new URL(msg.data.url).host;
-        void analytics.fireEvent("content_session_tracked", { host });
-      } catch {
-        /* invalid URL — skip GA */
-      }
+
+      const host = new URL(msg.data.url).host;
+      void analytics.fireEvent("content_session_tracked", { host });
+
       return;
     }
 
