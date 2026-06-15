@@ -1,21 +1,48 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLocale } from "@recap/i18n";
 
-import { GNB_TABS } from "@/shared/config";
+import { GNB_TABS, NAVIGATION_TAB } from "@/shared/config";
 import { GnbTabs, GnbTabsList, GnbTabsTrigger } from "@/shared/ui";
-import { useGnbNavigation } from "@/widgets/layout/model/use-gnb-navigation";
+import { useGnbRoute } from "@/widgets/layout/model/use-gnb-route";
 
 const TabNavigation = () => {
+  const router = useRouter();
   const { t } = useLocale("landing");
-  const { currentTab, onTabChange } = useGnbNavigation();
+  const { tab, date } = useGnbRoute();
+
+  const [currentTab, setCurrentTab] = useState<string | null>(null);
+
+  useEffect(() => {
+    setCurrentTab(currentTab);
+  }, [currentTab]);
 
   return (
-    <GnbTabs value={currentTab} onValueChange={onTabChange} className="w-fit">
+    <GnbTabs
+      value={currentTab ?? tab}
+      onValueChange={setCurrentTab}
+      className="w-fit"
+    >
       <GnbTabsList>
-        {GNB_TABS.map(({ labelKey, value }) => (
-          <GnbTabsTrigger key={value} value={value}>
-            {t(`navigation.${labelKey}`)}
+        {GNB_TABS.map(({ labelKey, value, path }) => (
+          <GnbTabsTrigger key={value} value={value} asChild>
+            <Link
+              className="flex items-center justify-center"
+              href={
+                value === NAVIGATION_TAB.SETTINGS
+                  ? path
+                  : `${path}?date=${date}`
+              }
+              prefetch
+              key={value}
+              onMouseEnter={() => router.prefetch(path)}
+              onFocus={() => router.prefetch(path)}
+            >
+              {t(`navigation.${labelKey}`)}
+            </Link>
           </GnbTabsTrigger>
         ))}
       </GnbTabsList>
