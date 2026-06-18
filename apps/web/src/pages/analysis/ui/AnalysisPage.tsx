@@ -1,16 +1,20 @@
 "use client";
 
-import Link from "next/link";
-import { useLocale } from "@recap/i18n";
+import { Suspense } from "react";
 import { Grid, Stack } from "@recap/ui";
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
+import CategoryAnalysisSkeleton from "@/features/analysis/ui/CategoryAnalysisSkeleton";
 import ScreenTime from "@/features/analysis/ui/ScreenTime";
+import ScreenTimeSkeleton from "@/features/analysis/ui/ScreenTimeSkeleton";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
+import TodayTimeThiefSkeleton from "@/features/analysis/ui/TodayTimeThiefSkeleton";
 import TopVisitedSites from "@/features/analysis/ui/TopVisitedSites";
+import TopVisitedSitesSkeleton from "@/features/analysis/ui/TopVisitedSitesSkeleton";
+import TrackDomainSetting from "@/features/analysis/ui/TrackDomainSetting";
 import WorkPattern from "@/features/analysis/ui/WorkPattern";
-import ArrowRightBlueIcon from "@/shared/assets/icons/arrow-right-blue.svg";
+import WorkPatternSkeleton from "@/features/analysis/ui/WorkPatternSkeleton";
 
 import AnalysisLoadingPage from "./AnalysisLoadingPage";
 import AnalysisUnloginPage from "./AnalysisUnloginPage";
@@ -27,30 +31,33 @@ const AnalysisPage = ({ date }: { date: string }) => (
 );
 
 const AnalysisLoggedInSection = ({ date }: { date: string }) => {
-  const { t } = useLocale("analysis");
-
   return (
     <>
       <Stack gap="none" className="gap-4 md:gap-5 xl:gap-7">
-        <ScreenTime date={date} />
-        <CategoryAnalysis date={date} />
+        <Suspense fallback={<ScreenTimeSkeleton />}>
+          <ScreenTime date={date} />
+        </Suspense>
+        <Suspense fallback={<CategoryAnalysisSkeleton />}>
+          <CategoryAnalysis date={date} />
+        </Suspense>
         <Grid
           cols={{ base: 1, md: 2 }}
           gap="none"
           className="gap-4 md:gap-5 xl:gap-7"
         >
-          <WorkPattern date={date} />
-          <TodayTimeThief date={date} />
+          <Suspense fallback={<WorkPatternSkeleton />}>
+            <WorkPattern date={date} />
+          </Suspense>
+
+          <Suspense fallback={<TodayTimeThiefSkeleton />}>
+            <TodayTimeThief date={date} />
+          </Suspense>
         </Grid>
-        <TopVisitedSites date={date} />
+        <Suspense fallback={<TopVisitedSitesSkeleton />}>
+          <TopVisitedSites date={date} />
+        </Suspense>
       </Stack>
-      <Link
-        href="/settings"
-        className="text-subtitle-1-md mt-7 flex items-center justify-end gap-1 p-2 text-[#4378ff]"
-      >
-        {t("settings.addNonTrackingDomainLink")}
-        <ArrowRightBlueIcon />
-      </Link>
+      <TrackDomainSetting />
     </>
   );
 };
