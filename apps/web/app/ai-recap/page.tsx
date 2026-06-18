@@ -1,4 +1,7 @@
+import { Suspense } from "react";
+
 import { AiRecapPage } from "@/pages/ai-recap/ui";
+import AiRecapLoadingPage from "@/pages/ai-recap/ui/AiRecapLoadingPage";
 import { getSafeQueryDate } from "@/shared/lib/date/safe-query-date";
 
 type AIRecapRouteProps = {
@@ -13,5 +16,9 @@ export default async function Page({ searchParams }: AIRecapRouteProps) {
 
   const date = getSafeQueryDate(dateParam);
 
-  return <AiRecapPage date={date} />;
+  return (
+    <Suspense fallback={<AiRecapLoadingPage />}>
+      <AiRecapPage date={date} />
+    </Suspense>
+  );
 }
