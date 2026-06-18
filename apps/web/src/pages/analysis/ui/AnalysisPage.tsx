@@ -1,11 +1,13 @@
 "use client";
 
 import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { Grid, Stack } from "@recap/ui";
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
 import CategoryAnalysisSkeleton from "@/features/analysis/ui/CategoryAnalysisSkeleton";
+import EmptyTodayTimeThief from "@/features/analysis/ui/EmptyTodayTimeThief";
 import ScreenTime from "@/features/analysis/ui/ScreenTime";
 import ScreenTimeSkeleton from "@/features/analysis/ui/ScreenTimeSkeleton";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
@@ -48,10 +50,11 @@ const AnalysisLoggedInSection = ({ date }: { date: string }) => {
           <Suspense fallback={<WorkPatternSkeleton />}>
             <WorkPattern date={date} />
           </Suspense>
-
-          <Suspense fallback={<TodayTimeThiefSkeleton />}>
-            <TodayTimeThief date={date} />
-          </Suspense>
+          <ErrorBoundary fallback={<EmptyTodayTimeThief />}>
+            <Suspense fallback={<TodayTimeThiefSkeleton />}>
+              <TodayTimeThief date={date} />
+            </Suspense>
+          </ErrorBoundary>
         </Grid>
         <Suspense fallback={<TopVisitedSitesSkeleton />}>
           <TopVisitedSites date={date} />
