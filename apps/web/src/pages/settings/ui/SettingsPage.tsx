@@ -1,13 +1,40 @@
-import { serverUserProfileQueryOptions } from "@/features/settings/api/user-query.server";
-import SettingContent from "@/features/settings/ui/SettingContent";
-import FetchBoundary from "@/shared/lib/query/FetchBoundary";
+"use client";
 
-const SettingsPage = async () => {
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { AuthConsumer } from "@/entities/auth/ui";
+import { userProfileQueryOptions } from "@/features/settings/api/user-query.client";
+import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
+import LanguageSection from "@/features/settings/ui/LanguageSection";
+import UserProfile from "@/features/settings/ui/UserProfile";
+import SettingsLoadingPage from "@/pages/settings/ui/SettingsLoadingPage";
+import SettingsUnloginPage from "@/pages/settings/ui/SettingsUnloginPage";
+
+const SettingPage = () => (
+  <AuthConsumer>
+    {({ isReady, isLoggedIn }) => {
+      if (!isReady) return <SettingsLoadingPage />;
+      if (!isLoggedIn) return <SettingsUnloginPage />;
+      return <LoggedInSettings />;
+    }}
+  </AuthConsumer>
+);
+
+const LoggedInSettings = () => {
+  const { data } = useSuspenseQuery({
+    ...userProfileQueryOptions(),
+    select: (data) => data.data,
+  });
+
+  if (!data) return <SettingsUnloginPage />;
+
   return (
-    <FetchBoundary queries={[serverUserProfileQueryOptions()]}>
-      <SettingContent />
-    </FetchBoundary>
+    <>
+      <UserProfile profile={data} />
+      <LanguageSection />
+      <ExcludedDomainSection domains={data.excludedDomains} />
+    </>
   );
 };
 
-export default SettingsPage;
+export default SettingPage;

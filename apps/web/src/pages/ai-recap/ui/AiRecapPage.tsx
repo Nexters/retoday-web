@@ -1,12 +1,45 @@
-import { serverAiRecapQueryOptions } from "@/features/ai-recap/api/ai-recap-query.server";
-import AiRecapContent from "@/features/ai-recap/ui/AiRecapContent";
-import FetchBoundary from "@/shared/lib/query/FetchBoundary";
+"use client";
 
-const AiRecapPage = async ({ date }: { date: string }) => {
+import type { RecapData } from "@recap/api";
+import { useSuspenseQuery } from "@tanstack/react-query";
+
+import { AuthConsumer } from "@/entities/auth/ui";
+import { aiRecapQueryOptions } from "@/features/ai-recap/api/ai-recap-query.client";
+import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
+import AiTimeline from "@/features/ai-recap/ui/AiTimeline";
+import RecapSummary from "@/features/ai-recap/ui/RecapSummary";
+import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
+import AiRecapEmptyPage from "@/pages/ai-recap/ui/AiRecapEmptyPage";
+import AiRecapLoadingPage from "@/pages/ai-recap/ui/AiRecapLoadingPage";
+import AiRecapUnloginPage from "@/pages/ai-recap/ui/AiRecapUnloginPage";
+
+const AiRecapPage = ({ date }: { date: string }) => (
+  <AuthConsumer>
+    {({ isReady, isLoggedIn }) => {
+      if (!isReady) return <AiRecapLoadingPage />;
+      if (!isLoggedIn) return <AiRecapUnloginPage />;
+      return <LoggedInRecap date={date} />;
+    }}
+  </AuthConsumer>
+);
+
+const LoggedInRecap = ({ date }: { date: string }) => {
+  const { data: recap } = useSuspenseQuery({
+    ...aiRecapQueryOptions(date),
+    select: (data): RecapData | null => {
+      const recap = data.data;
+      return recap && hasRecapContent(recap) ? recap : null;
+    },
+  });
+
+  if (!recap) return <AiRecapEmptyPage />;
+
   return (
-    <FetchBoundary queries={[serverAiRecapQueryOptions(date)]}>
-      <AiRecapContent date={date} />
-    </FetchBoundary>
+    <>
+      <RecapSummary recap={recap} />
+      <AiTimeline timelines={recap.timelines ?? []} />
+      <TopVisitedTopics topics={recap.topics ?? []} />
+    </>
   );
 };
 
