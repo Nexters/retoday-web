@@ -1,4 +1,5 @@
 export {
+  clearSession,
   fetchSession,
   loginWithOAuth,
   logoutSession,

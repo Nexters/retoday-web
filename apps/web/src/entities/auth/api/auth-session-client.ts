@@ -52,6 +52,20 @@ export async function logoutSession() {
   return res.json();
 }
 
+export async function clearSession() {
+  const res = await fetch("/api/auth/session", {
+    method: "DELETE",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    await parseError(res);
+  }
+
+  return res.json();
+}
+
 export async function fetchSession(): Promise<SessionResponse> {
   const res = await fetch("/api/auth/session", {
     credentials: "include",

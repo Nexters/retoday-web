@@ -5,7 +5,6 @@ import { DEFAULT_LANGUAGE } from "@recap/i18n";
 
 import { LanguageProvider, ReactQueryProvider } from "@/app/providers";
 import { AnalyticsProvider, AnalyticsScripts } from "@/app/providers/analytics";
-import { getServerSession } from "@/entities/auth/model/get-server-session";
 import { AuthProvider } from "@/entities/auth/ui";
 import { MainHeader, MainLayout } from "@/widgets/layout/ui";
 
@@ -48,8 +47,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { isLoggedIn: initialIsLoggedIn } = await getServerSession();
-
   return (
     <html
       lang={DEFAULT_LANGUAGE}
@@ -60,7 +57,7 @@ export default async function RootLayout({
         <ReactQueryProvider>
           <LanguageProvider>
             <AnalyticsProvider>
-              <AuthProvider initialIsLoggedIn={initialIsLoggedIn}>
+              <AuthProvider>
                 <MainLayout>
                   <Suspense>
                     <MainHeader />
