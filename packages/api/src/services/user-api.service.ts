@@ -24,4 +24,11 @@ export class UserAPIService {
       data,
     });
   }
+
+  deleteAccount(data: { oAuthToken: string }) {
+    return this.fetch.delete({
+      url: "users/me",
+      data,
+    });
+  }
 }
