@@ -1,8 +1,9 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useLocale } from "@recap/i18n";
 import { useDisclosure } from "@recap/lib";
+import { useQueryClient } from "@recap/react-query";
 import {
   Button,
   Dialog,
@@ -14,6 +15,11 @@ import {
   Stepper,
 } from "@recap/ui";
 
+import { clearSession } from "@/entities/auth/api/auth-session-client";
+import { requestGoogleAccessToken } from "@/entities/auth/lib/request-google-access-token";
+import { useAuth } from "@/entities/auth/ui";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
+import { useDeleteUserAccount } from "@/features/settings/api/user-query.client";
 import {
   INITIAL_DELETE_ACCOUNT_FORM,
   STEP_TITLE_KEYS,
@@ -26,16 +32,19 @@ import RightIcon from "@/shared/assets/icons/arrow-right-gray.svg";
 
 const DeleteAccountButton = () => {
   const { t } = useLocale("settings");
+  const { refreshAuth } = useAuth();
+  const queryClient = useQueryClient();
+  const { mutateAsync: deleteUserAccount } = useDeleteUserAccount();
   const [isOpen, { close, set }] = useDisclosure(false);
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<DeleteAccountForm>({
     ...INITIAL_DELETE_ACCOUNT_FORM,
   });
 
-  const resetState = useCallback(() => {
+  const resetState = () => {
     setStep(0);
     setForm({ ...INITIAL_DELETE_ACCOUNT_FORM });
-  }, []);
+  };
 
   const handleOpenChange = (open: boolean) => {
     set(open);
@@ -50,7 +59,16 @@ const DeleteAccountButton = () => {
   };
 
   const handleSubmit = async () => {
-    // TODO: 회원 탈퇴 API 연동
+    const oAuthToken = await requestGoogleAccessToken();
+    await deleteUserAccount({ oAuthToken });
+  };
+
+  const handleConfirm = async () => {
+    await clearSession();
+    queryClient.removeQueries({
+      queryKey: USER_KEYS.details(),
+    });
+    await refreshAuth();
   };
 
   return (
@@ -74,7 +92,7 @@ const DeleteAccountButton = () => {
         <Stepper currentStep={step} onStepChange={setStep}>
           <ReasonStep value={form} onChange={setForm} onCancel={handleClose} />
           <ConfirmStep onSubmit={handleSubmit} onCancel={handleClose} />
-          <DoneStep onClose={handleClose} />
+          <DoneStep onConfirm={handleConfirm} onClose={handleClose} />
         </Stepper>
       </DialogContent>
     </Dialog>
