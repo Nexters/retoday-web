@@ -40,13 +40,12 @@ export function createServerAuthedRestAPI(
 
       try {
         const refreshed = await refreshAuthTokens(apiBaseURL);
+
         if (!refreshed) return res;
 
-        const newAccess = await serverTokenStore.getAccess();
-        if (!newAccess) return res;
-
-        const retryHeaders = new Headers(init.headers);
-        retryHeaders.set("Authorization", `Bearer ${newAccess}`);
+        const retryHeaders = new Headers();
+        retryHeaders.set("Authorization", `Bearer ${refreshed.accessToken}`);
+        retryHeaders.set("Accept", "application/json");
 
         return fetch(url, { ...init, headers: retryHeaders });
       } catch {
