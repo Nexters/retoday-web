@@ -16,7 +16,7 @@ import {
 
 import {
   INITIAL_DELETE_ACCOUNT_FORM,
-  STEP_TITLES,
+  STEP_TITLE_KEYS,
 } from "@/features/settings/config/account-reason";
 import type { DeleteAccountForm } from "@/features/settings/model/account.type";
 import ConfirmStep from "@/features/settings/ui/delete-account/ConfirmStep";
@@ -66,7 +66,9 @@ const DeleteAccountButton = () => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader className="border-b border-solid border-gray-200">
-          <DialogTitle>{STEP_TITLES[step]}</DialogTitle>
+          <DialogTitle>
+            {t(`deleteAccount.stepTitle.${STEP_TITLE_KEYS[step]}`)}
+          </DialogTitle>
           {step !== 2 && <DialogClose />}
         </DialogHeader>
         <Stepper currentStep={step} onStepChange={setStep}>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useLocale } from "@recap/i18n";
 import {
   Button,
   DialogFooter,
@@ -23,6 +24,7 @@ type ReasonStepProps = {
 
 const ReasonStep = ({ value, onChange, onCancel }: ReasonStepProps) => {
   const { next } = useStepper();
+  const { t } = useLocale("settings");
 
   return (
     <div className="flex flex-col p-5">
@@ -32,19 +34,21 @@ const ReasonStep = ({ value, onChange, onCancel }: ReasonStepProps) => {
           onValueChange={(reason) => onChange({ ...value, reason })}
         >
           <SelectTrigger className="text-subtitle-1-md h-14 text-gray-800">
-            <SelectValue placeholder="탈퇴사유를 선택해주세요" />
+            <SelectValue
+              placeholder={t("deleteAccount.reasonSelectPlaceholder")}
+            />
           </SelectTrigger>
           <SelectContent>
-            {ACCOUNT_REASON_LIST.map((item) => (
-              <SelectItem key={item.value} value={item.value}>
-                {item.label}
+            {ACCOUNT_REASON_LIST.map((reason) => (
+              <SelectItem key={reason} value={reason}>
+                {t(`deleteAccount.reasonOptions.${reason}`)}
               </SelectItem>
             ))}
           </SelectContent>
         </Select>
         <TextArea
           rows={8}
-          placeholder="불편했던 점이나 의견을 자유롭게 적어주세요.작은 의견 하나도 서비스 개선에 큰 도움이 됩니다! eg) 00 이 불편해요. / 이런 기능이 필요해요."
+          placeholder={t("deleteAccount.commentPlaceholder")}
           value={value.comment}
           onChange={(event) =>
             onChange({ ...value, comment: event.target.value })
@@ -59,7 +63,7 @@ const ReasonStep = ({ value, onChange, onCancel }: ReasonStepProps) => {
           type="button"
           onClick={onCancel}
         >
-          취소하기
+          {t("deleteAccount.cancel")}
         </Button>
         <Button
           className="flex-2"
@@ -67,7 +71,7 @@ const ReasonStep = ({ value, onChange, onCancel }: ReasonStepProps) => {
           disabled={!value.reason}
           onClick={next}
         >
-          계속하기
+          {t("deleteAccount.continue")}
         </Button>
       </DialogFooter>
     </div>

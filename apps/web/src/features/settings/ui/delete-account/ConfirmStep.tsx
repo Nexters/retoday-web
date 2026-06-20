@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useLocale } from "@recap/i18n";
 import {
   Alert,
   AlertDescription,
@@ -18,6 +19,7 @@ type ConfirmStepProps = {
 };
 
 const ConfirmStep = ({ onSubmit, onCancel }: ConfirmStepProps) => {
+  const { t } = useLocale("settings");
   const { next } = useStepper();
   const [agreed, setAgreed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,12 +42,11 @@ const ConfirmStep = ({ onSubmit, onCancel }: ConfirmStepProps) => {
         <Alert>
           <AlertDescription>
             <ErrorIcon />
-            지금 탈퇴하시면 배송 예정된 리캡을 받아볼 수 없어요
+            {t("deleteAccount.confirmAlert1")}
           </AlertDescription>
           <AlertDescription>
             <ErrorIcon />
-            탈퇴 후에는 분석, 리캡 기록을 이용할 수 없게 돼요. 추후에 동일
-            계정으로 재가입하더라도 내역은 복구되지 않아요
+            {t("deleteAccount.confirmAlert2")}
           </AlertDescription>
         </Alert>
         <label className="flex items-center gap-1">
@@ -54,7 +55,7 @@ const ConfirmStep = ({ onSubmit, onCancel }: ConfirmStepProps) => {
             onCheckedChange={(checked) => setAgreed(checked === true)}
           />
           <span className="text-body-2 text-gray-800">
-            회원탈퇴 안내사항을 확인하였으며, 이에 동의합니다.
+            {t("deleteAccount.confirmAgreement")}
           </span>
         </label>
       </div>
@@ -67,7 +68,7 @@ const ConfirmStep = ({ onSubmit, onCancel }: ConfirmStepProps) => {
           onClick={onCancel}
           disabled={isSubmitting}
         >
-          취소하기
+          {t("deleteAccount.cancel")}
         </Button>
         <Button
           className="flex-2"
@@ -75,7 +76,7 @@ const ConfirmStep = ({ onSubmit, onCancel }: ConfirmStepProps) => {
           disabled={!agreed || isSubmitting}
           onClick={handleContinue}
         >
-          {agreed ? "계속하기" : "회원탈퇴"}
+          {agreed ? t("deleteAccount.continue") : t("deleteAccount.submit")}
         </Button>
       </DialogFooter>
     </div>
