@@ -1,11 +1,14 @@
 import { useMemo } from "react";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { useGetWorkPattern } from "@/features/analysis/api/analysis-query";
+import { workPatternQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import { toWorkPatternRatioData } from "@/features/analysis/model/work-pattern-ratio-data";
 import { CURRENT_LOCATION } from "@/shared/config/location";
 
 const useWorkPatternList = (date: string) => {
-  const { data } = useGetWorkPattern({ date, timeZone: CURRENT_LOCATION });
+  const { data } = useSuspenseQuery(
+    workPatternQueryOptions({ date, timeZone: CURRENT_LOCATION }),
+  );
 
   return useMemo(() => {
     if (!data) {

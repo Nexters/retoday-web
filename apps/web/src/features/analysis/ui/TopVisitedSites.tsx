@@ -23,9 +23,9 @@ import { toHttpsUrl } from "@/shared/lib/url";
 const TopVisitedSites = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useTopVisitedSiteList(date);
+  const data = useTopVisitedSiteList(date);
 
-  const isEmpty = !isLoading && data.length === 0;
+  const isEmpty = data.length === 0;
 
   return (
     <Card className="gap-0 rounded-[1.25rem] bg-white p-5 shadow-none md:p-6 xl:p-10">

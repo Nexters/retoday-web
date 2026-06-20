@@ -5,6 +5,7 @@ import {
   useQuery,
   type UseQueryOptions,
 } from "@recap/react-query";
+import { queryOptions } from "@tanstack/react-query";
 
 import { userAPIService } from "@/features/settings/api";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
@@ -18,14 +19,29 @@ type UseGetUserProfileOptions<TData = UserProfileResponse> = Omit<
   "queryKey" | "queryFn" | "retry"
 >;
 
+const userProfileQueryOptions = () =>
+  queryOptions<
+    UserProfileResponse,
+    Error,
+    UserProfileResponse,
+    UserProfileQueryKey
+  >({
+    queryKey: USER_KEYS.details(),
+    queryFn: () => userAPIService.getUserProfile(),
+    retry: false,
+  });
+
 const useGetUserProfile = <TData = UserProfileResponse>(
   options: UseGetUserProfileOptions<TData> = {},
 ) => {
   return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
+    ...(userProfileQueryOptions() as UseQueryOptions<
+      UserProfileResponse,
+      Error,
+      TData,
+      UserProfileQueryKey
+    >),
     ...options,
-    queryKey: USER_KEYS.details(),
-    queryFn: () => userAPIService.getUserProfile(),
-    retry: false,
   });
 };
 
@@ -51,4 +67,9 @@ const useDeleteExcludeDomain = (
   });
 };
 
-export { useDeleteExcludeDomain, useGetUserProfile, usePostExcludeDomain };
+export {
+  useDeleteExcludeDomain,
+  useGetUserProfile,
+  usePostExcludeDomain,
+  userProfileQueryOptions,
+};

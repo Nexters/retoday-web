@@ -1,7 +1,7 @@
 "use client";
 
 import { NAVIGATION_TAB } from "@/shared/config";
-import { useGnbNavigation } from "@/widgets/layout/model/use-gnb-navigation";
+import { useGnbRoute } from "@/widgets/layout/model/use-gnb-route";
 
 import DateSelector from "./DateSelector";
 import FeedbackButton from "./FeedbackButton";
@@ -9,8 +9,8 @@ import RefreshButton from "./RefreshButton";
 import TabNavigation from "./TabNavigation";
 
 const MainHeader = () => {
-  const { currentTab } = useGnbNavigation();
-  const isSettings = currentTab === NAVIGATION_TAB.SETTINGS;
+  const { tab } = useGnbRoute();
+  const isSettings = tab === NAVIGATION_TAB.SETTINGS;
 
   return (
     <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4">

@@ -9,24 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@recap/ui";
-import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { longestStayedWebsiteQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
-import { CURRENT_LOCATION } from "@/shared/config/location";
-import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
-import { getHostFromUrl } from "@/shared/lib/url";
 
-const TodayTimeThief = ({ date }: { date: string }) => {
+const EmptyTodayTimeThief = () => {
   const { t } = useLocale("analysis");
-  const { t: tc } = useLocale("common");
-  const { data } = useSuspenseQuery(
-    longestStayedWebsiteQueryOptions({
-      date,
-      timeZone: CURRENT_LOCATION,
-    }),
-  );
 
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
@@ -37,16 +25,11 @@ const TodayTimeThief = ({ date }: { date: string }) => {
           </CardTitle>
 
           <CardAction className="text-body-1 m-0 w-auto shrink-0 text-gray-500">
-            {t("timeThief.totalLabel", {
-              duration: formatSecondsToMinutes(data?.stayDuration ?? 0, tc),
-            })}
+            -
           </CardAction>
         </div>
 
-        <TimeThiefPill
-          title={getHostFromUrl(data?.domain ?? "") ?? ""}
-          faviconUrl={data?.faviconUrl ?? null}
-        />
+        <TimeThiefPill title="-" faviconUrl={null} />
       </CardHeader>
 
       <CardContent className="relative h-48 p-0 md:h-52 xl:h-54">
@@ -62,4 +45,4 @@ const TodayTimeThief = ({ date }: { date: string }) => {
   );
 };
 
-export default TodayTimeThief;
+export default EmptyTodayTimeThief;

@@ -13,12 +13,14 @@ import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 const LoginButton = ({ className }: { className?: string }) => {
   const { t } = useLocale("settings");
   const { refreshAuth } = useAuth();
+
   const queryClient = useQueryClient();
 
   const onLoginSuccess = useCallback(async () => {
-    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
-    await queryClient.invalidateQueries({ queryKey: USER_KEYS.details() });
     await refreshAuth();
+    queryClient.removeQueries({
+      queryKey: USER_KEYS.details(),
+    });
   }, [queryClient, refreshAuth]);
 
   const { ready, login } = useGoogleTokenLogin({
