@@ -15,8 +15,10 @@ import {
   Stepper,
 } from "@recap/ui";
 
-import { clearSession } from "@/entities/auth/api/auth-session-client";
-import { requestGoogleAccessToken } from "@/entities/auth/lib/request-google-access-token";
+import {
+  clearSession,
+  fetchOAuthToken,
+} from "@/entities/auth/api/auth-session-client";
 import { useAuth } from "@/entities/auth/ui";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import { useDeleteUserAccount } from "@/features/settings/api/user-query.client";
@@ -59,7 +61,7 @@ const DeleteAccountButton = () => {
   };
 
   const handleSubmit = async () => {
-    const oAuthToken = await requestGoogleAccessToken();
+    const oAuthToken = await fetchOAuthToken();
     await deleteUserAccount({ oAuthToken });
   };
 

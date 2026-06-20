@@ -5,10 +5,21 @@ import { parseApiPayload } from "@/entities/auth/lib/parse-api-payload";
 import { serverTokenStore } from "@/entities/auth/model/server-token-store";
 
 type LoginResponse = { accessToken: string; refreshToken: string };
+type LoginRequest = {
+  oAuthToken?: string;
+  provider?: string;
+};
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
+    const body = (await req.json()) as LoginRequest;
+
+    if (!body.oAuthToken) {
+      return NextResponse.json(
+        { message: "OAuth token is required" },
+        { status: 400 },
+      );
+    }
 
     const res = await fetch(buildBackendApiUrl("v1", "auth/login"), {
       method: "POST",
@@ -34,7 +45,10 @@ export async function POST(req: Request) {
       );
     }
 
-    await serverTokenStore.set(tokens);
+    await serverTokenStore.set({
+      ...tokens,
+      oAuthToken: body.oAuthToken,
+    });
 
     return NextResponse.json({ ok: true });
   } catch (error) {
