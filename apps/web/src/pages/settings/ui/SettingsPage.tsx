@@ -4,6 +4,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { AuthConsumer } from "@/entities/auth/ui";
 import { userProfileQueryOptions } from "@/features/settings/api/user-query.client";
+import DeleteAccountButton from "@/features/settings/ui/DeleteAccountButton";
 import ExcludedDomainSection from "@/features/settings/ui/ExcludedDomainSection";
 import LanguageSection from "@/features/settings/ui/LanguageSection";
 import UserProfile from "@/features/settings/ui/UserProfile";
@@ -33,6 +34,7 @@ const LoggedInSettings = () => {
       <UserProfile profile={data} />
       <LanguageSection />
       <ExcludedDomainSection domains={data.excludedDomains} />
+      <DeleteAccountButton />
     </>
   );
 };

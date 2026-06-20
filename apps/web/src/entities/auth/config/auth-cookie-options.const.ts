@@ -7,3 +7,4 @@ export const AUTH_COOKIE_OPTIONS = {
 
 export const ACCESS_TOKEN_MAX_AGE = 60 * 15; // 15분
 export const REFRESH_TOKEN_MAX_AGE = 60 * 60 * 24 * 14; // 14일
+export const OAUTH_TOKEN_MAX_AGE = 60 * 60; // 1시간

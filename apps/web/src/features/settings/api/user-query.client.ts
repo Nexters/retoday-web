@@ -67,8 +67,20 @@ const useDeleteExcludeDomain = (
   });
 };
 
+const useDeleteUserAccount = (
+  options: UseMutationOptions<void, Error, { oAuthToken: string }> = {},
+) => {
+  return useMutation<void, Error, { oAuthToken: string }>({
+    mutationFn: async (data: { oAuthToken: string }) => {
+      await userAPIService.deleteAccount(data);
+    },
+    ...options,
+  });
+};
+
 export {
   useDeleteExcludeDomain,
+  useDeleteUserAccount,
   useGetUserProfile,
   usePostExcludeDomain,
   userProfileQueryOptions,

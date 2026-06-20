@@ -1,4 +1,6 @@
 export {
+  clearSession,
+  fetchOAuthToken,
   fetchSession,
   loginWithOAuth,
   logoutSession,

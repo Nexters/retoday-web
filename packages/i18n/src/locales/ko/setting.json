@@ -4,6 +4,7 @@
     "name": "계정이름",
     "login": "로그인",
     "logout": "로그아웃",
+    "deleteAccount": "회원 탈퇴하기",
     "dailyRecordsPrompt": "로그인하고 내 하루 기록을 확인해 보세요",
     "sampleDataCaption": "지금 보이는 화면은 샘플데이터에요"
   },
@@ -31,5 +32,29 @@
     "delete": "삭제",
     "domainInputPlaceholder": "도메인 입력 (예 : abc.com sample.kr)",
     "add": "추가하기"
+  },
+  "deleteAccount": {
+    "stepTitle": {
+      "confirm": "정말 탈퇴하시겠어요?",
+      "done": "회원 탈퇴 완료"
+    },
+    "reasonSelectPlaceholder": "탈퇴사유를 선택해주세요",
+    "commentPlaceholder": "불편했던 점이나 의견을 자유롭게 적어주세요.\n작은 의견 하나도 서비스 개선에 큰 도움이 됩니다!",
+    "reasonOptions": {
+      "rarelyUse": "자주 사용하지 않아요.",
+      "privacyConcern": "개인정보 보호가 걱정돼요.",
+      "historyCollectionUncomfortable": "브라우저 기록 수집이 부담스러워요.",
+      "syncOrCollectionIssues": "기록 수집이나 연동이 원활하지 않았어요.",
+      "analysisNotUseful": "분석 결과가 충분히 유용하지 않았어요.",
+      "other": "기타"
+    },
+    "confirmAlert1": "지금 탈퇴하시면 배송 예정된 리캡을 받아볼 수 없어요",
+    "confirmAlert2": "탈퇴 후에는 분석, 리캡 기록을 이용할 수 없게 돼요. 추후에 동일 계정으로 재가입하더라도 내역은 복구되지 않아요",
+    "confirmAgreement": "회원탈퇴 안내사항을 확인하였으며, 이에 동의합니다.",
+    "submit": "회원탈퇴",
+    "doneMessage": "지금까지 리투데이를 이용해주셔서 감사합니다.",
+    "confirmButton": "확인하기",
+    "cancel": "취소하기",
+    "continue": "계속하기"
   }
 }

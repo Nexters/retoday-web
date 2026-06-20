@@ -4,6 +4,7 @@
     "name": "Account Name",
     "login": "Sign In",
     "logout": "Log Out",
+    "deleteAccount": "Delete Account",
     "dailyRecordsPrompt": "Log in and check my daily records",
     "sampleDataCaption": "What you see now is sample data"
   },
@@ -31,5 +32,29 @@
     "delete": "Delete",
     "domainInputPlaceholder": "Enter domain (e.g., abc.com sample.kr)",
     "add": "Add"
+  },
+  "deleteAccount": {
+    "stepTitle": {
+      "confirm": "Are you sure you want to delete your account?",
+      "done": "Account Deleted"
+    },
+    "reasonSelectPlaceholder": "Please select a reason for leaving",
+    "commentPlaceholder": "Feel free to share any inconveniences or suggestions.\nEvery bit of feedback helps us improve!",
+    "reasonOptions": {
+      "rarelyUse": "I don't use it often.",
+      "privacyConcern": "I'm concerned about privacy.",
+      "historyCollectionUncomfortable": "Browser history collection feels uncomfortable.",
+      "syncOrCollectionIssues": "History collection or syncing didn't work well.",
+      "analysisNotUseful": "Analysis results weren't useful enough.",
+      "other": "Other"
+    },
+    "confirmAlert1": "If you delete now, you won't receive scheduled recaps.",
+    "confirmAlert2": "After deletion, you won't be able to access analytics or recap history. Even if you re-register with the same account, your data won't be restored.",
+    "confirmAgreement": "I have read and agree to the account deletion notice.",
+    "submit": "Delete Account",
+    "doneMessage": "Thank you for using Retoday.",
+    "confirmButton": "OK",
+    "cancel": "Cancel",
+    "continue": "Continue"
   }
 }

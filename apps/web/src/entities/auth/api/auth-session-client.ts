@@ -52,6 +52,39 @@ export async function logoutSession() {
   return res.json();
 }
 
+export async function clearSession() {
+  const res = await fetch("/api/auth/session", {
+    method: "DELETE",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    await parseError(res);
+  }
+
+  return res.json();
+}
+
+export async function fetchOAuthToken(): Promise<string> {
+  const res = await fetch("/api/auth/oauth-token", {
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    await parseError(res);
+  }
+
+  const body = (await res.json()) as { oAuthToken?: string };
+
+  if (!body.oAuthToken) {
+    throw new Error("OAuth token not found");
+  }
+
+  return body.oAuthToken;
+}
+
 export async function fetchSession(): Promise<SessionResponse> {
   const res = await fetch("/api/auth/session", {
     credentials: "include",
