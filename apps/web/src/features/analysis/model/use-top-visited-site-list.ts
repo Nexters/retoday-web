@@ -1,14 +1,15 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { useTimeZone } from "@/entities/language";
 import { frequentlyVisitedSitesQueryOptions } from "@/features/analysis/api/analysis-query.client";
-import { CURRENT_LOCATION } from "@/shared/config/location";
 
 const useTopVisitedSiteList = (date: string) => {
+  const timeZone = useTimeZone();
   const { data } = useSuspenseQuery(
     frequentlyVisitedSitesQueryOptions({
       date,
       limit: 10,
-      timeZone: CURRENT_LOCATION,
+      timeZone,
     }),
   );
 

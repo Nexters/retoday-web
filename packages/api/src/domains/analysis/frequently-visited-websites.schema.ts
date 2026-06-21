@@ -1,6 +1,7 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, isoDurationStringSchema } from "../../schema";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schemas";
+import { TimeZoneSchema } from "../../schemas/enum.schema";
 
 const WebsiteAnalysisSchema = z.object({
   domain: z.string(),
@@ -20,7 +21,7 @@ export const GetWebsiteAnalysesResponseSchema = CreateResponseSchema(
 export const GetWebsiteAnalysesQuerySchema = z.object({
   date: z.string(),
   limit: z.number(),
-  timeZone: z.string(),
+  timeZone: TimeZoneSchema,
 });
 
 export type GetWebsiteAnalysesQueryType = z.infer<

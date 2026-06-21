@@ -10,11 +10,14 @@
   },
   "languageChange": {
     "title": "언어 변경 (Language)",
+    "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
     "apply": "적용하기"
   },
   "language": {
-    "selectPlaceholder": "선택된 언어"
+    "selectPlaceholder": "선택된 언어",
+    "loggedInSelectPlaceholder": "Selected Language / TimeZone",
+    "optionWithTimeZone": "{{language}} ({{offset}})"
   },
   "recapFrequency": {
     "title": "리캡 주기 설정",

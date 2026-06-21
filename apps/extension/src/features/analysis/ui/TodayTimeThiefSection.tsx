@@ -1,6 +1,7 @@
 import { useLocale } from "@recap/i18n";
-import { CURRENT_TIMEZONE, formatDate } from "@recap/lib";
+import { formatDate } from "@recap/lib";
 
+import useTimeZone from "@/entities/language/model/use-time-zone";
 import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
 import TodayTimeThiefSectionSkeleton from "@/features/analysis/ui/TodayTimeThiefSectionSkeleton";
 import TimeThiefImg from "@/shared/assets/imgs/time-thief.png";
@@ -10,11 +11,12 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 const TodayTimeThiefSection = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("analysis");
+  const timeZone = useTimeZone();
 
   const { data, isLoading } = useGetLongestWebSite(
     {
       date: formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
-      timeZone: CURRENT_TIMEZONE,
+      timeZone,
     },
     {
       retry: false,

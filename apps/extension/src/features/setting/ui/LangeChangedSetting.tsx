@@ -1,20 +1,44 @@
 import { useState } from "react";
 import { type LanguageType, useLocale } from "@recap/i18n";
+import { useQueryClient } from "@recap/react-query";
 import { Button } from "@recap/ui";
 
-import { LanguageSelect, useLanguageStore } from "@/entities/language";
+import { LanguageSelect } from "@/entities/language";
+import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
+import useLanguage from "@/entities/language/model/use-language";
+import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-keys";
+import { USER_KEYS } from "@/features/setting/api/query-keys";
+import { usePatchUserProfile } from "@/features/setting/api/user-query";
+import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
 
 const LangeChangedSetting = () => {
   const { t } = useLocale("settings");
-
-  const localize = useLanguageStore((s) => s.localize);
-  const setLanguage = useLanguageStore((s) => s.setLanguage);
+  const { language, setLanguage } = useLanguage();
+  const queryClient = useQueryClient();
 
   const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageType>(localize);
+    useState<LanguageType>(language);
+
+  const { mutate, isPending } = usePatchUserProfile({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: USER_KEYS.details(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: AI_RECAP_KEYS.all,
+      });
+    },
+  });
 
   const handleApply = () => {
-    setLanguage(selectedLanguage);
+    if (selectedLanguage === language) return;
+
+    mutate(LANGUAGE_TO_PROFILE[selectedLanguage], {
+      onSuccess: () => {
+        setLanguage(selectedLanguage);
+        browserTimeZone.set(LANGUAGE_TO_PROFILE[selectedLanguage].timeZone);
+      },
+    });
   };
 
   return (
@@ -24,15 +48,15 @@ const LangeChangedSetting = () => {
       </h2>
       <div className="my-4">
         <LanguageSelect
-          key={localize}
-          defaultValue={localize}
+          key={language}
+          defaultValue={language}
           onValueChange={setSelectedLanguage}
         />
       </div>
       <Button
         variant="secondary"
         onClick={handleApply}
-        disabled={selectedLanguage === localize}
+        disabled={selectedLanguage === language || isPending}
       >
         {t("languageChange.apply")}
       </Button>
