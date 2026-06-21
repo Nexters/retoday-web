@@ -4,6 +4,7 @@ import { toScreenTimeChartState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import { formatDate, formatDuration } from "@recap/lib";
 
+import useTimeZone from "@/entities/language/model/use-time-zone";
 import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
 import {
   SCREEN_TIME_MODE_CONFIG,
@@ -11,7 +12,6 @@ import {
 } from "@/features/analysis/lib/screen-time-config.const";
 import WeeklyScreenTimeSectionSkeleton from "@/features/analysis/ui/WeeklyScreenTimeSectionSkeleton";
 import { DATE_FORMAT } from "@/shared/config";
-import { CURRENT_LOCATION } from "@/shared/config/location";
 import {
   ScreenTimeWeeklyBarChart,
   ToggleGroup,
@@ -26,9 +26,10 @@ const WeeklyScreenTimeSection = () => {
   const { t: tc } = useLocale("common");
 
   const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
+  const timeZone = useTimeZone();
 
   const { data, isLoading } = useGetAnalysisScreenTime(
-    { date, period: mode, timeZone: CURRENT_LOCATION },
+    { date, period: mode, timeZone },
     {
       select: (screenTimeData) =>
         toScreenTimeChartState({ data: screenTimeData, mode, date, t }),

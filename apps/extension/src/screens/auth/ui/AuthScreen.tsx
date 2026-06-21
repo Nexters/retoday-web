@@ -35,7 +35,7 @@ const AuthScreen = () => {
           className="size-40 rounded-4xl"
         />
         <h1 className="text-display-1 mt-6">{t("landing.brand")}</h1>
-        <h2 className="text-subtitle-1-md text-gray-800">
+        <h2 className="text-subtitle-1-md text-gray-800 w-full px-10 text-center">
           {t("landing.headline")}
         </h2>
         <GoogleLoginButton className="mt-9" onClick={handleGoogleLogin} />
