@@ -45,6 +45,7 @@ jobs:
 
       - name: Zip build output
         run: |
+          test -d apps/extension/dist/chrome || (echo "Build output not found at apps/extension/dist/chrome" && exit 1)
           cd apps/extension/dist/chrome
           zip -r ../../../../retoday-extension-v${{ steps.version.outputs.tag }}.zip .
 
