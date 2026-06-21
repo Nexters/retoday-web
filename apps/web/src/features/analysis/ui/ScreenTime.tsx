@@ -16,12 +16,12 @@ import {
 } from "@recap/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { useTimeZone } from "@/entities/language";
 import { screenTimeQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
 } from "@/features/analysis/lib/screen-time-config.const";
-import { CURRENT_LOCATION } from "@/shared/config/location";
 import {
   ScreenTimeWeeklyBarChart,
   ToggleGroup,
@@ -32,12 +32,13 @@ const ScreenTime = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
+  const timeZone = useTimeZone();
 
   const { data } = useSuspenseQuery({
     ...screenTimeQueryOptions({
       date,
       period: mode,
-      timeZone: CURRENT_LOCATION,
+      timeZone,
     }),
     select: (screenTimeData) =>
       toScreenTimeChartState({ data: screenTimeData, mode, date, t }),

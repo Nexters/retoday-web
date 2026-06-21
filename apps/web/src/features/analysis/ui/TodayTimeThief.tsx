@@ -11,20 +11,21 @@ import {
 } from "@recap/ui";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
+import { useTimeZone } from "@/entities/language";
 import { longestStayedWebsiteQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
-import { CURRENT_LOCATION } from "@/shared/config/location";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 import { getHostFromUrl } from "@/shared/lib/url";
 
 const TodayTimeThief = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
+  const timeZone = useTimeZone();
   const { data } = useSuspenseQuery(
     longestStayedWebsiteQueryOptions({
       date,
-      timeZone: CURRENT_LOCATION,
+      timeZone,
     }),
   );
 

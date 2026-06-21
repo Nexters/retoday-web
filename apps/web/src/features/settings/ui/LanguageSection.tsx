@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { type LanguageType, useLocale } from "@recap/i18n";
+import { useQueryClient } from "@recap/react-query";
 import {
   Button,
   Card,
@@ -12,7 +13,12 @@ import {
   Flex,
 } from "@recap/ui";
 
-import { LanguageSelect, useLanguageStore } from "@/entities/language";
+import { useAuth } from "@/entities/auth/ui";
+import { LanguageSelect, useLanguage } from "@/entities/language";
+import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-keys";
+import { USER_KEYS } from "@/features/settings/api/query-keys";
+import { usePatchUserProfile } from "@/features/settings/api/user-query.client";
+import { LANGUAGE_TO_PROFILE } from "@/features/settings/config/language.const";
 
 type LanguageSectionProps = {
   disabled?: boolean;
@@ -20,14 +26,32 @@ type LanguageSectionProps = {
 
 const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
   const { t } = useLocale("settings");
-  const localize = useLanguageStore((s) => s.localize);
-  const setLanguage = useLanguageStore((s) => s.setLanguage);
+
+  const { isLoggedIn } = useAuth();
+  const { language, setLanguage } = useLanguage();
+  const queryClient = useQueryClient();
 
   const [selectedLanguage, setSelectedLanguage] =
-    useState<LanguageType>(localize);
+    useState<LanguageType>(language);
+
+  const { mutate, isPending } = usePatchUserProfile({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: USER_KEYS.details(),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: AI_RECAP_KEYS.all,
+      });
+    },
+  });
 
   const handleApply = () => {
-    if (disabled || selectedLanguage === localize) return;
+    if (disabled || selectedLanguage === language) return;
+    if (isLoggedIn) {
+      mutate(LANGUAGE_TO_PROFILE[selectedLanguage]);
+      return;
+    }
     setLanguage(selectedLanguage);
   };
 
@@ -35,6 +59,7 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
     <Card
       className={cn(
         "flex w-full flex-col flex-nowrap items-stretch gap-6 px-9 py-8 md:px-6 md:py-6 xl:px-9 xl:py-8",
+
         disabled && "pointer-events-none opacity-50",
       )}
     >
@@ -52,9 +77,9 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
         >
           <div className="w-full min-w-0 md:flex-1">
             <LanguageSelect
-              key={localize}
+              key={language}
               className="h-auto min-h-[52px] w-full rounded-xl border-gray-200 py-4"
-              defaultValue={localize}
+              defaultValue={language}
               onValueChange={setSelectedLanguage}
               disabled={disabled}
             />
@@ -67,11 +92,12 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
               size="md"
               className={cn(
                 "px-6 md:w-auto! md:justify-start!",
-                selectedLanguage === localize &&
+
+                selectedLanguage === language &&
                   "bg-gray-500 hover:bg-gray-600",
               )}
               onClick={handleApply}
-              disabled={disabled}
+              disabled={disabled || selectedLanguage === language || isPending}
             >
               {t("languageChange.apply")}
             </Button>

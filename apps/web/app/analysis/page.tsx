@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { SERVER_TIMEZONE } from "@recap/lib";
 import { Grid, Stack } from "@recap/ui";
 
 import AuthBoundary from "@/entities/auth/ui/AuthBoundary";
@@ -51,7 +52,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
               serverScreenTimeQueryOptions({
                 date,
                 period: "DAILY",
-                timeZone: "SEOUL",
+                timeZone: SERVER_TIMEZONE.SEOUL,
               }),
             ]}
           >
@@ -63,7 +64,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
             queries={[
               serverCategoryAnalysisQueryOptions({
                 date,
-                timeZone: "SEOUL",
+                timeZone: SERVER_TIMEZONE.SEOUL,
               }),
             ]}
           >
@@ -80,7 +81,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
               queries={[
                 serverWorkPatternQueryOptions({
                   date,
-                  timeZone: "SEOUL",
+                  timeZone: SERVER_TIMEZONE.SEOUL,
                 }),
               ]}
             >
@@ -93,7 +94,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
                 queries={[
                   serverLongestStayedWebsiteQueryOptions({
                     date,
-                    timeZone: "SEOUL",
+                    timeZone: SERVER_TIMEZONE.SEOUL,
                   }),
                 ]}
               >
@@ -108,7 +109,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
               serverFrequentlyVisitedSitesQueryOptions({
                 date,
                 limit: 10,
-                timeZone: "SEOUL",
+                timeZone: SERVER_TIMEZONE.SEOUL,
               }),
             ]}
           >
