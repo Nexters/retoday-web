@@ -1,22 +1,8 @@
 import type { PropsWithChildren } from "react";
-import { getHttpStatus, ReactQueryProvider } from "@recap/react-query";
-
-import { useAuthStore } from "@/entities/auth/model";
+import { ReactQueryProvider } from "@recap/react-query";
 
 const QueryProvider = ({ children }: PropsWithChildren) => {
-  return (
-    <ReactQueryProvider
-      options={{
-        onError: (error) => {
-          if (getHttpStatus(error) === 401) {
-            useAuthStore.getState().setIsLoggedIn(false);
-          }
-        },
-      }}
-    >
-      {children}
-    </ReactQueryProvider>
-  );
+  return <ReactQueryProvider>{children}</ReactQueryProvider>;
 };
 
 export default QueryProvider;

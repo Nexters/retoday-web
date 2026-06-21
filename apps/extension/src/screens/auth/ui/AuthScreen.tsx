@@ -1,35 +1,16 @@
-import { useLayoutEffect } from "react";
 import { Trans, useLocale } from "@recap/i18n";
 
-import { useAuthStore } from "@/entities/auth/model";
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
 import { LanguageSelect, useLanguageStore } from "@/entities/language";
 import GoogleLoginButton from "@/screens/auth/ui/GoogleLoginButton";
 import LogoImg from "@/shared/assets/icons/favicon-128.png";
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "@/shared/config";
-import useBrowserMessage from "@/shared/lib/browser/use-browser-message";
-import { tokenStore } from "@/shared/lib/token-store";
 
 const AuthScreen = () => {
   const { t } = useLocale("landing");
 
   const language = useLanguageStore((s) => s.localize);
   const setLanguage = useLanguageStore((s) => s.setLanguage);
-
-  const setIsLoggedIn = useAuthStore((s) => s.setIsLoggedIn);
-
-  const checkAuth = async () => {
-    const accessToken = await tokenStore.getAccess();
-    setIsLoggedIn(accessToken !== null);
-  };
-
-  useLayoutEffect(() => {
-    void checkAuth();
-  }, []);
-
-  useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
-    void checkAuth();
-  });
 
   const handleGoogleLogin = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
