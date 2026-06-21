@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CreateResponseSchema } from "../../schema";
+import { CreateResponseSchema } from "../../schemas";
 
 export const WorkPatternDayEnum = z.enum([
   "DAWN",

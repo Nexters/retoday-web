@@ -4,7 +4,7 @@ import {
   CreateResponseSchema,
   dateStringSchema,
   isoDurationStringSchema,
-} from "../../schema";
+} from "../../schemas";
 
 export const RecapSectionSchema = z.object({
   title: z.string(),
