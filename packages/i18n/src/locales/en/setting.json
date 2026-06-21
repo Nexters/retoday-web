@@ -9,12 +9,15 @@
     "sampleDataCaption": "What you see now is sample data"
   },
   "languageChange": {
-    "title": "언어 변경 (Language)",
+    "title": "Language",
+    "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
     "apply": "Apply"
   },
   "language": {
-    "selectPlaceholder": "Selected language"
+    "selectPlaceholder": "Selected language",
+    "loggedInSelectPlaceholder": "Selected Language / TimeZone",
+    "optionWithTimeZone": "{{language}} ({{offset}})"
   },
   "recapFrequency": {
     "title": "Recap Frequency Settings",

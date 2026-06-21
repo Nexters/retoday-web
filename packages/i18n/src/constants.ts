@@ -65,3 +65,15 @@ export const resources = {
 } as const;
 
 export type Resources = (typeof resources)[keyof typeof resources];
+
+export const LANGUAGE_LABEL: Record<LanguageType, string> = {
+  ko: "한국어",
+  en: "English",
+  ja: "日本語",
+};
+
+export const LANGUAGE_UTC_OFFSET: Record<LanguageType, string> = {
+  en: "UTC-08:00",
+  ko: "UTC+09:00",
+  ja: "UTC+09:00",
+};

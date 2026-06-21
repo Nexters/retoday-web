@@ -1,6 +1,8 @@
 export {
   DEFAULT_LANGUAGE,
   DEFAULT_NAMESPACE,
+  LANGUAGE_LABEL,
+  LANGUAGE_UTC_OFFSET,
   LanguageList,
   type LanguageType,
   type Namespace,
