@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import { LanguageProvider } from "@/app/providers/language-provider";
 import { QueryProvider } from "@/app/providers/query-provider";
+import { AuthProvider } from "@/entities/auth/ui";
 
 import { SidePanel } from "./SidePanel";
 
@@ -13,9 +14,11 @@ if (container) {
   createRoot(container).render(
     <StrictMode>
       <LanguageProvider>
-        <QueryProvider>
-          <SidePanel />
-        </QueryProvider>
+        <AuthProvider>
+          <QueryProvider>
+            <SidePanel />
+          </QueryProvider>
+        </AuthProvider>
       </LanguageProvider>
     </StrictMode>,
   );

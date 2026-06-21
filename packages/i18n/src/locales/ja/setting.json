@@ -4,16 +4,20 @@
     "name": "アカウント名",
     "login": "ログイン",
     "logout": "ログアウト",
+    "deleteAccount": "会員退会",
     "dailyRecordsPrompt": "ログインして、今日の記録を確認してみてください",
     "sampleDataCaption": "現在表示されているのはサンプルデータです"
   },
   "languageChange": {
     "title": "言語変更（Language）",
+    "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
     "apply": "適用する"
   },
   "language": {
-    "selectPlaceholder": "選択中の言語"
+    "selectPlaceholder": "選択中の言語",
+    "loggedInSelectPlaceholder": "Selected Language / TimeZone",
+    "optionWithTimeZone": "{{language}} ({{offset}})"
   },
   "recapFrequency": {
     "title": "リキャップ頻度設定",
@@ -31,5 +35,29 @@
     "delete": "削除",
     "domainInputPlaceholder": "ドメイン入力 (例: abc.com sample.kr)",
     "add": "追加"
+  },
+  "deleteAccount": {
+    "stepTitle": {
+      "confirm": "本当に退会しますか？",
+      "done": "退会完了"
+    },
+    "reasonSelectPlaceholder": "退会理由を選択してください",
+    "commentPlaceholder": "ご不便な点やご意見を自由にお書きください。\n小さなご意見もサービス改善に大いに役立ちます！",
+    "reasonOptions": {
+      "rarelyUse": "あまり使わない。",
+      "privacyConcern": "個人情報の保護が心配。",
+      "historyCollectionUncomfortable": "ブラウザ履歴の収集が負担。",
+      "syncOrCollectionIssues": "履歴収集や連携がうまくいかなかった。",
+      "analysisNotUseful": "分析結果が十分に役立たなかった。",
+      "other": "その他"
+    },
+    "confirmAlert1": "今退会すると、配信予定のリキャップを受け取れなくなります",
+    "confirmAlert2": "退会後は分析・リキャップ履歴を利用できなくなります。同じアカウントで再登録しても履歴は復元されません",
+    "confirmAgreement": "会員退会の案内事項を確認し、これに同意します。",
+    "submit": "会員退会",
+    "doneMessage": "これまでRetodayをご利用いただきありがとうございました。",
+    "confirmButton": "確認",
+    "cancel": "キャンセル",
+    "continue": "続ける"
   }
 }

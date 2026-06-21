@@ -9,21 +9,25 @@ import {
   CardHeader,
   CardTitle,
 } from "@recap/ui";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
-import { useGetLongestWebSite } from "@/features/analysis/api/analysis-query";
+import { useTimeZone } from "@/entities/language";
+import { longestStayedWebsiteQueryOptions } from "@/features/analysis/api/analysis-query.client";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
 import TimeThiefImg from "@/shared/assets/img/time-thief.png";
-import { CURRENT_LOCATION } from "@/shared/config/location";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 import { getHostFromUrl } from "@/shared/lib/url";
 
 const TodayTimeThief = ({ date }: { date: string }) => {
   const { t } = useLocale("analysis");
   const { t: tc } = useLocale("common");
-  const { data, isLoading } = useGetLongestWebSite({
-    date,
-    timeZone: CURRENT_LOCATION,
-  });
+  const timeZone = useTimeZone();
+  const { data } = useSuspenseQuery(
+    longestStayedWebsiteQueryOptions({
+      date,
+      timeZone,
+    }),
+  );
 
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
@@ -34,16 +38,14 @@ const TodayTimeThief = ({ date }: { date: string }) => {
           </CardTitle>
 
           <CardAction className="text-body-1 m-0 w-auto shrink-0 text-gray-500">
-            {isLoading
-              ? "-"
-              : t("timeThief.totalLabel", {
-                  duration: formatSecondsToMinutes(data?.stayDuration ?? 0, tc),
-                })}
+            {t("timeThief.totalLabel", {
+              duration: formatSecondsToMinutes(data?.stayDuration ?? 0, tc),
+            })}
           </CardAction>
         </div>
 
         <TimeThiefPill
-          title={isLoading ? "-" : (getHostFromUrl(data?.domain ?? "") ?? "")}
+          title={getHostFromUrl(data?.domain ?? "") ?? ""}
           faviconUrl={data?.faviconUrl ?? null}
         />
       </CardHeader>

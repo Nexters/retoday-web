@@ -1,0 +1,48 @@
+"use client";
+
+import Image from "next/image";
+import { useLocale } from "@recap/i18n";
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@recap/ui";
+
+import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
+import TimeThiefImg from "@/shared/assets/img/time-thief.png";
+
+const EmptyTodayTimeThief = () => {
+  const { t } = useLocale("analysis");
+
+  return (
+    <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
+      <CardHeader className="gap-3.5 p-5 pb-0 md:p-6 md:pb-0 xl:p-10 xl:pb-0">
+        <div className="flex items-center justify-between gap-4">
+          <CardTitle className="text-heading-rg whitespace-nowrap text-gray-800">
+            {t("timeThief.title")}
+          </CardTitle>
+
+          <CardAction className="text-body-1 m-0 w-auto shrink-0 text-gray-500">
+            -
+          </CardAction>
+        </div>
+
+        <TimeThiefPill title="-" faviconUrl={null} />
+      </CardHeader>
+
+      <CardContent className="relative h-48 p-0 md:h-52 xl:h-54">
+        <Image
+          src={TimeThiefImg}
+          alt={t("timeThief.imageAlt")}
+          fill
+          className="object-cover"
+          priority={false}
+        />
+      </CardContent>
+    </Card>
+  );
+};
+
+export default EmptyTodayTimeThief;

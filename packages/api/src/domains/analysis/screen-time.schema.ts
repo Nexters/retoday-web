@@ -4,7 +4,8 @@ import {
   CreateResponseSchema,
   dateStringSchema,
   isoDurationStringSchema,
-} from "../../schema";
+} from "../../schemas";
+import { TimeZoneSchema } from "../../schemas/enum.schema";
 
 const ScreenTimePeriodEnum = z.enum(["DAILY", "WEEKLY"]);
 
@@ -29,7 +30,7 @@ export const GetScreenTimeResponseSchema =
 export const GetScreenTimeQuerySchema = z.object({
   date: z.string(),
   period: ScreenTimePeriodEnum,
-  timeZone: z.string(),
+  timeZone: TimeZoneSchema,
 });
 
 export type GetScreenTimeQueryType = z.infer<typeof GetScreenTimeQuerySchema>;

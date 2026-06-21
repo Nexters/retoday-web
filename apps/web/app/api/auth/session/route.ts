@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 
-import { getServerSession } from "@/entities/auth/model/get-server-session";
+import { serverTokenStore } from "@/entities/auth/model/server-token-store";
 
 export async function GET() {
-  const session = await getServerSession();
+  const isLoggedIn = await serverTokenStore.hasRefresh();
 
-  return NextResponse.json(session);
+  return NextResponse.json({ isLoggedIn });
+}
+
+export async function DELETE() {
+  await serverTokenStore.clear();
+
+  return NextResponse.json({ ok: true });
 }

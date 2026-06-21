@@ -1,10 +1,15 @@
-import type { Envelope, UserProfileType } from "@recap/api";
+import type {
+  Envelope,
+  PatchUserProfileDTO,
+  UserProfileType,
+} from "@recap/api";
 import {
   useMutation,
   type UseMutationOptions,
   useQuery,
   type UseQueryOptions,
 } from "@recap/react-query";
+import { queryOptions } from "@tanstack/react-query";
 
 import { userAPIService } from "@/features/settings/api";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
@@ -18,14 +23,29 @@ type UseGetUserProfileOptions<TData = UserProfileResponse> = Omit<
   "queryKey" | "queryFn" | "retry"
 >;
 
+const userProfileQueryOptions = () =>
+  queryOptions<
+    UserProfileResponse,
+    Error,
+    UserProfileResponse,
+    UserProfileQueryKey
+  >({
+    queryKey: USER_KEYS.details(),
+    queryFn: () => userAPIService.getUserProfile(),
+    retry: false,
+  });
+
 const useGetUserProfile = <TData = UserProfileResponse>(
   options: UseGetUserProfileOptions<TData> = {},
 ) => {
   return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
+    ...(userProfileQueryOptions() as UseQueryOptions<
+      UserProfileResponse,
+      Error,
+      TData,
+      UserProfileQueryKey
+    >),
     ...options,
-    queryKey: USER_KEYS.details(),
-    queryFn: () => userAPIService.getUserProfile(),
-    retry: false,
   });
 };
 
@@ -51,4 +71,33 @@ const useDeleteExcludeDomain = (
   });
 };
 
-export { useDeleteExcludeDomain, useGetUserProfile, usePostExcludeDomain };
+const useDeleteUserAccount = (
+  options: UseMutationOptions<void, Error, { oAuthToken: string }> = {},
+) => {
+  return useMutation<void, Error, { oAuthToken: string }>({
+    mutationFn: async (data: { oAuthToken: string }) => {
+      await userAPIService.deleteAccount(data);
+    },
+    ...options,
+  });
+};
+
+const usePatchUserProfile = (
+  options: UseMutationOptions<void, Error, PatchUserProfileDTO> = {},
+) => {
+  return useMutation<void, Error, PatchUserProfileDTO>({
+    mutationFn: async (data) => {
+      await userAPIService.patchUserProfile(data);
+    },
+    ...options,
+  });
+};
+
+export {
+  useDeleteExcludeDomain,
+  useDeleteUserAccount,
+  useGetUserProfile,
+  usePatchUserProfile,
+  usePostExcludeDomain,
+  userProfileQueryOptions,
+};

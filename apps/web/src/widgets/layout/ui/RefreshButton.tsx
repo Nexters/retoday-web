@@ -8,7 +8,7 @@ import { ANALYSIS_KEYS } from "@/features/analysis/api/query-keys";
 import AutoRenewIcon from "@/shared/assets/icons/auto-renew.svg";
 import { NAVIGATION_TAB } from "@/shared/config";
 import { RoundButton } from "@/shared/ui";
-import { useGnbNavigation } from "@/widgets/layout/model/use-gnb-navigation";
+import { useGnbRoute } from "@/widgets/layout/model/use-gnb-route";
 
 const QUERY_KEY_BY_TAB = {
   [NAVIGATION_TAB.AI_RECAP]: AI_RECAP_KEYS.all,
@@ -16,13 +16,12 @@ const QUERY_KEY_BY_TAB = {
 } as const;
 
 const RefreshButton = () => {
-  const { currentTab } = useGnbNavigation();
+  const { tab } = useGnbRoute();
   const { t } = useLocale("landing");
   const queryClient = useQueryClient();
 
   const handleRefresh = () => {
-    const queryKey =
-      QUERY_KEY_BY_TAB[currentTab as keyof typeof QUERY_KEY_BY_TAB];
+    const queryKey = QUERY_KEY_BY_TAB[tab as keyof typeof QUERY_KEY_BY_TAB];
 
     if (!queryKey) return;
 

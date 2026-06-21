@@ -1,3 +1,4 @@
+import type { PatchUserProfileDTO } from "../domains/user/user-profile.schema";
 import { GetUserProfileSchema } from "../domains/user/user-profile.schema";
 import type { RestAPIProtocol } from "../rest/types";
 
@@ -21,6 +22,20 @@ export class UserAPIService {
   deleteExcludedDomain(data: { domain: string }) {
     return this.fetch.delete({
       url: "users/me/excluded-domains",
+      data,
+    });
+  }
+
+  deleteAccount(data: { oAuthToken: string }) {
+    return this.fetch.delete({
+      url: "users/me",
+      data,
+    });
+  }
+
+  patchUserProfile(data: PatchUserProfileDTO) {
+    return this.fetch.patch({
+      url: "users/me/profiles",
       data,
     });
   }

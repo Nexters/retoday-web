@@ -1,5 +1,4 @@
 import { GetCategoryAnalysesResponseSchema } from "../domains/analysis/category-analysis.schema";
-import type { DateTimeZoneQueryType } from "../domains/analysis/enum.schema";
 import {
   type GetWebsiteAnalysesQueryType,
   GetWebsiteAnalysesResponseSchema,
@@ -11,6 +10,7 @@ import {
 } from "../domains/analysis/screen-time.schema";
 import { GetWorkPatternResponseSchema } from "../domains/analysis/work-pattern.schema";
 import type { RestAPIProtocol } from "../rest/types";
+import type { DateTimeZoneQueryType } from "../schemas/enum.schema";
 
 export class AnalysisAPIService {
   constructor(private fetch: RestAPIProtocol) {}

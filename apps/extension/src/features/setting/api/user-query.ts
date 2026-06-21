@@ -1,4 +1,8 @@
-import type { Envelope, UserProfileType } from "@recap/api";
+import type {
+  Envelope,
+  PatchUserProfileDTO,
+  UserProfileType,
+} from "@recap/api";
 import {
   useMutation,
   type UseMutationOptions,
@@ -51,4 +55,15 @@ const useDeleteExcludeDomain = (
   });
 };
 
-export { useDeleteExcludeDomain, usePostExcludeDomain };
+const usePatchUserProfile = (
+  options: UseMutationOptions<void, Error, PatchUserProfileDTO> = {},
+) => {
+  return useMutation<void, Error, PatchUserProfileDTO>({
+    mutationFn: async (data) => {
+      await userAPIService.patchUserProfile(data);
+    },
+    ...options,
+  });
+};
+
+export { useDeleteExcludeDomain, usePatchUserProfile, usePostExcludeDomain };

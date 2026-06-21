@@ -23,7 +23,7 @@ import { USER_KEYS } from "@/features/settings/api/query-keys";
 import {
   useDeleteExcludeDomain,
   usePostExcludeDomain,
-} from "@/features/settings/api/user-query";
+} from "@/features/settings/api/user-query.client";
 
 type ExcludedDomainSectionProps = {
   disabled?: boolean;

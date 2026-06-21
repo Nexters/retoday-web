@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { CreateResponseSchema, isoDurationStringSchema } from "../../schema";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schemas";
 
 const CategoryEnum = z.enum([
   "STUDY",

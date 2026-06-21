@@ -8,7 +8,7 @@ import type {
 } from "@recap/analytics";
 import { createParamsEnricher } from "@recap/analytics";
 
-import { useLanguageStore } from "@/entities/language";
+import { useLanguage } from "@/entities/language";
 
 import { AnalyticsContext } from "./analytics-context";
 
@@ -16,7 +16,7 @@ const APP_VERSION = process.env.NEXT_PUBLIC_APP_VERSION ?? "0.1.0";
 
 export function useAnalytics(): AnalyticsClient {
   const client = useContext(AnalyticsContext);
-  const locale = useLanguageStore((s) => s.localize);
+  const { language: locale } = useLanguage();
 
   return useMemo(() => {
     const enrich = createParamsEnricher(() => ({

@@ -101,7 +101,7 @@ const runScheduledSessionRestart = async () => {
       tabId: Number(activeTabId),
     } as StorageSession;
 
-    browserHistory.createClosedHistory(sessionForClosedHistory);
+    await browserHistory.createClosedHistory(sessionForClosedHistory);
 
     /**
      * 실제 현재 session close 처리
@@ -121,7 +121,7 @@ const runScheduledSessionRestart = async () => {
       closedAt,
     } as StorageSession;
 
-    browserHistory.createHistory(sessionForHistory);
+    await browserHistory.createHistory(sessionForHistory);
 
     /**
      * 같은 탭을 다시 start 상태로 전환
@@ -190,7 +190,7 @@ browser.tabs.onActivated.addListener(async ({ tabId }) => {
   }
 
   if (!removedTabIds.has(Number(closedSession.tabId))) {
-    browserHistory.createHistory(closedSession as StorageSession);
+    await browserHistory.createHistory(closedSession as StorageSession);
   }
 });
 
