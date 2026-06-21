@@ -1,5 +1,9 @@
 import { GetUserProfileSchema } from "../domains/user/user-profile.schema";
 import type { RestAPIProtocol } from "../rest/types";
+import type {
+  LanguageSchemaType,
+  TimeZoneSchemaType,
+} from "../schemas/enum.schema";
 
 export class UserAPIService {
   constructor(private fetch: RestAPIProtocol) {}
@@ -28,6 +32,16 @@ export class UserAPIService {
   deleteAccount(data: { oAuthToken: string }) {
     return this.fetch.delete({
       url: "users/me",
+      data,
+    });
+  }
+
+  patchUserProfile(data: {
+    timeZone: TimeZoneSchemaType;
+    language: LanguageSchemaType;
+  }) {
+    return this.fetch.patch({
+      url: "users/me/profiles",
       data,
     });
   }
