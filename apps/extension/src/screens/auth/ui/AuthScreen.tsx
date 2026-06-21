@@ -1,7 +1,8 @@
 import { Trans, useLocale } from "@recap/i18n";
 
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
-import { LanguageSelect, useLanguageStore } from "@/entities/language";
+import { LanguageSelect } from "@/entities/language";
+import useLanguage from "@/entities/language/model/use-language";
 import GoogleLoginButton from "@/screens/auth/ui/GoogleLoginButton";
 import LogoImg from "@/shared/assets/icons/favicon-128.png";
 import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "@/shared/config";
@@ -9,8 +10,7 @@ import { PRIVACY_POLICY_URL, TERMS_OF_SERVICE_URL } from "@/shared/config";
 const AuthScreen = () => {
   const { t } = useLocale("landing");
 
-  const language = useLanguageStore((s) => s.localize);
-  const setLanguage = useLanguageStore((s) => s.setLanguage);
+  const { language, setLanguage } = useLanguage();
 
   const handleGoogleLogin = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

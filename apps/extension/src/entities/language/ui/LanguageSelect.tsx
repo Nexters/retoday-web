@@ -1,7 +1,10 @@
 import {
   DEFAULT_LANGUAGE,
+  LANGUAGE_LABEL,
+  LANGUAGE_UTC_OFFSET,
   type LanguageType,
   SUPPORTED_LANGUAGES,
+  useLocale,
 } from "@recap/i18n";
 import { useUncontrolled } from "@recap/lib";
 import {
@@ -12,11 +15,7 @@ import {
   SelectValue,
 } from "@recap/ui";
 
-const LANGUAGE_LABEL: Record<LanguageType, string> = {
-  ko: "한국어",
-  en: "English",
-  ja: "日本語",
-};
+import { useAuth } from "@/entities/auth/ui";
 
 type LanguageSelectProps = {
   className?: string;
@@ -40,6 +39,10 @@ const LanguageSelect = ({
   onValueChange,
   disabled,
 }: LanguageSelectProps) => {
+  const { t } = useLocale("settings");
+
+  const { isLoggedIn } = useAuth();
+
   const [selectedLanguage, setSelectedLanguage] = useUncontrolled<LanguageType>(
     {
       value,
@@ -53,6 +56,17 @@ const LanguageSelect = ({
     setSelectedLanguage(next as LanguageType);
   };
 
+  const getLanguageLabel = (lng: LanguageType) => {
+    if (!isLoggedIn) {
+      return LANGUAGE_LABEL[lng];
+    }
+
+    return t("language.optionWithTimeZone", {
+      language: LANGUAGE_LABEL[lng],
+      offset: LANGUAGE_UTC_OFFSET[lng],
+    });
+  };
+
   return (
     <Select
       value={selectedLanguage}
@@ -60,13 +74,19 @@ const LanguageSelect = ({
       disabled={disabled}
     >
       <SelectTrigger className={className}>
-        <SelectValue />
+        <SelectValue
+          placeholder={
+            isLoggedIn
+              ? t("language.loggedInSelectPlaceholder")
+              : t("language.selectPlaceholder")
+          }
+        />
       </SelectTrigger>
 
       <SelectContent>
         {SUPPORTED_LANGUAGES.map((lng) => (
           <SelectItem key={lng} value={lng}>
-            {LANGUAGE_LABEL[lng]}
+            {getLanguageLabel(lng)}
           </SelectItem>
         ))}
       </SelectContent>

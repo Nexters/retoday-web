@@ -1,7 +1,7 @@
 import { Language, SERVER_TIMEZONE } from "@recap/lib";
 import { z } from "zod";
 
-export const LanguageSchema = z.enum([Language.KOREA, Language.ENGLISH]);
+export const LanguageSchema = z.enum([Language.KOREAN, Language.ENGLISH]);
 
 export type LanguageSchemaType = z.infer<typeof LanguageSchema>;
 

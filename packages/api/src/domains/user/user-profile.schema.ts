@@ -17,3 +17,10 @@ const UserProfileSchema = z.object({
 export type UserProfileType = z.infer<typeof UserProfileSchema>;
 
 export const GetUserProfileSchema = CreateResponseSchema(UserProfileSchema);
+
+export const PatchUserProfileSchema = z.object({
+  timeZone: TimeZoneSchema,
+  language: LanguageSchema,
+});
+
+export type PatchUserProfileDTO = z.infer<typeof PatchUserProfileSchema>;

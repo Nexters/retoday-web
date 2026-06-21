@@ -1,9 +1,6 @@
+import type { PatchUserProfileDTO } from "../domains/user/user-profile.schema";
 import { GetUserProfileSchema } from "../domains/user/user-profile.schema";
 import type { RestAPIProtocol } from "../rest/types";
-import type {
-  LanguageSchemaType,
-  TimeZoneSchemaType,
-} from "../schemas/enum.schema";
 
 export class UserAPIService {
   constructor(private fetch: RestAPIProtocol) {}
@@ -36,10 +33,7 @@ export class UserAPIService {
     });
   }
 
-  patchUserProfile(data: {
-    timeZone: TimeZoneSchemaType;
-    language: LanguageSchemaType;
-  }) {
+  patchUserProfile(data: PatchUserProfileDTO) {
     return this.fetch.patch({
       url: "users/me/profiles",
       data,
