@@ -1,20 +1,32 @@
 import type { RestAPIProtocol } from "@recap/api";
 import { RestAPI, RestAPIInstance } from "@recap/api";
 
-import { clearSession } from "@/entities/auth/api/auth-session-client";
+import {
+  clearSession,
+  fetchSession,
+} from "@/entities/auth/api/auth-session-client";
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 
 const CLIENT_BFF_BASE_URL = "/api/backend";
 
 let refreshPromise: Promise<boolean> | null = null;
 
-async function refreshSession(): Promise<boolean> {
+async function refreshSession(refreshToken: string): Promise<boolean> {
   const res = await fetch("/api/auth/refresh", {
     method: "POST",
     credentials: "include",
-    headers: { Accept: "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({ refreshToken }),
   });
 
-  return res.ok;
+  if (!res.ok) return false;
+
+  await fetchSession();
+
+  return true;
 }
 
 function isRefreshUrl(url: string) {
@@ -39,10 +51,13 @@ export function createAuthedRestAPI(
       if (res.status !== 401) return res;
       if (isRefreshUrl(url)) return res;
 
+      const refreshToken = clientTokenStore.getRefresh();
+      if (!refreshToken) return res;
+
       if (!refreshPromise) {
         refreshPromise = (async () => {
           try {
-            return await refreshSession();
+            return await refreshSession(refreshToken);
           } finally {
             refreshPromise = null;
           }

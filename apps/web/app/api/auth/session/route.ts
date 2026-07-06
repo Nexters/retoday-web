@@ -3,9 +3,18 @@ import { NextResponse } from "next/server";
 import { serverTokenStore } from "@/entities/auth/model/server-token-store";
 
 export async function GET() {
-  const isLoggedIn = await serverTokenStore.hasRefresh();
+  const tokens = await serverTokenStore.get();
+  const isLoggedIn = Boolean(tokens.refreshToken);
 
-  return NextResponse.json({ isLoggedIn });
+  if (!isLoggedIn) {
+    return NextResponse.json({ isLoggedIn: false });
+  }
+
+  return NextResponse.json({
+    isLoggedIn: true,
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+  });
 }
 
 export async function DELETE() {

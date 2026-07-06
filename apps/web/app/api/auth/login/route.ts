@@ -50,7 +50,11 @@ export async function POST(req: Request) {
       oAuthToken: body.oAuthToken,
     });
 
-    return NextResponse.json({ ok: true });
+    return NextResponse.json({
+      ok: true,
+      accessToken: tokens.accessToken,
+      refreshToken: tokens.refreshToken,
+    });
   } catch (error) {
     return NextResponse.json(
       {

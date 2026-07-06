@@ -55,18 +55,18 @@ export default async function RootLayout({
     >
       <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
         <ReactQueryProvider>
-          <LanguageProvider>
-            <AnalyticsProvider>
-              <AuthProvider>
+          <AuthProvider>
+            <LanguageProvider>
+              <AnalyticsProvider>
                 <MainLayout>
                   <Suspense>
                     <MainHeader />
                   </Suspense>
                   {children}
                 </MainLayout>
-              </AuthProvider>
-            </AnalyticsProvider>
-          </LanguageProvider>
+              </AnalyticsProvider>
+            </LanguageProvider>
+          </AuthProvider>
         </ReactQueryProvider>
         <AnalyticsScripts />
       </body>
