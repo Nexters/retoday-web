@@ -1,3 +1,5 @@
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
+
 type LoginPayload = {
   oAuthToken: string;
   provider: "GOOGLE";
@@ -5,6 +7,8 @@ type LoginPayload = {
 
 type SessionResponse = {
   isLoggedIn: boolean;
+  accessToken?: string;
+  refreshToken?: string;
 };
 
 async function parseError(res: Response) {
@@ -35,7 +39,19 @@ export async function loginWithOAuth(payload: LoginPayload) {
     await parseError(res);
   }
 
-  return res.json();
+  const body = (await res.json()) as {
+    accessToken?: string;
+    refreshToken?: string;
+  };
+
+  if (body.accessToken && body.refreshToken) {
+    clientTokenStore.set({
+      accessToken: body.accessToken,
+      refreshToken: body.refreshToken,
+    });
+  }
+
+  return body;
 }
 
 export async function logoutSession() {
@@ -49,10 +65,14 @@ export async function logoutSession() {
     await parseError(res);
   }
 
+  clientTokenStore.clear();
+
   return res.json();
 }
 
 export async function clearSession() {
+  clientTokenStore.clear();
+
   const res = await fetch("/api/auth/session", {
     method: "DELETE",
     credentials: "include",
@@ -95,5 +115,16 @@ export async function fetchSession(): Promise<SessionResponse> {
     return { isLoggedIn: false };
   }
 
-  return (await res.json()) as SessionResponse;
+  const session = (await res.json()) as SessionResponse;
+
+  if (session.isLoggedIn && session.accessToken && session.refreshToken) {
+    clientTokenStore.set({
+      accessToken: session.accessToken,
+      refreshToken: session.refreshToken,
+    });
+  } else {
+    clientTokenStore.clear();
+  }
+
+  return session;
 }
