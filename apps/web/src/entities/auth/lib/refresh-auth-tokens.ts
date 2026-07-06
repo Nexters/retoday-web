@@ -29,8 +29,9 @@ async function requestRefresh(
 
 export async function refreshAuthTokens(
   apiBaseURL = "v1",
+  _refreshToken?: string,
 ): Promise<RefreshResponse | null> {
-  const refreshToken = await serverTokenStore.getRefresh();
+  const refreshToken = _refreshToken ?? (await serverTokenStore.getRefresh());
   if (!refreshToken) return null;
 
   const existing = refreshPromises.get(refreshToken);
@@ -39,7 +40,7 @@ export async function refreshAuthTokens(
   const promise = (async () => {
     try {
       const tokens = await requestRefresh(refreshToken, apiBaseURL);
-      await serverTokenStore.set(tokens);
+
       return tokens;
     } finally {
       refreshPromises.delete(refreshToken);
