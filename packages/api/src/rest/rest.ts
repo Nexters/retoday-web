@@ -1,4 +1,4 @@
-import { APIError, wrapZodError } from "../errors/APIError";
+import { parseErrorResponse, wrapZodError } from "../errors/APIError";
 
 import type {
   RestAPIConfig,
@@ -156,13 +156,7 @@ export class RestAPI implements RestAPIProtocol {
       const res = await this.instance.request(fullUrl, reqInit);
 
       if (!res.ok) {
-        const text = await res.text().catch(() => "");
-        throw new APIError(text || res.statusText, {
-          status: res.status,
-          meta: {
-            errorType: "HTTP_ERROR",
-            errorMessage: text || res.statusText,
-          },
+        throw await parseErrorResponse(res, {
           url: fullUrl,
           method: methodUpper,
         });

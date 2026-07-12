@@ -54,8 +54,8 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen w-[min(100%,80rem)] bg-gray-100">
-        <ReactQueryProvider>
-          <AuthProvider>
+        <AuthProvider>
+          <ReactQueryProvider>
             <LanguageProvider>
               <AnalyticsProvider>
                 <MainLayout>
@@ -66,8 +66,8 @@ export default async function RootLayout({
                 </MainLayout>
               </AnalyticsProvider>
             </LanguageProvider>
-          </AuthProvider>
-        </ReactQueryProvider>
+          </ReactQueryProvider>
+        </AuthProvider>
         <AnalyticsScripts />
       </body>
     </html>

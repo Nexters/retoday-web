@@ -7,9 +7,10 @@ import {
 } from "@/entities/auth/config/auth-cookie-keys.const";
 import {
   ACCESS_TOKEN_MAX_AGE,
-  AUTH_COOKIE_OPTIONS,
+  HTTP_ONLY_COOKIE_OPTIONS,
   OAUTH_TOKEN_MAX_AGE,
   REFRESH_TOKEN_MAX_AGE,
+  TOKEN_COOKIE_OPTIONS,
 } from "@/entities/auth/config/auth-cookie-options.const";
 
 type AuthTokens = {
@@ -58,18 +59,18 @@ export const serverTokenStore = {
     const cookieStore = await cookies();
 
     cookieStore.set(ACCESS_TOKEN_COOKIE, tokens.accessToken, {
-      ...AUTH_COOKIE_OPTIONS,
+      ...TOKEN_COOKIE_OPTIONS,
       maxAge: ACCESS_TOKEN_MAX_AGE,
     });
 
     cookieStore.set(REFRESH_TOKEN_COOKIE, tokens.refreshToken, {
-      ...AUTH_COOKIE_OPTIONS,
+      ...TOKEN_COOKIE_OPTIONS,
       maxAge: REFRESH_TOKEN_MAX_AGE,
     });
 
     if (tokens.oAuthToken) {
       cookieStore.set(OAUTH_TOKEN_COOKIE, tokens.oAuthToken, {
-        ...AUTH_COOKIE_OPTIONS,
+        ...HTTP_ONLY_COOKIE_OPTIONS,
         maxAge: OAUTH_TOKEN_MAX_AGE,
       });
     }
