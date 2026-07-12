@@ -1,8 +1,8 @@
 import type { RestAPIProtocol } from "@recap/api";
-import { RestAPI, RestAPIInstance } from "@recap/api";
+import { APIError, RestAPI, RestAPIInstance } from "@recap/api";
 
+import { authUnTokenAPIService } from "@/entities/auth/api";
 import { getBackendUrl } from "@/entities/auth/lib/backend-url";
-import { refreshAuthTokens } from "@/entities/auth/lib/refresh-auth-tokens";
 import { serverTokenStore } from "@/entities/auth/model/server-token-store";
 
 function isRefreshUrl(url: string) {
@@ -39,17 +39,32 @@ export function createServerAuthedRestAPI(
       if (isRefreshUrl(url)) return res;
 
       try {
-        const refreshed = await refreshAuthTokens(apiBaseURL);
+        const refreshToken = await serverTokenStore.getRefresh();
+        if (!refreshToken) {
+          throw new APIError("Refresh token not found", {
+            code: "REFRESH_TOKEN_NOT_FOUND",
+            status: 401,
+          });
+        }
 
-        if (!refreshed) return res;
+        const refreshRes = await authUnTokenAPIService.refreshTokens({
+          refreshToken,
+        });
 
-        const retryHeaders = new Headers();
-        retryHeaders.set("Authorization", `Bearer ${refreshed.accessToken}`);
+        await serverTokenStore.set(refreshRes);
+
+        const retryHeaders = new Headers(init.headers);
+        retryHeaders.set("Authorization", `Bearer ${refreshRes.accessToken}`);
         retryHeaders.set("Accept", "application/json");
 
         return fetch(url, { ...init, headers: retryHeaders });
-      } catch {
+      } catch (error) {
         await serverTokenStore.clear();
+
+        if (error instanceof APIError) {
+          throw error;
+        }
+
         return res;
       }
     },

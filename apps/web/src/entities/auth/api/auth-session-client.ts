@@ -44,12 +44,14 @@ export async function loginWithOAuth(payload: LoginPayload) {
     refreshToken?: string;
   };
 
-  if (body.accessToken && body.refreshToken) {
-    clientTokenStore.set({
-      accessToken: body.accessToken,
-      refreshToken: body.refreshToken,
-    });
+  if (!body.accessToken || !body.refreshToken) {
+    throw new Error("Invalid login response");
   }
+
+  clientTokenStore.set({
+    accessToken: body.accessToken,
+    refreshToken: body.refreshToken,
+  });
 
   return body;
 }
@@ -73,17 +75,11 @@ export async function logoutSession() {
 export async function clearSession() {
   clientTokenStore.clear();
 
-  const res = await fetch("/api/auth/session", {
-    method: "DELETE",
+  await fetch("/api/auth/logout", {
+    method: "POST",
     credentials: "include",
     headers: { Accept: "application/json" },
-  });
-
-  if (!res.ok) {
-    await parseError(res);
-  }
-
-  return res.json();
+  }).catch(() => undefined);
 }
 
 export async function fetchOAuthToken(): Promise<string> {
@@ -105,26 +101,18 @@ export async function fetchOAuthToken(): Promise<string> {
   return body.oAuthToken;
 }
 
-export async function fetchSession(): Promise<SessionResponse> {
-  const res = await fetch("/api/auth/session", {
-    credentials: "include",
-    headers: { Accept: "application/json" },
-  });
+export function fetchSession(): SessionResponse {
+  const accessToken = clientTokenStore.getAccess();
+  const refreshToken = clientTokenStore.getRefresh();
+  const isLoggedIn = Boolean(refreshToken);
 
-  if (!res.ok) {
+  if (!isLoggedIn) {
     return { isLoggedIn: false };
   }
 
-  const session = (await res.json()) as SessionResponse;
-
-  if (session.isLoggedIn && session.accessToken && session.refreshToken) {
-    clientTokenStore.set({
-      accessToken: session.accessToken,
-      refreshToken: session.refreshToken,
-    });
-  } else {
-    clientTokenStore.clear();
-  }
-
-  return session;
+  return {
+    isLoggedIn: true,
+    accessToken: accessToken ?? undefined,
+    refreshToken: refreshToken ?? undefined,
+  };
 }

@@ -4,6 +4,7 @@ import { Button } from "@recap/ui";
 import browser from "webextension-polyfill";
 
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";
+import { tokenStore } from "@/shared/lib/token-store";
 import { Icon } from "@/shared/ui";
 import { useDateSelectorStore } from "@/widgets/date-selector/model";
 import { useTabNavigationStore } from "@/widgets/tab-navigation/model";
@@ -13,10 +14,20 @@ const SidePanelFooter = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
   const { t } = useLocale("landing");
 
-  const handleOpenDashboard = () => {
-    const path = GNB_TABS.find((tab) => tab.value === activeTab)?.path;
-    browser.tabs.create({
-      url: `${RETODAY_BASE_URL}${path}?date=${formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH)}`,
+  const handleOpenDashboard = async () => {
+    const path =
+      GNB_TABS.find((tab) => tab.value === activeTab)?.path ?? "/analysis";
+    const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
+    const refreshToken = (await tokenStore.getRefresh()) ?? "";
+
+    const params = new URLSearchParams({
+      code: refreshToken,
+      redirect: path,
+      date,
+    });
+
+    await browser.tabs.create({
+      url: `${RETODAY_BASE_URL}/auth/extension?${params.toString()}`,
     });
   };
 
