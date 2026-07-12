@@ -5,7 +5,24 @@ export type ApiMeta = {
   errorMessage?: string;
 };
 
+export type ApiErrorBody = {
+  code: string;
+  message: string;
+};
+
+export function isApiErrorBody(value: unknown): value is ApiErrorBody {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "code" in value &&
+    "message" in value &&
+    typeof (value as { code: unknown }).code === "string" &&
+    typeof (value as { message: unknown }).message === "string"
+  );
+}
+
 export class APIError extends Error {
+  public code?: string;
   public status?: number;
   public meta?: ApiMeta;
   public url?: string;
@@ -14,6 +31,7 @@ export class APIError extends Error {
   constructor(
     message: string,
     opts?: {
+      code?: string;
       status?: number;
       meta?: ApiMeta;
       url?: string;
@@ -27,11 +45,56 @@ export class APIError extends Error {
     );
 
     this.name = "APIError";
+    this.code = opts?.code;
     this.status = opts?.status;
     this.meta = opts?.meta;
     this.url = opts?.url;
     this.method = opts?.method;
   }
+}
+
+export async function parseErrorResponse(
+  response: Response,
+  opts?: {
+    url?: string;
+    method?: string;
+  },
+): Promise<APIError> {
+  const text = await response.text().catch(() => "");
+  let body: unknown = text;
+
+  if (text) {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      body = text;
+    }
+  }
+
+  if (isApiErrorBody(body)) {
+    return new APIError(body.message, {
+      code: body.code,
+      status: response.status,
+      meta: {
+        errorType: "HTTP_ERROR",
+        errorMessage: body.message,
+      },
+      url: opts?.url,
+      method: opts?.method,
+    });
+  }
+
+  const fallbackMessage = text || response.statusText || "Request failed";
+
+  return new APIError(fallbackMessage, {
+    status: response.status,
+    meta: {
+      errorType: "HTTP_ERROR",
+      errorMessage: fallbackMessage,
+    },
+    url: opts?.url,
+    method: opts?.method,
+  });
 }
 
 export function wrapZodError(err: unknown, url?: string, method?: string) {

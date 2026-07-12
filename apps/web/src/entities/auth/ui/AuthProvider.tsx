@@ -8,7 +8,10 @@ import {
   useState,
 } from "react";
 
-import { fetchSession } from "@/entities/auth/api/auth-session-client";
+import {
+  clearSession,
+  fetchSession,
+} from "@/entities/auth/api/auth-session-client";
 
 import { AuthContext, type AuthValue } from "./auth-context";
 
@@ -35,13 +38,21 @@ const AuthProvider = ({
     }
   }, []);
 
+  const unLogin = useCallback(async () => {
+    try {
+      await clearSession();
+    } finally {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
   useEffect(() => {
     void refreshAuth();
   }, [refreshAuth]);
 
   const value = useMemo<AuthValue>(
-    () => ({ isReady, isLoggedIn, refreshAuth }),
-    [isReady, isLoggedIn, refreshAuth],
+    () => ({ isReady, isLoggedIn, refreshAuth, unLogin }),
+    [isReady, isLoggedIn, refreshAuth, unLogin],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
