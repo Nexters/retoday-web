@@ -25,24 +25,26 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
     [],
   );
 
-  const login = () => {
-    void requestGoogleAccessToken()
-      .then(async (googleAccessToken) => {
-        await loginWithOAuth({
-          oAuthToken: googleAccessToken,
-          provider: "GOOGLE",
-        });
+  const login = async (oAuthToken?: string) => {
+    try {
+      const googleAccessToken =
+        oAuthToken ?? (await requestGoogleAccessToken());
 
-        track("login", { method: "google" });
-        await onLoginSuccess?.();
-      })
-      .catch((e: unknown) => {
-        catchAPIError(e);
-        track("web_error", {
-          where: "google_token_login",
-          message: e instanceof Error ? e.message : undefined,
-        });
+      await loginWithOAuth({
+        oAuthToken: googleAccessToken,
+        provider: "GOOGLE",
       });
+
+      track("login", { method: "google" });
+      await onLoginSuccess?.();
+    } catch (e: unknown) {
+      catchAPIError(e);
+      track("web_error", {
+        where: "google_token_login",
+        message: e instanceof Error ? e.message : undefined,
+      });
+      throw e;
+    }
   };
 
   useEffect(() => {

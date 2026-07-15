@@ -32,7 +32,7 @@ const LoginButton = ({ className }: { className?: string }) => {
       type="button"
       variant="secondary"
       size="md"
-      onClick={login}
+      onClick={() => login()}
       disabled={!ready}
       className={cn("flex gap-2 px-4 py-2", className)}
     >

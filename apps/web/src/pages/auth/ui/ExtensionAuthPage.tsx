@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { authUnTokenAPIService } from "@/entities/auth/api";
-import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 import { useAuth } from "@/entities/auth/ui";
+import { useGoogleTokenLogin } from "@/entities/login/model/use-google-token-login";
 
 function buildRedirectPath(redirect: string | null, date: string | null) {
   const path = redirect && redirect.startsWith("/") ? redirect : "/analysis";
@@ -22,40 +21,36 @@ export default function ExtensionAuthPage() {
   const { refreshAuth, unLogin } = useAuth();
   const startedRef = useRef(false);
 
+  const redirect = searchParams?.get("redirect") ?? null;
+  const date = searchParams?.get("date") ?? null;
+  const oAuthToken = searchParams?.get("oAuthToken");
+
+  const onLoginSuccess = useCallback(async () => {
+    await refreshAuth();
+    router.replace(buildRedirectPath(redirect, date));
+  }, [date, redirect, refreshAuth, router]);
+
+  const { login } = useGoogleTokenLogin({ onLoginSuccess });
+
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
 
-    const code = searchParams?.get("code");
-    const redirect = searchParams?.get("redirect");
-    const date = searchParams?.get("date");
-
     void (async () => {
       try {
-        if (!code) {
+        if (!oAuthToken) {
           await unLogin();
           router.replace("/analysis");
           return;
         }
 
-        clientTokenStore.set({
-          accessToken: clientTokenStore.getAccess() ?? "",
-          refreshToken: code,
-        });
-
-        const tokens = await authUnTokenAPIService.refreshTokens({
-          refreshToken: code,
-        });
-
-        clientTokenStore.set(tokens);
-        await refreshAuth();
-        router.replace(buildRedirectPath(redirect ?? null, date ?? null));
+        await login(oAuthToken);
       } catch {
         await unLogin();
         router.replace("/analysis");
       }
     })();
-  }, [refreshAuth, router, searchParams, unLogin]);
+  }, [login, oAuthToken, router, unLogin]);
 
   return (
     <div className="flex min-h-[40vh] items-center justify-center px-4 text-center text-sm text-gray-500">

@@ -6,6 +6,7 @@ export { dehydrateState } from "./ssr";
 export {
   useMutation,
   type UseMutationOptions,
+  useQueries,
   useQuery,
   useQueryClient,
   type UseQueryOptions,

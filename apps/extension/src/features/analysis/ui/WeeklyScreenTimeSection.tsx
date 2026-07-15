@@ -3,9 +3,10 @@ import type { ScreenTimePeriodType } from "@recap/api";
 import { toScreenTimeChartState } from "@recap/features";
 import { useLocale } from "@recap/i18n";
 import { formatDate, formatDuration } from "@recap/lib";
+import { useQueries } from "@recap/react-query";
 
 import useTimeZone from "@/entities/language/model/use-time-zone";
-import { useGetAnalysisScreenTime } from "@/features/analysis/api/analysis-query";
+import { screenTimeQueryOptions } from "@/features/analysis/api/analysis-query";
 import {
   SCREEN_TIME_MODE_CONFIG,
   SCREEN_TIME_PERIOD_LIST,
@@ -28,20 +29,29 @@ const WeeklyScreenTimeSection = () => {
   const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
   const timeZone = useTimeZone();
 
-  const { data, isLoading } = useGetAnalysisScreenTime(
-    { date, period: mode, timeZone },
-    {
-      select: (screenTimeData) =>
-        toScreenTimeChartState({ data: screenTimeData, mode, date, t }),
-    },
-  );
+  const [
+    { data: daily, isLoading: isDailyLoading },
+    { data: weekly, isLoading: isWeeklyLoading },
+  ] = useQueries({
+    queries: [
+      screenTimeQueryOptions({ date, period: "DAILY", timeZone }),
+      screenTimeQueryOptions({ date, period: "WEEKLY", timeZone }),
+    ],
+  });
+
+  if (isDailyLoading || isWeeklyLoading || !daily || !weekly) {
+    return <WeeklyScreenTimeSectionSkeleton />;
+  }
+
+  const data = toScreenTimeChartState({
+    data: mode === "DAILY" ? daily : weekly,
+    mode,
+    date,
+    t,
+  });
 
   const isEmpty = data?.duration && data.duration <= 0;
   const modeConfig = SCREEN_TIME_MODE_CONFIG[mode];
-
-  if (isLoading) {
-    return <WeeklyScreenTimeSectionSkeleton />;
-  }
 
   return (
     <div className="w-full bg-white flex flex-col py-4 px-5">

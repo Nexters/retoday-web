@@ -14,7 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@recap/ui";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQueries } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
 import { screenTimeQueryOptions } from "@/features/analysis/api/analysis-query.client";
@@ -34,14 +34,26 @@ const ScreenTime = ({ date }: { date: string }) => {
   const [mode, setMode] = useState<ScreenTimePeriodType>("DAILY");
   const timeZone = useTimeZone();
 
-  const { data } = useSuspenseQuery({
-    ...screenTimeQueryOptions({
-      date,
-      period: mode,
-      timeZone,
-    }),
-    select: (screenTimeData) =>
-      toScreenTimeChartState({ data: screenTimeData, mode, date, t }),
+  const [{ data: daily }, { data: weekly }] = useSuspenseQueries({
+    queries: [
+      screenTimeQueryOptions({
+        date,
+        period: "DAILY",
+        timeZone,
+      }),
+      screenTimeQueryOptions({
+        date,
+        period: "WEEKLY",
+        timeZone,
+      }),
+    ],
+  });
+
+  const data = toScreenTimeChartState({
+    data: mode === "DAILY" ? daily : weekly,
+    mode,
+    date,
+    t,
   });
 
   const isEmpty = data?.duration && data.duration <= 0;
