@@ -54,6 +54,11 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
                 period: "DAILY",
                 timeZone: SERVER_TIMEZONE.SEOUL,
               }),
+              serverScreenTimeQueryOptions({
+                date,
+                period: "WEEKLY",
+                timeZone: SERVER_TIMEZONE.SEOUL,
+              }),
             ]}
           >
             <ScreenTime date={date} />

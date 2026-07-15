@@ -69,7 +69,11 @@ const screenTimeQueryOptions = (dateQuery: GetScreenTimeQueryType) =>
     AnalysisScreenTimeData,
     ScreenTimeQueryKey
   >({
-    queryKey: ANALYSIS_KEYS.screenTime([dateQuery.period, dateQuery.date]),
+    queryKey: ANALYSIS_KEYS.screenTime([
+      dateQuery.period,
+      dateQuery.date,
+      dateQuery.timeZone,
+    ]),
     queryFn: async () => {
       const envelope = await analysisAPIService.getScreenTime(dateQuery);
       return envelope.data;
