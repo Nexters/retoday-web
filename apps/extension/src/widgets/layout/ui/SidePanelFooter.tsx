@@ -4,10 +4,26 @@ import { Button } from "@recap/ui";
 import browser from "webextension-polyfill";
 
 import { DATE_FORMAT, GNB_TABS, RETODAY_BASE_URL } from "@/shared/config";
-import { tokenStore } from "@/shared/lib/token-store";
 import { Icon } from "@/shared/ui";
 import { useDateSelectorStore } from "@/widgets/date-selector/model";
 import { useTabNavigationStore } from "@/widgets/tab-navigation/model";
+
+function getGoogleOAuthToken(interactive = false): Promise<string> {
+  return new Promise((resolve, reject) => {
+    chrome.identity.getAuthToken({ interactive }, (token) => {
+      if (chrome.runtime.lastError || !token) {
+        reject(
+          new Error(
+            chrome.runtime.lastError?.message ?? "Failed to get Google token",
+          ),
+        );
+        return;
+      }
+
+      resolve(token);
+    });
+  });
+}
 
 const SidePanelFooter = () => {
   const activeTab = useTabNavigationStore((state) => state.activeTab);
@@ -18,10 +34,17 @@ const SidePanelFooter = () => {
     const path =
       GNB_TABS.find((tab) => tab.value === activeTab)?.path ?? "/analysis";
     const date = formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH);
-    const refreshToken = (await tokenStore.getRefresh()) ?? "";
+
+    let oAuthToken: string;
+
+    try {
+      oAuthToken = await getGoogleOAuthToken(false);
+    } catch {
+      oAuthToken = await getGoogleOAuthToken(true);
+    }
 
     const params = new URLSearchParams({
-      code: refreshToken,
+      oAuthToken,
       redirect: path,
       date,
     });
