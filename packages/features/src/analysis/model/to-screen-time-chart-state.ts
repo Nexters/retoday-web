@@ -5,7 +5,6 @@ import type {
   AnalysisBarChartTranslateFn,
 } from "./analysis-bar-chart.type";
 import {
-  secondsToMinute,
   toDailyAnalysisBarChartState,
   toWeeklyAnalysisBarChartState,
 } from "./to-analysis-bar-chart-state";
@@ -32,14 +31,15 @@ export const toScreenTimeChartState = ({
     return { chartData: [], duration: 0 };
   }
 
-  const totalMinutes = secondsToMinute(data.totalStayDuration);
   const chartData =
     mode === "DAILY"
       ? toDailyAnalysisBarChartState(data.screenTimes, t)
       : toWeeklyAnalysisBarChartState(data.screenTimes, date, t);
 
   const duration =
-    mode === "DAILY" ? totalMinutes * 60 : Math.round(totalMinutes / 7) * 60;
+    mode === "DAILY"
+      ? data.totalStayDuration
+      : Math.round(data.totalStayDuration / 7);
 
   return { chartData, duration };
 };
