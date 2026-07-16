@@ -9,6 +9,11 @@ export const formatDuration = (seconds: number, t: TranslateFn): string => {
   }
 
   const totalSeconds = Math.floor(seconds);
+
+  if (totalSeconds < 60) {
+    return t("common:duration.second", { count: totalSeconds });
+  }
+
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const secs = totalSeconds % 60;
