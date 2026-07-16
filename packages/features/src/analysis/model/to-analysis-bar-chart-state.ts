@@ -32,7 +32,7 @@ export const toDailyAnalysisBarChartState = (
     const startHour = i * 2;
     return {
       key: `today-${startHour}`,
-      label: String(startHour),
+      label: startHour === 0 ? "" : String(startHour),
       subLabel: t("screenTime.dailyTimeSlotSubLabel", {
         start: padNumber(startHour),
         end: padNumber(startHour + 2),
