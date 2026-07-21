@@ -1,5 +1,11 @@
 import type { RestAPIProtocol } from "@recap/api";
-import { RestAPI, RestAPIInstance } from "@recap/api";
+import {
+  APIError,
+  AuthUnTokenAPIService,
+  generateRestAPI,
+  RestAPI,
+  RestAPIInstance,
+} from "@recap/api";
 
 import { tokenStore } from "@/shared/lib/token-store";
 
@@ -7,52 +13,55 @@ type RefreshResponse = { accessToken: string; refreshToken: string };
 
 let refreshPromise: Promise<RefreshResponse> | null = null;
 
-function buildApiUrl(baseURL: string, apiBaseURL: string, path: string) {
-  const normalizedPath = path.replace(/^\/+/, "");
-  const prefix = apiBaseURL ? `/${apiBaseURL}` : "";
-  return `${baseURL}${prefix}/${normalizedPath}`;
+function isRefreshUrl(url: string) {
+  return url.includes("/auth/refresh");
 }
 
 type CreateAuthedRestAPIOptions = {
   apiBaseURL?: string;
 };
 
-async function refreshTokens(
-  baseURL: string,
-  apiBaseURL: string,
-): Promise<RefreshResponse> {
-  const refreshToken = await tokenStore.getRefresh();
-  if (!refreshToken) throw new Error("No refresh token");
-
-  const res = await fetch(buildApiUrl(baseURL, apiBaseURL, "auth/refresh"), {
-    method: "POST",
-    headers: { "Content-Type": "application/json", Accept: "application/json" },
-    body: JSON.stringify({ refreshToken }),
-  });
-
-  if (!res.ok) {
-    throw new Error("Refresh failed");
-  }
-
-  return (await res.json()) as RefreshResponse;
-}
-
-function isRefreshUrl(url: string) {
-  return url.includes("/auth/refresh");
-}
-
 export function createAuthedRestAPI(
   baseURL: string,
   options?: CreateAuthedRestAPIOptions,
 ): RestAPIProtocol {
   const apiBaseURL = options?.apiBaseURL ?? "v1";
+
+  const authUnTokenAPIService = new AuthUnTokenAPIService(
+    generateRestAPI(
+      { APIbaseURL: apiBaseURL },
+      {
+        baseURL,
+        withCredentials: false,
+        headers: { Accept: "application/json" },
+      },
+    ),
+  );
+
+  async function refreshTokens(): Promise<RefreshResponse> {
+    const refreshToken = await tokenStore.getRefresh();
+    if (!refreshToken) {
+      throw new APIError("Refresh token not found", {
+        code: "REFRESH_TOKEN_NOT_FOUND",
+        status: 401,
+      });
+    }
+
+    const refreshRes = await authUnTokenAPIService.refreshTokens({
+      refreshToken,
+    });
+
+    await tokenStore.set(refreshRes);
+
+    return refreshRes;
+  }
+
   const instance = new RestAPIInstance(baseURL, {
     withCredentials: false,
     headers: { Accept: "application/json" },
 
     onRequest: async ({ url, init }) => {
       const accessToken = await tokenStore.getAccess();
-
       if (!accessToken) return { url, init };
 
       const headers = new Headers(init.headers);
@@ -65,30 +74,26 @@ export function createAuthedRestAPI(
       if (res.status !== 401) return res;
       if (isRefreshUrl(url)) return res;
 
+      // 동시에 여러 요청이 401을 받아도 refresh는 한 번만 수행한다.
       if (!refreshPromise) {
-        refreshPromise = (async () => {
-          try {
-            const tokens = await refreshTokens(baseURL, apiBaseURL);
-            await tokenStore.set(tokens);
-            return tokens;
-          } finally {
-            refreshPromise = null;
-          }
-        })();
+        refreshPromise = refreshTokens().finally(() => {
+          refreshPromise = null;
+        });
       }
 
       try {
-        await refreshPromise;
-
-        const newAccess = await tokenStore.getAccess();
-        if (!newAccess) return res;
+        const refreshRes = await refreshPromise;
 
         const retryHeaders = new Headers(init.headers);
-        retryHeaders.set("Authorization", `Bearer ${newAccess}`);
+        retryHeaders.set("Authorization", `Bearer ${refreshRes.accessToken}`);
+        retryHeaders.set("Accept", "application/json");
 
         return fetch(url, { ...init, headers: retryHeaders });
-      } catch {
-        await tokenStore.clear();
+      } catch (error) {
+        if (error instanceof APIError) {
+          throw error;
+        }
+
         return res;
       }
     },
