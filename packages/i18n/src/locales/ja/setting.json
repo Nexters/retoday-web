@@ -12,7 +12,8 @@
     "title": "言語変更（Language）",
     "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
-    "apply": "適用する"
+    "apply": "適用する",
+    "success": "言語を変更しました。"
   },
   "language": {
     "selectPlaceholder": "選択中の言語",
@@ -34,7 +35,12 @@
     "description": "ブラウザの使用履歴集計から除外するドメインを管理します。",
     "delete": "削除",
     "domainInputPlaceholder": "ドメイン入力 (例: abc.com sample.kr)",
-    "add": "追加"
+    "add": "追加",
+    "addSuccess": "トラッキング禁止ドメインを追加しました。",
+    "deleteSuccess": "トラッキング禁止ドメインを削除しました。"
+  },
+  "error": {
+    "network": "ネットワークを確認してください。"
   },
   "deleteAccount": {
     "stepTitle": {

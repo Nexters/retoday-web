@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { APIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
-import { Button, Input } from "@recap/ui";
+import { Button, Input, useToast } from "@recap/ui";
 
 import { USER_KEYS } from "@/features/setting/api/query-keys";
 import { usePostExcludeDomain } from "@/features/setting/api/user-query";
@@ -14,12 +15,29 @@ type UntrackedDomainSettingProps = {
 
 const UntrackedDomainSetting = ({ domains }: UntrackedDomainSettingProps) => {
   const { t } = useLocale("settings");
+  const { showToast } = useToast();
   const queryClient = useQueryClient();
   const [domainValue, setDomainValue] = useState("");
   const { mutate } = usePostExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.addSuccess"),
+      });
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
+      });
+    },
+    onError: (error) => {
+      const message =
+        error instanceof APIError &&
+        error.code === "EXCLUDED_DOMAIN_ALREADY_EXISTS"
+          ? error.message
+          : t("error.network");
+
+      showToast({
+        type: "error",
+        message,
       });
     },
   });

@@ -1,6 +1,6 @@
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
-import { Button } from "@recap/ui";
+import { Button, useToast } from "@recap/ui";
 
 import { USER_KEYS } from "@/features/setting/api/query-keys";
 import { useDeleteExcludeDomain } from "@/features/setting/api/user-query";
@@ -8,12 +8,23 @@ import { domainStore } from "@/shared/lib/domain-store";
 
 const DomainItem = ({ domain }: { domain: string }) => {
   const { t } = useLocale("settings");
+  const { showToast } = useToast();
   const queryClient = useQueryClient();
 
   const { mutate } = useDeleteExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.deleteSuccess"),
+      });
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
+      });
+    },
+    onError: () => {
+      showToast({
+        type: "error",
+        message: t("error.network"),
       });
     },
   });

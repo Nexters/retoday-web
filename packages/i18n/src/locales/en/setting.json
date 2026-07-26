@@ -12,7 +12,8 @@
     "title": "Language",
     "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
-    "apply": "Apply"
+    "apply": "Apply",
+    "success": "Language changed."
   },
   "language": {
     "selectPlaceholder": "Selected language",
@@ -34,7 +35,12 @@
     "description": "Manage domains to exclude from browser usage history aggregation.",
     "delete": "Delete",
     "domainInputPlaceholder": "Enter domain (e.g., abc.com sample.kr)",
-    "add": "Add"
+    "add": "Add",
+    "addSuccess": "Untracked domain added.",
+    "deleteSuccess": "Untracked domain deleted."
+  },
+  "error": {
+    "network": "Please check your network connection."
   },
   "deleteAccount": {
     "stepTitle": {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { APIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import {
@@ -16,6 +17,7 @@ import {
   Item,
   ItemActions,
   ItemGroup,
+  useToast,
 } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
@@ -35,6 +37,7 @@ const ExcludedDomainSection = ({
   domains,
 }: ExcludedDomainSectionProps) => {
   const { t } = useLocale("settings");
+  const { showToast } = useToast();
   const [domain, setDomain] = useState("");
 
   const { refreshAuth } = useAuth();
@@ -42,17 +45,43 @@ const ExcludedDomainSection = ({
 
   const { mutate: addMutate } = usePostExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.addSuccess"),
+      });
       refreshAuth();
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
       });
     },
+    onError: (error) => {
+      const message =
+        error instanceof APIError &&
+        error.code === "EXCLUDED_DOMAIN_ALREADY_EXISTS"
+          ? error.message
+          : t("error.network");
+
+      showToast({
+        type: "error",
+        message,
+      });
+    },
   });
   const { mutate: deleteMutate } = useDeleteExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.deleteSuccess"),
+      });
       refreshAuth();
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
+      });
+    },
+    onError: () => {
+      showToast({
+        type: "error",
+        message: t("error.network"),
       });
     },
   });
