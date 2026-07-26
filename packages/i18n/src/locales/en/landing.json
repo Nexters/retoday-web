@@ -20,6 +20,7 @@
     "placeholder": "Select date"
   },
   "refresh": "Refresh",
+  "refreshTooltip": "Click refresh to update the data.",
   "sendFeedback": "Send feedback",
   "feedback": {
     "contentLabel": "Message",
