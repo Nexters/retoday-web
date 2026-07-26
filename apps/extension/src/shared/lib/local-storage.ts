@@ -24,16 +24,6 @@ const getItemOrNull = <T>(key: LocalStorageKey): T | null => {
   }
 };
 
-const removeItem = (key: LocalStorageKey): void => {
-  if (!canUseLocalStorage()) return;
-
-  try {
-    window.localStorage.removeItem(key);
-  } catch (error) {
-    console.log("localstorage error: ", error);
-  }
-};
-
 /** 새로고침 툴팁 첫 노출 여부 */
 export const getInitialized = (): boolean => {
   return !!getItemOrNull<boolean>(LocalStorageKey.IsInitialized);
@@ -41,8 +31,4 @@ export const getInitialized = (): boolean => {
 
 export const setInitialized = (value: boolean): void => {
   setItem<boolean>(LocalStorageKey.IsInitialized, value);
-};
-
-export const removeInitialized = (): void => {
-  removeItem(LocalStorageKey.IsInitialized);
 };
