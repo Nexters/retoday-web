@@ -16,6 +16,7 @@ import AutoRenewIcon from "@/shared/assets/icons/auto-renew.svg";
 import { NAVIGATION_TAB } from "@/shared/config";
 import { RoundButton } from "@/shared/ui";
 import { useGnbRoute } from "@/widgets/layout/model/use-gnb-route";
+import { useRefreshTooltip } from "@/widgets/layout/model/use-refresh-tooltip";
 
 const QUERY_KEY_BY_TAB = {
   [NAVIGATION_TAB.AI_RECAP]: AI_RECAP_KEYS.all,
@@ -26,6 +27,7 @@ const RefreshButton = () => {
   const { tab } = useGnbRoute();
   const { t } = useLocale("landing");
   const queryClient = useQueryClient();
+  const { open } = useRefreshTooltip({ duration: 4000 });
 
   const handleRefresh = () => {
     const queryKey = QUERY_KEY_BY_TAB[tab as keyof typeof QUERY_KEY_BY_TAB];
@@ -37,7 +39,7 @@ const RefreshButton = () => {
 
   return (
     <TooltipProvider>
-      <Tooltip>
+      <Tooltip open={open}>
         <TooltipTrigger asChild>
           <RoundButton
             className="group"

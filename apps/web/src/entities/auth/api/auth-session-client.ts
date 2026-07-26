@@ -1,4 +1,5 @@
 import { clientTokenStore } from "@/entities/auth/model/client-token-store";
+import { removeInitialized } from "@/shared/lib/local-storage";
 
 type LoginPayload = {
   oAuthToken: string;
@@ -68,12 +69,14 @@ export async function logoutSession() {
   }
 
   clientTokenStore.clear();
+  removeInitialized();
 
   return res.json();
 }
 
 export async function clearSession() {
   clientTokenStore.clear();
+  removeInitialized();
 
   await fetch("/api/auth/logout", {
     method: "POST",
