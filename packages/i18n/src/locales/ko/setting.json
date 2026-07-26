@@ -12,7 +12,8 @@
     "title": "언어 변경 (Language)",
     "loggedInTitle": "Selected Language / TimeZone",
     "selectedLanguage": "Selected Language",
-    "apply": "적용하기"
+    "apply": "적용하기",
+    "success": "언어를 변경했어요."
   },
   "language": {
     "selectPlaceholder": "선택된 언어",
@@ -34,7 +35,9 @@
     "description": "브라우저 사용 기록 집계에서 제외할 도메인을 관리합니다.",
     "delete": "삭제",
     "domainInputPlaceholder": "도메인 입력 (예 : abc.com sample.kr)",
-    "add": "추가하기"
+    "add": "추가하기",
+    "addSuccess": "추적금지 도메인을 추가했어요.",
+    "deleteSuccess": "추적금지 도메인을 삭제했어요."
   },
   "deleteAccount": {
     "stepTitle": {

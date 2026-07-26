@@ -16,6 +16,7 @@ import {
   Item,
   ItemActions,
   ItemGroup,
+  useToast,
 } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
@@ -35,6 +36,7 @@ const ExcludedDomainSection = ({
   domains,
 }: ExcludedDomainSectionProps) => {
   const { t } = useLocale("settings");
+  const { showToast } = useToast();
   const [domain, setDomain] = useState("");
 
   const { refreshAuth } = useAuth();
@@ -42,6 +44,10 @@ const ExcludedDomainSection = ({
 
   const { mutate: addMutate } = usePostExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.addSuccess"),
+      });
       refreshAuth();
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
@@ -50,6 +56,10 @@ const ExcludedDomainSection = ({
   });
   const { mutate: deleteMutate } = useDeleteExcludeDomain({
     onSuccess: () => {
+      showToast({
+        type: "success",
+        message: t("untrackedDomains.deleteSuccess"),
+      });
       refreshAuth();
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),

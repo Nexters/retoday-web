@@ -11,6 +11,7 @@ import {
   CardTitle,
   cn,
   Flex,
+  useToast,
 } from "@recap/ui";
 
 import { useAuth } from "@/entities/auth/ui";
@@ -25,7 +26,8 @@ type LanguageSectionProps = {
 };
 
 const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
-  const { t } = useLocale("settings");
+  const { t, i18n } = useLocale("settings");
+  const { showToast } = useToast();
 
   const { isLoggedIn } = useAuth();
   const { language, setLanguage } = useLanguage();
@@ -42,6 +44,14 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
 
       queryClient.invalidateQueries({
         queryKey: AI_RECAP_KEYS.all,
+      });
+
+      showToast({
+        type: "success",
+        message: i18n.t("languageChange.success", {
+          lng: selectedLanguage,
+          ns: "settings",
+        }),
       });
     },
   });
