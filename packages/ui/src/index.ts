@@ -20,6 +20,7 @@ export * from "./stepper";
 export * from "./switch";
 export * from "./tabs";
 export * from "./textarea";
+export * from "./toast";
 export * from "./toggle-group";
 export * from "./tooltip";
 export * from "./utils/cn";
