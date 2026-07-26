@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { DEFAULT_LANGUAGE } from "@recap/i18n";
+import { ToastProvider } from "@recap/ui";
 
 import { LanguageProvider, ReactQueryProvider } from "@/app/providers";
 import { AnalyticsProvider, AnalyticsScripts } from "@/app/providers/analytics";
@@ -58,12 +59,14 @@ export default async function RootLayout({
           <ReactQueryProvider>
             <LanguageProvider>
               <AnalyticsProvider>
-                <MainLayout>
-                  <Suspense>
-                    <MainHeader />
-                  </Suspense>
-                  {children}
-                </MainLayout>
+                <ToastProvider>
+                  <MainLayout>
+                    <Suspense>
+                      <MainHeader />
+                    </Suspense>
+                    {children}
+                  </MainLayout>
+                </ToastProvider>
               </AnalyticsProvider>
             </LanguageProvider>
           </ReactQueryProvider>
