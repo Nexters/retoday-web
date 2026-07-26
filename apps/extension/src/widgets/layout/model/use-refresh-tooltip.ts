@@ -14,7 +14,6 @@ type UseRefreshTooltipOptions = {
  * 로그인 후에만 첫 1회 refresh tooltip을 delay 동안 노출.
  * - UI delay: `useDelayedOpen`
  * - 노출 여부: `getInitialized` / `setInitialized`
- * - 로그아웃 clear: `AuthProvider.logout`의 `removeInitialized`
  */
 export const useRefreshTooltip = (options: UseRefreshTooltipOptions = {}) => {
   const { duration = DEFAULT_DURATION_MS } = options;
