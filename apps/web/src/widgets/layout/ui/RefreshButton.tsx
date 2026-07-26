@@ -1,6 +1,13 @@
 "use client";
 
 import { useLocale } from "@recap/i18n";
+import {
+  Tooltip,
+  TooltipArrow,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@recap/ui";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { AI_RECAP_KEYS } from "@/features/ai-recap/api/query-keys";
@@ -29,16 +36,30 @@ const RefreshButton = () => {
   };
 
   return (
-    <RoundButton
-      className="group"
-      aria-haspopup="dialog"
-      onClick={handleRefresh}
-    >
-      <div className="flex items-center gap-1 py-1.5 pr-1 pl-2.5">
-        <AutoRenewIcon />
-        <p className="text-subtitle-2-rg text-gray-900">{t("refresh")}</p>
-      </div>
-    </RoundButton>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <RoundButton
+            className="group"
+            aria-label={t("refresh")}
+            onClick={handleRefresh}
+          >
+            <div className="flex items-center gap-1 py-1.5 pr-1 pl-2.5">
+              <AutoRenewIcon />
+              <p className="text-subtitle-2-rg text-gray-900">{t("refresh")}</p>
+            </div>
+          </RoundButton>
+        </TooltipTrigger>
+        <TooltipContent
+          side="bottom"
+          sideOffset={4}
+          className="text-body-2 rounded-xl bg-gray-900 px-3 py-2 text-white shadow-none ring-0"
+        >
+          {t("refreshTooltip")}
+          <TooltipArrow className="fill-gray-900" width={21} height={10} />
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

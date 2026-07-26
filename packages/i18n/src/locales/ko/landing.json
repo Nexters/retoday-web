@@ -20,6 +20,7 @@
     "placeholder": "날짜 선택"
   },
   "refresh": "새로고침",
+  "refreshTooltip": "새로고침을 눌러서 데이터를 업데이트 하세요.",
   "sendFeedback": "의견 보내기",
   "feedback": {
     "contentLabel": "문의 내용",

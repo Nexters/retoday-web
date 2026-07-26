@@ -20,6 +20,7 @@
     "placeholder": "日付を選択"
   },
   "refresh": "更新",
+  "refreshTooltip": "更新を押してデータを更新してください。",
   "sendFeedback": "ご意見を送る",
   "feedback": {
     "contentLabel": "お問い合わせ内容",
