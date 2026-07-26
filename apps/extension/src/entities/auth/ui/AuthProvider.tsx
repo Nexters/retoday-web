@@ -8,6 +8,7 @@ import {
 
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
 import useBrowserMessage from "@/shared/lib/browser/use-browser-message";
+import { removeInitialized } from "@/shared/lib/local-storage";
 import { tokenStore } from "@/shared/lib/token-store";
 
 import { AuthContext, type AuthValue } from "./auth-context";
@@ -33,6 +34,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const logout = useCallback(() => {
     void tokenStore.clear();
+    removeInitialized();
     setIsLoggedIn(false);
   }, []);
 
