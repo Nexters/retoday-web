@@ -26,6 +26,7 @@ const ScreenTimeWeeklyBarChart = ({
       tooltipContentClassName={cn(
         "rounded-xl bg-white px-4 py-3 text-sm text-gray-900 shadow-lg ring-1 ring-black/10",
       )}
+      tooltipArrowClassName={cn("fill-white")}
     />
   );
 };
