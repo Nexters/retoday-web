@@ -24,6 +24,7 @@ const getItemOrNull = <T>(key: LocalStorageKey): T | null => {
   }
 };
 
+// eslint-disable-next-line unused-imports/no-unused-vars
 const removeItem = (key: LocalStorageKey): void => {
   if (!canUseLocalStorage()) return;
 
@@ -41,8 +42,4 @@ export const getInitialized = (): boolean => {
 
 export const setInitialized = (value: boolean): void => {
   setItem<boolean>(LocalStorageKey.IsInitialized, value);
-};
-
-export const removeInitialized = (): void => {
-  removeItem(LocalStorageKey.IsInitialized);
 };
