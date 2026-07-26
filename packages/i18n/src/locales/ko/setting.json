@@ -39,6 +39,9 @@
     "addSuccess": "추적금지 도메인을 추가했어요.",
     "deleteSuccess": "추적금지 도메인을 삭제했어요."
   },
+  "error": {
+    "network": "네트워크를 확인해 주세요."
+  },
   "deleteAccount": {
     "stepTitle": {
       "confirm": "정말 탈퇴하시겠어요?",

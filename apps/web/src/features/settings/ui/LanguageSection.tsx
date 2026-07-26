@@ -54,6 +54,12 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
         }),
       });
     },
+    onError: () => {
+      showToast({
+        type: "error",
+        message: t("error.network"),
+      });
+    },
   });
 
   const handleApply = () => {

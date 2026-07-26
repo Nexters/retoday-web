@@ -39,6 +39,9 @@
     "addSuccess": "トラッキング禁止ドメインを追加しました。",
     "deleteSuccess": "トラッキング禁止ドメインを削除しました。"
   },
+  "error": {
+    "network": "ネットワークを確認してください。"
+  },
   "deleteAccount": {
     "stepTitle": {
       "confirm": "本当に退会しますか？",

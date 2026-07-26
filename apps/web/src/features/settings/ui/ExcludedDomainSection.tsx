@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { APIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import {
@@ -53,6 +54,18 @@ const ExcludedDomainSection = ({
         queryKey: USER_KEYS.details(),
       });
     },
+    onError: (error) => {
+      const message =
+        error instanceof APIError &&
+        error.code === "EXCLUDED_DOMAIN_ALREADY_EXISTS"
+          ? error.message
+          : t("error.network");
+
+      showToast({
+        type: "error",
+        message,
+      });
+    },
   });
   const { mutate: deleteMutate } = useDeleteExcludeDomain({
     onSuccess: () => {
@@ -63,6 +76,12 @@ const ExcludedDomainSection = ({
       refreshAuth();
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
+      });
+    },
+    onError: () => {
+      showToast({
+        type: "error",
+        message: t("error.network"),
       });
     },
   });

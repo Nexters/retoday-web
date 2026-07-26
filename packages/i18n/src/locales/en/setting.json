@@ -39,6 +39,9 @@
     "addSuccess": "Untracked domain added.",
     "deleteSuccess": "Untracked domain deleted."
   },
+  "error": {
+    "network": "Please check your network connection."
+  },
   "deleteAccount": {
     "stepTitle": {
       "confirm": "Are you sure you want to delete your account?",
