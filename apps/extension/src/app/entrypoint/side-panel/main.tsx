@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { ToastProvider } from "@recap/ui";
 
 import { LanguageProvider } from "@/app/providers/language-provider";
 import { QueryProvider } from "@/app/providers/query-provider";
@@ -16,7 +17,9 @@ if (container) {
       <LanguageProvider>
         <AuthProvider>
           <QueryProvider>
-            <SidePanel />
+            <ToastProvider>
+              <SidePanel />
+            </ToastProvider>
           </QueryProvider>
         </AuthProvider>
       </LanguageProvider>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { type LanguageType, useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
-import { Button } from "@recap/ui";
+import { Button, useToast } from "@recap/ui";
 
 import { LanguageSelect } from "@/entities/language";
 import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
@@ -12,7 +12,8 @@ import { usePatchUserProfile } from "@/features/setting/api/user-query";
 import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
 
 const LangeChangedSetting = () => {
-  const { t } = useLocale("settings");
+  const { t, i18n } = useLocale("settings");
+  const { showToast } = useToast();
   const { language, setLanguage } = useLanguage();
   const queryClient = useQueryClient();
 
@@ -26,6 +27,20 @@ const LangeChangedSetting = () => {
       });
       queryClient.invalidateQueries({
         queryKey: AI_RECAP_KEYS.all,
+      });
+
+      showToast({
+        type: "success",
+        message: i18n.t("languageChange.success", {
+          lng: selectedLanguage,
+          ns: "settings",
+        }),
+      });
+    },
+    onError: () => {
+      showToast({
+        type: "error",
+        message: t("error.network"),
       });
     },
   });

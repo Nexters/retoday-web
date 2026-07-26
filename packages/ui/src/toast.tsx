@@ -3,8 +3,8 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 
-import ErrorIcon from "./assets/error.svg";
-import SuccessIcon from "./assets/success.svg";
+import ErrorIcon from "./assets/error-icon";
+import SuccessIcon from "./assets/success-icon";
 import { cn } from "./utils/cn";
 
 type ToastType = "success" | "error";
