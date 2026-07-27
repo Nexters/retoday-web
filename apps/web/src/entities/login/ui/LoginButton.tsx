@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
+import { useRouter } from "next/navigation";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button, cn } from "@recap/ui";
@@ -13,7 +14,7 @@ import RightIcon from "@/shared/assets/icons/arrow-right.svg";
 const LoginButton = ({ className }: { className?: string }) => {
   const { t } = useLocale("settings");
   const { refreshAuth } = useAuth();
-
+  const router = useRouter();
   const queryClient = useQueryClient();
 
   const onLoginSuccess = useCallback(async () => {
@@ -21,7 +22,8 @@ const LoginButton = ({ className }: { className?: string }) => {
     queryClient.removeQueries({
       queryKey: USER_KEYS.details(),
     });
-  }, [queryClient, refreshAuth]);
+    router.refresh();
+  }, [queryClient, refreshAuth, router]);
 
   const { ready, login } = useGoogleTokenLogin({
     onLoginSuccess,

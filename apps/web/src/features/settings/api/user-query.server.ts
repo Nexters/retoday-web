@@ -1,6 +1,11 @@
-import type { Envelope, UserProfileType } from "@recap/api";
+import type { Envelope, TimeZoneSchemaType, UserProfileType } from "@recap/api";
 import { UserAPIService } from "@recap/api";
-import { type FetchQueryOptions, queryOptions } from "@tanstack/react-query";
+import { Language, SERVER_TIMEZONE } from "@recap/lib";
+import {
+  type FetchQueryOptions,
+  type QueryClient,
+  queryOptions,
+} from "@tanstack/react-query";
 
 import { createServerAuthedRestAPI } from "@/entities/auth/lib/create-server-authed-rest";
 
@@ -29,3 +34,33 @@ export const serverUserProfileQueryOptions = (): FetchQueryOptions<
     queryFn: () => serverUserAPIService.getUserProfile(),
     retry: false,
   });
+
+const resolveTimeZoneFromProfile = (
+  profile: UserProfileType | undefined,
+): TimeZoneSchemaType => {
+  if (profile?.timeZone) {
+    return profile.timeZone;
+  }
+
+  if (profile?.language === Language.KOREAN) {
+    return SERVER_TIMEZONE.SEOUL;
+  }
+
+  return SERVER_TIMEZONE.UTC;
+};
+
+export const getServerUserTimeZone = async (
+  queryClient: QueryClient,
+): Promise<TimeZoneSchemaType | null> => {
+  await queryClient.prefetchQuery(serverUserProfileQueryOptions());
+
+  const profile = queryClient.getQueryData<UserProfileResponse>(
+    USER_KEYS.details(),
+  );
+
+  if (!profile?.data) {
+    return null;
+  }
+
+  return resolveTimeZoneFromProfile(profile.data);
+};
