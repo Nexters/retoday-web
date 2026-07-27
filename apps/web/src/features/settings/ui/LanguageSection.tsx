@@ -38,6 +38,8 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
 
   const { mutate, isPending } = usePatchUserProfile({
     onSuccess: () => {
+      setLanguage(selectedLanguage);
+
       queryClient.invalidateQueries({
         queryKey: USER_KEYS.details(),
       });
@@ -68,7 +70,15 @@ const LanguageSection = ({ disabled = false }: LanguageSectionProps) => {
       mutate(LANGUAGE_TO_PROFILE[selectedLanguage]);
       return;
     }
+
     setLanguage(selectedLanguage);
+    showToast({
+      type: "success",
+      message: i18n.t("languageChange.success", {
+        lng: selectedLanguage,
+        ns: "settings",
+      }),
+    });
   };
 
   return (

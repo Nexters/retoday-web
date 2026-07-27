@@ -74,7 +74,12 @@ function Toast({
 
 function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = React.useState<ToastItem[]>([]);
+  const [isMounted, setIsMounted] = React.useState(false);
   const nextId = React.useRef(0);
+
+  React.useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const dismissToast = React.useCallback((id: number) => {
     setToasts((current) => current.filter((toast) => toast.id !== id));
@@ -102,7 +107,7 @@ function ToastProvider({ children }: ToastProviderProps) {
   return (
     <ToastContext.Provider value={value}>
       {children}
-      {typeof document !== "undefined" &&
+      {isMounted &&
         createPortal(
           <div className="pointer-events-none fixed inset-x-4 top-12 z-50 flex flex-col items-center gap-2">
             {toasts.map((toast) => (

@@ -11,7 +11,7 @@ const CategoryLink = ({
 
   return (
     <div className="bg-gray-75 flex items-center justify-between rounded-full pl-2 pr-4 py-2">
-      <div className="flex items-center gap-3">
+      <div className="flex min-w-0 items-center gap-3">
         {faviconUrl ? (
           <img
             src={faviconUrl}
@@ -21,10 +21,10 @@ const CategoryLink = ({
         ) : (
           <div className="size-6 rounded-full bg-gray-300" />
         )}
-        <p className="text-body-1 text-gray-500">{domain}</p>
+        <p className="text-body-1 max-w-44 truncate text-gray-500">{domain}</p>
       </div>
 
-      <p className="text-body-1 text-gray-900">
+      <p className="text-body-1 ml-2 max-w-19.25 shrink-0 truncate text-gray-900">
         {formatDuration(stayDuration, t)}
       </p>
     </div>
