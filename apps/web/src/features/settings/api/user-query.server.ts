@@ -38,15 +38,16 @@ export const serverUserProfileQueryOptions = (): FetchQueryOptions<
 const resolveTimeZoneFromProfile = (
   profile: UserProfileType | undefined,
 ): TimeZoneSchemaType => {
-  if (profile?.timeZone) {
-    return profile.timeZone;
+  if (profile?.language === Language.ENGLISH) {
+    return SERVER_TIMEZONE.UTC;
   }
 
   if (profile?.language === Language.KOREAN) {
     return SERVER_TIMEZONE.SEOUL;
   }
 
-  return SERVER_TIMEZONE.UTC;
+  // language가 없으면 timeZone 값을 쓰고, 그것도 없으면 SEOUL
+  return profile?.timeZone ?? SERVER_TIMEZONE.SEOUL;
 };
 
 export const getServerUserTimeZone = async (

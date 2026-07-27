@@ -8,7 +8,6 @@ import { useGetUserProfile } from "@/features/settings/api/user-query.client";
 
 const useLanguage = () => {
   const storedLanguage = useLanguageStore((s) => s.localize);
-
   const setLanguage = useLanguageStore((s) => s.setLanguage);
   const { isLoggedIn } = useAuth();
   const { data: profileLanguage } = useGetUserProfile({
