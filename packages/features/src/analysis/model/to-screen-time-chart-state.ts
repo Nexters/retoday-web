@@ -18,6 +18,7 @@ export type ToScreenTimeChartStateInput = {
   data: AnalysisScreenTimeData | null | undefined;
   mode: ScreenTimePeriodType;
   date: string;
+  timeZone: string;
   t: AnalysisBarChartTranslateFn;
 };
 
@@ -25,6 +26,7 @@ export const toScreenTimeChartState = ({
   data,
   mode,
   date,
+  timeZone,
   t,
 }: ToScreenTimeChartStateInput): ScreenTimeChartState => {
   if (!data) {
@@ -33,8 +35,8 @@ export const toScreenTimeChartState = ({
 
   const chartData =
     mode === "DAILY"
-      ? toDailyAnalysisBarChartState(data.screenTimes, t)
-      : toWeeklyAnalysisBarChartState(data.screenTimes, date, t);
+      ? toDailyAnalysisBarChartState(data.screenTimes, t, timeZone)
+      : toWeeklyAnalysisBarChartState(data.screenTimes, date, t, timeZone);
 
   const duration =
     mode === "DAILY"

@@ -1,5 +1,5 @@
 import type { ScreenTimeType } from "@recap/api";
-import { CURRENT_TIMEZONE, dayjs, padNumber } from "@recap/lib";
+import { dayjs, padNumber, toIanaTimeZone } from "@recap/lib";
 
 import type {
   AnalysisBarChartDatum,
@@ -27,7 +27,10 @@ export const SCREEN_TIME_BAR_WEEKDAY_KEYS = [
 export const toDailyAnalysisBarChartState = (
   screenTimes: ScreenTimeType[],
   t: AnalysisBarChartTranslateFn,
+  timeZone: string,
 ): AnalysisBarChartDatum[] => {
+  const ianaTimeZone = toIanaTimeZone(timeZone);
+
   const blocks: AnalysisBarChartDatum[] = Array.from({ length: 12 }, (_, i) => {
     const startHour = i * 2;
     return {
@@ -43,7 +46,7 @@ export const toDailyAnalysisBarChartState = (
   });
 
   for (const screenTime of screenTimes) {
-    const hour = dayjs(screenTime.startedAt).tz(CURRENT_TIMEZONE).hour();
+    const hour = dayjs(screenTime.startedAt).tz(ianaTimeZone).hour();
     const idx = Math.floor(hour / 2);
     if (!blocks[idx]) continue;
 
@@ -60,12 +63,15 @@ export const toWeeklyAnalysisBarChartState = (
   screenTimes: ScreenTimeType[],
   anchorDate: string | Date,
   t: AnalysisBarChartTranslateFn,
+  timeZone: string,
 ): AnalysisBarChartDatum[] => {
+  const ianaTimeZone = toIanaTimeZone(timeZone);
+
   const labels = SCREEN_TIME_BAR_WEEKDAY_KEYS.map((key) =>
     t(`screenTime.weekdayShort.${key}`),
   );
 
-  const weekStart = dayjs(anchorDate).tz(CURRENT_TIMEZONE).startOf("week");
+  const weekStart = dayjs(anchorDate).tz(ianaTimeZone).startOf("week");
 
   const blocks: AnalysisBarChartDatum[] = labels.map((label, idx) => ({
     key: `week-${idx}-${label}`,
@@ -76,7 +82,7 @@ export const toWeeklyAnalysisBarChartState = (
   }));
 
   for (const screenTime of screenTimes) {
-    const day = dayjs(screenTime.startedAt).tz(CURRENT_TIMEZONE).day();
+    const day = dayjs(screenTime.startedAt).tz(ianaTimeZone).day();
     if (!blocks[day]) continue;
 
     blocks[day].totalMinutes += secondsToMinute(screenTime.stayDuration);

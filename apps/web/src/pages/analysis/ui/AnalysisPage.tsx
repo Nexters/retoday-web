@@ -9,7 +9,6 @@ import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
 import CategoryAnalysisSkeleton from "@/features/analysis/ui/CategoryAnalysisSkeleton";
 import EmptyTodayTimeThief from "@/features/analysis/ui/EmptyTodayTimeThief";
 import ScreenTime from "@/features/analysis/ui/ScreenTime";
-import ScreenTimeSkeleton from "@/features/analysis/ui/ScreenTimeSkeleton";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
 import TodayTimeThiefSkeleton from "@/features/analysis/ui/TodayTimeThiefSkeleton";
 import TopVisitedSites from "@/features/analysis/ui/TopVisitedSites";
@@ -36,9 +35,7 @@ const AnalysisLoggedInSection = ({ date }: { date: string }) => {
   return (
     <>
       <Stack gap="none" className="gap-4 md:gap-5 xl:gap-7">
-        <Suspense fallback={<ScreenTimeSkeleton />}>
-          <ScreenTime date={date} />
-        </Suspense>
+        <ScreenTime date={date} />
         <Suspense fallback={<CategoryAnalysisSkeleton />}>
           <CategoryAnalysis date={date} />
         </Suspense>

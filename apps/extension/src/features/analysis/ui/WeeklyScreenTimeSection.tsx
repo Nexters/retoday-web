@@ -47,6 +47,7 @@ const WeeklyScreenTimeSection = () => {
     data: mode === "DAILY" ? daily : weekly,
     mode,
     date,
+    timeZone,
     t,
   });
 

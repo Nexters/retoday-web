@@ -10,14 +10,12 @@ import {
   serverCategoryAnalysisQueryOptions,
   serverFrequentlyVisitedSitesQueryOptions,
   serverLongestStayedWebsiteQueryOptions,
-  serverScreenTimeQueryOptions,
   serverWorkPatternQueryOptions,
 } from "@/features/analysis/api/analysis-query.server";
 import CategoryAnalysis from "@/features/analysis/ui/CategoryAnalysis";
 import CategoryAnalysisSkeleton from "@/features/analysis/ui/CategoryAnalysisSkeleton";
 import EmptyTodayTimeThief from "@/features/analysis/ui/EmptyTodayTimeThief";
 import ScreenTime from "@/features/analysis/ui/ScreenTime";
-import ScreenTimeSkeleton from "@/features/analysis/ui/ScreenTimeSkeleton";
 import TodayTimeThief from "@/features/analysis/ui/TodayTimeThief";
 import TodayTimeThiefSkeleton from "@/features/analysis/ui/TodayTimeThiefSkeleton";
 import TopVisitedSites from "@/features/analysis/ui/TopVisitedSites";
@@ -58,24 +56,7 @@ export default async function Page({ searchParams }: AnalysisRouteProps) {
       <HydrationBoundary state={dehydrateState(queryClient)}>
         <TimeZoneProvider timeZone={timeZone}>
           <Stack gap="none" className="gap-4 md:gap-5 xl:gap-7">
-            <Suspense fallback={<ScreenTimeSkeleton />}>
-              <FetchBoundary
-                queries={[
-                  serverScreenTimeQueryOptions({
-                    date,
-                    period: "DAILY",
-                    timeZone,
-                  }),
-                  serverScreenTimeQueryOptions({
-                    date,
-                    period: "WEEKLY",
-                    timeZone,
-                  }),
-                ]}
-              >
-                <ScreenTime date={date} />
-              </FetchBoundary>
-            </Suspense>
+            <ScreenTime date={date} />
             <Suspense fallback={<CategoryAnalysisSkeleton />}>
               <FetchBoundary
                 queries={[
