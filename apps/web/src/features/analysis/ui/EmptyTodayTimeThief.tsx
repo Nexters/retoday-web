@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "@recap/i18n";
 import {
   Card,
@@ -10,8 +9,8 @@ import {
   CardTitle,
 } from "@recap/ui";
 
+import TimeThiefIllustration from "@/features/analysis/ui/TimeThiefIllustration";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
-import TimeThiefImg from "@/shared/assets/img/time-thief.png";
 
 const EmptyTodayTimeThief = () => {
   const { t } = useLocale("analysis");
@@ -32,13 +31,10 @@ const EmptyTodayTimeThief = () => {
         <TimeThiefPill title="-" faviconUrl={null} />
       </CardHeader>
 
-      <CardContent className="relative h-48 p-0 md:h-52 xl:h-54">
-        <Image
-          src={TimeThiefImg}
+      <CardContent className="p-0">
+        <TimeThiefIllustration
           alt={t("timeThief.imageAlt")}
-          fill
-          className="object-cover"
-          priority={false}
+          faviconUrl={null}
         />
       </CardContent>
     </Card>
