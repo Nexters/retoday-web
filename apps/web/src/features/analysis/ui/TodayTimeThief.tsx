@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useLocale } from "@recap/i18n";
 import {
   Card,
@@ -13,8 +12,8 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTimeZone } from "@/entities/language";
 import { longestStayedWebsiteQueryOptions } from "@/features/analysis/api/analysis-query.client";
+import TimeThiefIllustration from "@/features/analysis/ui/TimeThiefIllustration";
 import TimeThiefPill from "@/features/analysis/ui/TimeThiefPill";
-import TimeThiefImg from "@/shared/assets/img/time-thief.png";
 import { formatSecondsToMinutes } from "@/shared/lib/date/format-date";
 import { getHostFromUrl } from "@/shared/lib/url";
 
@@ -28,6 +27,8 @@ const TodayTimeThief = ({ date }: { date: string }) => {
       timeZone,
     }),
   );
+
+  const host = getHostFromUrl(data?.domain ?? "") ?? "";
 
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
@@ -44,19 +45,14 @@ const TodayTimeThief = ({ date }: { date: string }) => {
           </CardAction>
         </div>
 
-        <TimeThiefPill
-          title={getHostFromUrl(data?.domain ?? "") ?? ""}
-          faviconUrl={data?.faviconUrl ?? null}
-        />
+        <TimeThiefPill title={host} faviconUrl={data?.faviconUrl ?? null} />
       </CardHeader>
 
-      <CardContent className="relative h-48 p-0 md:h-52 xl:h-54">
-        <Image
-          src={TimeThiefImg}
+      <CardContent className="p-0">
+        <TimeThiefIllustration
           alt={t("timeThief.imageAlt")}
-          fill
-          className="object-cover"
-          priority={false}
+          faviconUrl={data?.faviconUrl ?? null}
+          faviconAlt={host}
         />
       </CardContent>
     </Card>

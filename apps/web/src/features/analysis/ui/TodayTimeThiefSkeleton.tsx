@@ -13,8 +13,8 @@ const TodayTimeThiefSkeleton = () => (
       <Skeleton className="h-10 w-44 rounded-xl" />
     </CardHeader>
 
-    <CardContent className="relative h-48 p-0 md:h-52 xl:h-54">
-      <Skeleton className="absolute inset-0 rounded-none" />
+    <CardContent className="p-0">
+      <Skeleton className="aspect-[560/216] w-full rounded-none" />
     </CardContent>
   </Card>
 );
