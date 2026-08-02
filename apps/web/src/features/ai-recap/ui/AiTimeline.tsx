@@ -29,8 +29,8 @@ const AiTimeline = ({ timelines }: { timelines: AiRecapTimeline[] }) => {
   );
 
   return (
-    <Card className="relative flex flex-row flex-nowrap gap-9 rounded-[1.25rem] bg-white px-9 py-8 shadow-none">
-      <CardHeader className="max-w-57 shrink-0 gap-0 p-0">
+    <Card className="relative flex flex-col gap-6 rounded-[1.25rem] bg-white px-5 py-5 shadow-none md:flex-row md:flex-nowrap md:gap-9 md:px-6 md:py-6 xl:px-9 xl:py-8">
+      <CardHeader className="shrink-0 gap-0 p-0 md:max-w-57">
         <Stack gap="none" className="gap-2">
           <CardTitle className="text-heading-rg text-gray-800">
             {t("todayRecap.aiTimelineTitle")}

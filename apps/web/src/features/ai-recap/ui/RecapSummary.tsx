@@ -41,10 +41,12 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
 
   const title = detail?.title?.trim() || "-";
   const summary = detail?.summary?.trim() || "-";
+  const recapImage =
+    (detail?.image && AI_RECAP_IMAGE[detail.image]) ?? RecapImg;
 
   return (
     <Card className="gap-0 overflow-hidden rounded-[1.25rem] bg-white p-0 shadow-none">
-      <CardHeader className="gap-0 p-10">
+      <CardHeader className="gap-0 p-5 md:p-6 xl:p-10">
         <Flex
           direction="column"
           className="items-stretch gap-6 md:flex-row md:items-end md:justify-between"
@@ -81,7 +83,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
           </Flex>
         </Flex>
 
-        <Item className="mt-12 flex-nowrap items-center gap-4 self-start rounded-full border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none">
+        <Item className="mt-8 flex-nowrap items-center gap-4 self-start rounded-full border-0 bg-blue-50 p-0 px-2.5 py-2 shadow-none xl:mt-12">
           <ItemContent className="min-w-0 flex-1 flex-row flex-wrap items-center gap-4 p-0">
             <div className="flex shrink-0 items-center gap-2">
               <AIRecapIcon />
@@ -97,20 +99,30 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
         </Item>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-[1fr_464px] gap-0 border-t border-solid border-gray-100 p-0">
+      <CardContent className="grid grid-cols-1 border-t border-solid border-gray-100 p-0 md:grid-cols-[1fr_464px]">
+        <div className="relative order-1 h-97 overflow-hidden md:order-2 md:h-auto md:min-h-105">
+          <Image
+            src={recapImage}
+            alt="recapImg"
+            fill
+            sizes="(max-width: 767px) 100vw, 464px"
+            className="object-fill"
+          />
+        </div>
+
         {sections.length === 0 ? (
-          <div className="pt-6 pr-9 pb-13 pl-10">
+          <div className="order-2 px-5 py-6 md:order-1 md:px-6 md:pt-6 md:pr-9 md:pb-13 xl:px-10">
             <p className="text-body-1 text-gray-500">
               {t("todayRecap.summarySectionsEmpty")}
             </p>
           </div>
         ) : (
-          <ItemGroup className="gap-0">
+          <ItemGroup className="order-2 gap-0 md:order-1">
             {sections.map((section, index) => (
               <Item
                 key={`${section.title}-${index}`}
                 className={cn(
-                  "flex-col items-stretch rounded-none border-0 bg-transparent p-0 pt-6 pr-9 pb-13 pl-10 shadow-none",
+                  "flex-col items-stretch rounded-none border-0 bg-transparent p-0 px-5 py-6 shadow-none md:pt-6 md:pr-9 md:pb-13 md:pl-6 xl:pl-10",
                   index > 0 && "border-t border-solid border-gray-200",
                 )}
               >
@@ -129,13 +141,6 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
             ))}
           </ItemGroup>
         )}
-
-        <Image
-          src={(detail?.image && AI_RECAP_IMAGE[detail.image]) ?? RecapImg}
-          alt="recapImg"
-          width={464}
-          height={420}
-        />
       </CardContent>
     </Card>
   );
