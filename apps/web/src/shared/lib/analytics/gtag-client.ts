@@ -15,9 +15,6 @@ function send(command: string, ...args: unknown[]): void {
   if (!isBrowser()) return;
 
   if (isDev) {
-    console.groupCollapsed(`[analytics] gtag(${command})`);
-    console.log(args);
-    console.groupEnd();
     return;
   }
 

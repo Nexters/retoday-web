@@ -1,17 +1,48 @@
 import type { RestAPIProtocol } from "@recap/api";
 import { APIError, RestAPI, RestAPIInstance } from "@recap/api";
 
-import { authUnTokenAPIService } from "@/entities/auth/api";
 import { getBackendUrl } from "@/entities/auth/lib/backend-url";
+import type { AuthTokenPair } from "@/entities/auth/lib/refresh-auth-tokens";
 import { clientTokenStore } from "@/entities/auth/model/client-token-store";
-
-function isRefreshUrl(url: string) {
-  return url.includes("/auth/refresh");
-}
 
 type CreateAuthedRestAPIOptions = {
   apiBaseURL?: string;
 };
+
+/**
+ * 동시에 여러 요청이 401을 반환하더라도
+ * refresh 요청은 하나만 실행하도록 공유하는 Promise
+ */
+let refreshPromise: Promise<AuthTokenPair> | null = null;
+
+/**
+ * 갱신은 Route Handler에만 맡긴다.
+ * 브라우저와 SSR이 항상 같은 쿠키를 보도록 갱신 창구를 하나로 유지하기 위함.
+ */
+async function requestRefresh(): Promise<AuthTokenPair> {
+  const res = await fetch("/api/auth/refresh", {
+    method: "POST",
+    credentials: "include",
+    headers: { Accept: "application/json" },
+  });
+
+  if (!res.ok) {
+    throw new APIError("Failed to refresh tokens", {
+      code: "REFRESH_TOKEN_NOT_FOUND",
+      status: 401,
+    });
+  }
+
+  return (await res.json()) as AuthTokenPair;
+}
+
+function refreshAccessToken(): Promise<AuthTokenPair> {
+  refreshPromise ??= requestRefresh().finally(() => {
+    refreshPromise = null;
+  });
+
+  return refreshPromise;
+}
 
 export function createAuthedRestAPI(
   baseURL?: string,
@@ -36,25 +67,12 @@ export function createAuthedRestAPI(
 
     onResponse: async ({ url, init, res }) => {
       if (res.status !== 401) return res;
-      if (isRefreshUrl(url)) return res;
 
       try {
-        const refreshToken = clientTokenStore.getRefresh();
-        if (!refreshToken) {
-          throw new APIError("Refresh token not found", {
-            code: "REFRESH_TOKEN_NOT_FOUND",
-            status: 401,
-          });
-        }
-
-        const refreshRes = await authUnTokenAPIService.refreshTokens({
-          refreshToken,
-        });
-
-        clientTokenStore.set(refreshRes);
+        const tokens = await refreshAccessToken();
 
         const retryHeaders = new Headers(init.headers);
-        retryHeaders.set("Authorization", `Bearer ${refreshRes.accessToken}`);
+        retryHeaders.set("Authorization", `Bearer ${tokens.accessToken}`);
         retryHeaders.set("Accept", "application/json");
 
         return fetch(url, { ...init, headers: retryHeaders });
