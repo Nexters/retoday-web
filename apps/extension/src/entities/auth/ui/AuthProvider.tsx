@@ -22,8 +22,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const refreshAuth = useCallback(async () => {
     try {
-      const accessToken = await tokenStore.getAccess();
-      setIsLoggedIn(accessToken !== null);
+      const refreshToken = await tokenStore.getRefresh();
+      setIsLoggedIn(refreshToken !== null);
     } catch {
       setIsLoggedIn(false);
     } finally {
@@ -37,11 +37,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   }, []);
 
   useEffect(() => {
-    void refreshAuth();
+    refreshAuth();
   }, [refreshAuth]);
 
   useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, () => {
-    void refreshAuth();
+    refreshAuth();
   });
 
   const value = useMemo<AuthValue>(
