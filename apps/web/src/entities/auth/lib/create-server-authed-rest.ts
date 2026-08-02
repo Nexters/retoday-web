@@ -1,13 +1,8 @@
 import type { RestAPIProtocol } from "@recap/api";
-import { APIError, RestAPI, RestAPIInstance } from "@recap/api";
+import { RestAPI, RestAPIInstance } from "@recap/api";
 
-import { authUnTokenAPIService } from "@/entities/auth/api";
 import { getBackendUrl } from "@/entities/auth/lib/backend-url";
 import { serverTokenStore } from "@/entities/auth/model/server-token-store";
-
-function isRefreshUrl(url: string) {
-  return url.includes("/auth/refresh");
-}
 
 type CreateServerAuthedRestAPIOptions = {
   apiBaseURL?: string;
@@ -20,6 +15,11 @@ export function createServerAuthedRestAPI(
   const apiBaseURL = options?.apiBaseURL ?? "v1";
   const resolvedBaseURL = baseURL ?? getBackendUrl();
 
+  /**
+   * Server Component 렌더 중에는 Set-Cookie를 보낼 수 없어 회전된 토큰을 저장할 수 없다.
+   * 여기서 refresh를 시도하면 1회용 refresh token만 소모하고 쿠키에는 무효한 토큰이 남으므로,
+   * 갱신은 middleware와 /api/auth/refresh에서만 수행한다.
+   */
   const instance = new RestAPIInstance(resolvedBaseURL, {
     withCredentials: false,
     headers: { Accept: "application/json" },
@@ -32,41 +32,6 @@ export function createServerAuthedRestAPI(
       headers.set("Authorization", `Bearer ${accessToken}`);
 
       return { url, init: { ...init, headers } };
-    },
-
-    onResponse: async ({ url, init, res }) => {
-      if (res.status !== 401) return res;
-      if (isRefreshUrl(url)) return res;
-
-      try {
-        const refreshToken = await serverTokenStore.getRefresh();
-        if (!refreshToken) {
-          throw new APIError("Refresh token not found", {
-            code: "REFRESH_TOKEN_NOT_FOUND",
-            status: 401,
-          });
-        }
-
-        const refreshRes = await authUnTokenAPIService.refreshTokens({
-          refreshToken,
-        });
-
-        await serverTokenStore.set(refreshRes);
-
-        const retryHeaders = new Headers(init.headers);
-        retryHeaders.set("Authorization", `Bearer ${refreshRes.accessToken}`);
-        retryHeaders.set("Accept", "application/json");
-
-        return fetch(url, { ...init, headers: retryHeaders });
-      } catch (error) {
-        await serverTokenStore.clear();
-
-        if (error instanceof APIError) {
-          throw error;
-        }
-
-        return res;
-      }
     },
   });
 
