@@ -6,7 +6,9 @@ import {
   RestAPI,
   RestAPIInstance,
 } from "@recap/api";
+import browser from "webextension-polyfill";
 
+import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
 import { tokenStore } from "@/shared/lib/token-store";
 
 type RefreshResponse = { accessToken: string; refreshToken: string };
@@ -47,13 +49,19 @@ export function createAuthedRestAPI(
       });
     }
 
-    const refreshRes = await authUnTokenAPIService.refreshTokens({
-      refreshToken,
-    });
-
-    await tokenStore.set(refreshRes);
-
-    return refreshRes;
+    try {
+      const refreshRes = await authUnTokenAPIService.refreshTokens({
+        refreshToken,
+      });
+      await tokenStore.set(refreshRes);
+      return refreshRes;
+    } catch (error) {
+      throw new APIError("Failed to refresh tokens", {
+        code: "REFRESH_TOKEN_NOT_FOUND",
+        status: 401,
+        cause: error,
+      });
+    }
   }
 
   const instance = new RestAPIInstance(baseURL, {
@@ -74,27 +82,32 @@ export function createAuthedRestAPI(
       if (res.status !== 401) return res;
       if (isRefreshUrl(url)) return res;
 
-      // 동시에 여러 요청이 401을 받아도 refresh는 한 번만 수행한다.
-      if (!refreshPromise) {
-        refreshPromise = refreshTokens().finally(() => {
-          refreshPromise = null;
-        });
-      }
+      refreshPromise ??= refreshTokens().finally(() => {
+        refreshPromise = null;
+      });
 
       try {
-        const refreshRes = await refreshPromise;
+        const tokens = await refreshPromise;
 
         const retryHeaders = new Headers(init.headers);
-        retryHeaders.set("Authorization", `Bearer ${refreshRes.accessToken}`);
+        retryHeaders.set("Authorization", `Bearer ${tokens.accessToken}`);
         retryHeaders.set("Accept", "application/json");
 
         return fetch(url, { ...init, headers: retryHeaders });
       } catch (error) {
+        await tokenStore.clear();
+        void browser.runtime
+          .sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED })
+          .catch(() => undefined);
+
         if (error instanceof APIError) {
           throw error;
         }
 
-        return res;
+        throw new APIError("Failed to refresh tokens", {
+          code: "REFRESH_TOKEN_NOT_FOUND",
+          status: 401,
+        });
       }
     },
   });

@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import type { RecapData } from "@recap/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
@@ -12,18 +13,23 @@ import TopVisitedTopics from "@/features/ai-recap/ui/TopVisitedTopics";
 import AiRecapEmptyPage from "@/pages/ai-recap/ui/AiRecapEmptyPage";
 import AiRecapLoadingPage from "@/pages/ai-recap/ui/AiRecapLoadingPage";
 import AiRecapUnloginPage from "@/pages/ai-recap/ui/AiRecapUnloginPage";
+import { getSafeQueryDate } from "@/shared/lib/date/safe-query-date";
 
-const AiRecapPage = ({ date }: { date: string }) => (
+const AiRecapPage = () => (
   <AuthConsumer>
     {({ isReady, isLoggedIn }) => {
       if (!isReady) return <AiRecapLoadingPage />;
       if (!isLoggedIn) return <AiRecapUnloginPage />;
-      return <LoggedInRecap date={date} />;
+      return <LoggedInRecap />;
     }}
   </AuthConsumer>
 );
 
-const LoggedInRecap = ({ date }: { date: string }) => {
+const LoggedInRecap = () => {
+  const searchParams = useSearchParams();
+  const rawDate = searchParams?.get("date");
+  const date = getSafeQueryDate(rawDate);
+
   const { data: recap } = useSuspenseQuery({
     ...aiRecapQueryOptions(date),
     select: (data): RecapData | null => {

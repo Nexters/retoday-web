@@ -9,11 +9,11 @@ const TimeZoneProvider = ({
   timeZone,
   children,
 }: {
-  timeZone: TimeZoneSchemaType;
+  timeZone?: TimeZoneSchemaType;
   children: ReactNode;
 }) => {
   return (
-    <TimeZoneContext.Provider value={timeZone}>
+    <TimeZoneContext.Provider value={timeZone ?? null}>
       {children}
     </TimeZoneContext.Provider>
   );

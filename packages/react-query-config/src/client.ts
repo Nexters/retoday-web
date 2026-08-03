@@ -21,6 +21,7 @@ export function getHttpStatus(error: unknown): number | undefined {
 export function createQueryClient(opts?: CreateQueryClientOptions) {
   const staleTime = opts?.staleTimeMs ?? 30000;
   const gcTime = opts?.gcTimeMs ?? 10 * 60000;
+  const retry = opts?.retry;
 
   const onQueryError = opts?.onQueryError ?? opts?.onError;
   const onMutationError = opts?.onMutationError ?? opts?.onError;
@@ -43,6 +44,7 @@ export function createQueryClient(opts?: CreateQueryClientOptions) {
         refetchOnWindowFocus: false,
         refetchOnReconnect: true,
         refetchOnMount: false,
+        ...(retry !== undefined ? { retry } : {}),
       },
     },
   });

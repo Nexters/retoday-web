@@ -16,8 +16,8 @@ type CreateAuthedRestAPIOptions = {
 let refreshPromise: Promise<AuthTokenPair> | null = null;
 
 /**
- * 갱신은 Route Handler에만 맡긴다.
- * 브라우저와 SSR이 항상 같은 쿠키를 보도록 갱신 창구를 하나로 유지하기 위함.
+ * 갱신은 Route Handler가 쿠키를 회전하고, 응답 JSON으로 clientTokenStore도 맞춘다.
+ * Bearer / 세션 판정은 clientTokenStore만 사용한다.
  */
 async function requestRefresh(): Promise<AuthTokenPair> {
   const res = await fetch("/api/auth/refresh", {
@@ -33,7 +33,9 @@ async function requestRefresh(): Promise<AuthTokenPair> {
     });
   }
 
-  return (await res.json()) as AuthTokenPair;
+  const tokens = (await res.json()) as AuthTokenPair;
+  clientTokenStore.set(tokens);
+  return tokens;
 }
 
 function refreshAccessToken(): Promise<AuthTokenPair> {
@@ -83,7 +85,10 @@ export function createAuthedRestAPI(
           throw error;
         }
 
-        return res;
+        throw new APIError("Failed to refresh tokens", {
+          code: "REFRESH_TOKEN_NOT_FOUND",
+          status: 401,
+        });
       }
     },
   });

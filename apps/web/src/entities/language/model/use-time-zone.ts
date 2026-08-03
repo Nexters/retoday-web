@@ -3,13 +3,14 @@ import { DEFAULT_LANGUAGE } from "@recap/i18n";
 import { useAuth } from "@/entities/auth/ui";
 import { LANGUAGE_MAP } from "@/entities/language/config/language.const";
 import { useLanguageStore } from "@/entities/language/model/language.store";
-import { useTimeZoneContext } from "@/entities/language/ui/TimeZoneProvider";
 import { useGetUserProfile } from "@/features/settings/api/user-query.client";
 import { LANGUAGE_TO_PROFILE } from "@/features/settings/config/language.const";
 
+/**
+ * timeZone은 서버 hydrate 없이 client 프로필(clientToken Bearer) + local language로만 결정한다.
+ */
 const useTimeZone = () => {
   const { isLoggedIn } = useAuth();
-  const timeZoneFromServer = useTimeZoneContext();
   const storedLanguage = useLanguageStore((s) => s.localize);
 
   const { data: profileLanguage } = useGetUserProfile({
@@ -28,7 +29,7 @@ const useTimeZone = () => {
     return LANGUAGE_TO_PROFILE[language].timeZone;
   }
 
-  return timeZoneFromServer ?? timeZoneFromLocal;
+  return timeZoneFromLocal;
 };
 
 export default useTimeZone;

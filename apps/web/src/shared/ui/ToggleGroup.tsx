@@ -43,10 +43,26 @@ function ToggleGroup<T extends string = string>({
   className,
   ...props
 }: ToggleGroupProps<T>) {
+  if (props.type === "single") {
+    const { onValueChange, ...singleProps } = props;
+
+    return (
+      <ToggleGroupPrimitive
+        {...singleProps}
+        className={cn(toggleGroupRootClassName, className)}
+        onValueChange={(value: string) => {
+          if (value === "") return;
+
+          onValueChange?.(value as T);
+        }}
+      />
+    );
+  }
+
   return (
     <ToggleGroupPrimitive
+      {...props}
       className={cn(toggleGroupRootClassName, className)}
-      {...(props as ToggleGroupPrimitiveProps)}
     />
   );
 }
