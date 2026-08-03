@@ -16,6 +16,7 @@ export default function ReactQueryProvider({
   return (
     <ReactQueryProviderComponent
       options={{
+        retry: 0,
         onError: (error: unknown) => {
           if (!(error instanceof APIError)) return;
 
