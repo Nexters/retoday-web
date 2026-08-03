@@ -77,7 +77,7 @@ const RecapSummary = ({ recap }: { recap: RecapData }) => {
                 {t("todayRecap.measurementTimeLabel")}
               </CardDescription>
               <p className="text-heading-rg m-0 text-gray-900">
-                {formatMeasuredRange(tc, detail?.startedAt, detail?.closedAt)}
+                {formatMeasuredRange(tc, detail?.startedAt, detail?.endedAt)}
               </p>
             </Stack>
           </Flex>
