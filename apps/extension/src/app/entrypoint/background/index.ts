@@ -215,15 +215,25 @@ browser.runtime.onMessage.addListener(
 
     if (msg.type === MESSAGE_TYPE.GOOGLE_LOGIN) {
       chrome.identity.getAuthToken({ interactive: true }, (token) => {
-        authAPIService
+        if (chrome.runtime.lastError || !token) {
+          console.error(
+            chrome.runtime.lastError?.message ?? "Failed to get Google token",
+          );
+          return;
+        }
+
+        void authAPIService
           .googleOauthLogin({
             oAuthToken: token,
             provider: "GOOGLE",
           })
-          .then((data: unknown) => {
-            tokenStore.set(data as LoginResponse);
+          .then(async (data: unknown) => {
+            await tokenStore.set(data as LoginResponse);
             void analytics.fireEvent("login", { method: "google" });
             chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
+          })
+          .catch((error: unknown) => {
+            console.error("Google login failed", error);
           });
       });
     }
