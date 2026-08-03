@@ -1,14 +1,32 @@
 import { z } from "zod";
 
-import {
-  CreateResponseSchema,
-  dateStringSchema,
-  isoDurationStringSchema,
-} from "../../schemas";
+import { CreateResponseSchema, isoDurationStringSchema } from "../../schemas";
+
+const optionalText = z
+  .string()
+  .nullish()
+  .transform((value) => value ?? undefined);
+
+const text = z
+  .string()
+  .nullish()
+  .transform((value) => value ?? "");
+
+const optionalDate = z
+  .string()
+  .refine((value) => !Number.isNaN(Date.parse(value)), {
+    message: "Invalid date string",
+  })
+  .transform((value) => new Date(value))
+  .nullish()
+  .transform((value) => value ?? undefined)
+  .catch(undefined);
+
+const durationSeconds = isoDurationStringSchema.catch(0);
 
 export const RecapSectionSchema = z.object({
-  title: z.string(),
-  content: z.string(),
+  title: text,
+  content: text,
 });
 
 const RecapImageEnum = z.enum([
@@ -38,35 +56,35 @@ const RecapImageEnum = z.enum([
 export type RecapImageType = z.infer<typeof RecapImageEnum>;
 
 export const RecapTimelineSchema = z.object({
-  startedAt: z.string(),
-  endedAt: z.string(),
-  title: z.string(),
-  duration: isoDurationStringSchema,
+  startedAt: text,
+  endedAt: text,
+  title: text,
+  duration: durationSeconds,
 });
 
 export const RecapTopicSchema = z.object({
-  keyword: z.string(),
-  title: z.string(),
-  content: z.string(),
+  keyword: text,
+  title: text,
+  content: text,
 });
 
 export const RecapDetailSchema = z.object({
-  id: z.number(),
-  userId: z.number().optional(),
-  date: z.string().optional(),
-  title: z.string().optional(),
-  summary: z.string().optional(),
-  image: RecapImageEnum.nullable().optional(),
-  aiProvider: z.string().optional(),
-  startedAt: dateStringSchema.optional(),
-  closedAt: dateStringSchema.optional(),
+  id: optionalText,
+  userId: optionalText,
+  date: optionalText,
+  title: optionalText,
+  summary: optionalText,
+  image: RecapImageEnum.nullish().catch(null),
+  aiProvider: optionalText,
+  startedAt: optionalDate,
+  endedAt: optionalDate,
 });
 
 export const RecapSchema = z.object({
-  recap: RecapDetailSchema.optional(),
-  sections: z.array(RecapSectionSchema).optional(),
-  timelines: z.array(RecapTimelineSchema).optional(),
-  topics: z.array(RecapTopicSchema).optional(),
+  recap: RecapDetailSchema.optional().catch(undefined),
+  sections: z.array(RecapSectionSchema).optional().catch([]),
+  timelines: z.array(RecapTimelineSchema).optional().catch([]),
+  topics: z.array(RecapTopicSchema).optional().catch([]),
 });
 
 export const GetRecapResponseSchema = CreateResponseSchema(RecapSchema);

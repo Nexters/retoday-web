@@ -47,7 +47,7 @@ const TodayRecapSection = ({ recap }: { recap: RecapData }) => {
                 {t("todayRecap.measurementTimeLabel")}
               </p>
               <p className="text-body-2 text-gray-900">
-                {formatTimeRange(detail?.startedAt, detail?.closedAt) || "-"}
+                {formatTimeRange(detail?.startedAt, detail?.endedAt) || "-"}
               </p>
             </div>
           </div>
