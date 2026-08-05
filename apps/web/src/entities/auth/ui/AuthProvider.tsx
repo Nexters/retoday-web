@@ -8,10 +8,7 @@ import {
   useState,
 } from "react";
 
-import {
-  clearSession,
-  fetchSession,
-} from "@/entities/auth/api/auth-session-client";
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 
 import { AuthContext, type AuthValue } from "./auth-context";
 
@@ -29,8 +26,7 @@ const AuthProvider = ({
 
   const refreshAuth = useCallback(async () => {
     try {
-      const session = await fetchSession();
-      setIsLoggedIn(session.isLoggedIn);
+      setIsLoggedIn(Boolean(clientTokenStore.getRefresh()));
     } catch {
       setIsLoggedIn(false);
     } finally {
@@ -39,19 +35,20 @@ const AuthProvider = ({
   }, []);
 
   const unLogin = useCallback(async () => {
-    try {
-      await clearSession();
-    } finally {
-      setIsLoggedIn(false);
-    }
+    clientTokenStore.clear();
+    setIsLoggedIn(false);
   }, []);
 
   useEffect(() => {
-    void refreshAuth();
+    refreshAuth();
   }, [refreshAuth]);
 
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+
   const value = useMemo<AuthValue>(
-    () => ({ isReady, isLoggedIn, refreshAuth, unLogin }),
+    () => ({ isReady, isLoggedIn, refreshAuth, unLogin, login }),
     [isReady, isLoggedIn, refreshAuth, unLogin],
   );
 

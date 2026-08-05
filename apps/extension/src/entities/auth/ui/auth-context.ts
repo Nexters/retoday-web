@@ -4,7 +4,8 @@ export type AuthValue = {
   isReady: boolean;
   isLoggedIn: boolean;
   refreshAuth: () => Promise<void>;
-  logout: () => void;
+  unLogin: () => Promise<void>;
+  login: () => void;
 };
 
 export const AuthContext = createContext<AuthValue | null>(null);

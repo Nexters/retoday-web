@@ -4,23 +4,23 @@ import {
 } from "@/entities/auth/config/auth-token.const";
 import { getStorage, setStorage } from "@/shared/lib/storage";
 
+type ClientAuthTokens = {
+  accessToken: string;
+  refreshToken: string;
+};
+
 export const tokenStore = {
   async getAccess(): Promise<string | null> {
     const result = await getStorage(["accessToken", "accessTokenExpiresAt"]);
-
     return result.accessToken;
   },
 
   async getRefresh(): Promise<string | null> {
     const result = await getStorage(["refreshToken", "refreshTokenExpiresAt"]);
-
     return result.refreshToken;
   },
 
-  async set(tokens: {
-    accessToken: string;
-    refreshToken: string;
-  }): Promise<void> {
+  async set(tokens: ClientAuthTokens): Promise<void> {
     const now = Date.now();
 
     await setStorage({

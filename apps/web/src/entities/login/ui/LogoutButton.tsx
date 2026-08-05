@@ -2,7 +2,8 @@ import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button } from "@recap/ui";
 
-import { logoutSession } from "@/entities/auth/api/auth-session-client";
+import { authAPIService } from "@/entities/auth/api/auth-api";
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 import { useAuth } from "@/entities/auth/ui";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import RightIcon from "@/shared/assets/icons/arrow-right.svg";
@@ -18,7 +19,8 @@ const LogoutButton = () => {
 
   const handleLogout = async () => {
     try {
-      await logoutSession();
+      await authAPIService.logout();
+      clientTokenStore.clear();
 
       analytics.identify(null);
       analytics.track("logout", {});

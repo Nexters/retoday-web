@@ -6,9 +6,9 @@ import {
   useState,
 } from "react";
 
+import { tokenStore } from "@/entities/auth/model/token-store";
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
 import useBrowserMessage from "@/shared/lib/browser/use-browser-message";
-import { tokenStore } from "@/shared/lib/token-store";
 
 import { AuthContext, type AuthValue } from "./auth-context";
 
@@ -22,8 +22,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const refreshAuth = useCallback(async () => {
     try {
-      const refreshToken = await tokenStore.getRefresh();
-      setIsLoggedIn(refreshToken !== null);
+      setIsLoggedIn(Boolean(await tokenStore.getRefresh()));
     } catch {
       setIsLoggedIn(false);
     } finally {
@@ -31,9 +30,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, []);
 
-  const logout = useCallback(() => {
-    void tokenStore.clear();
+  const unLogin = useCallback(async () => {
+    await tokenStore.clear();
     setIsLoggedIn(false);
+  }, []);
+
+  const login = useCallback(() => {
+    setIsLoggedIn(true);
   }, []);
 
   useEffect(() => {
@@ -45,8 +48,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   });
 
   const value = useMemo<AuthValue>(
-    () => ({ isReady, isLoggedIn, refreshAuth, logout }),
-    [isReady, isLoggedIn, refreshAuth, logout],
+    () => ({ isReady, isLoggedIn, refreshAuth, unLogin, login }),
+    [isReady, isLoggedIn, refreshAuth, unLogin, login],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

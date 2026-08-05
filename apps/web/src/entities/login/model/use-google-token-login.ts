@@ -3,11 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { catchAPIError } from "@recap/api";
 
-import { loginWithOAuth } from "@/entities/auth/api/auth-session-client";
+import { authUnTokenAPIService } from "@/entities/auth/api/auth-un-token-api";
 import {
   ensureGoogleGisLoaded,
   requestGoogleAccessToken,
 } from "@/entities/auth/lib/request-google-access-token";
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
+import { useAuth } from "@/entities/auth/ui";
 import { useAnalytics } from "@/shared/lib/analytics";
 
 type UseGoogleTokenLoginOptions = {
@@ -17,6 +19,7 @@ type UseGoogleTokenLoginOptions = {
 export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
   const { onLoginSuccess } = options ?? {};
   const { track } = useAnalytics();
+  const { login: loginAuth } = useAuth();
 
   const [ready, setReady] = useState(false);
 
@@ -30,9 +33,16 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
       const googleAccessToken =
         oAuthToken ?? (await requestGoogleAccessToken());
 
-      await loginWithOAuth({
+      const tokens = await authUnTokenAPIService.googleOauthLogin({
         oAuthToken: googleAccessToken,
         provider: "GOOGLE",
+      });
+
+      loginAuth();
+
+      clientTokenStore.set({
+        ...tokens,
+        oAuthToken: googleAccessToken,
       });
 
       track("login", { method: "google" });

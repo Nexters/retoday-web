@@ -1,7 +1,7 @@
 import browser from "webextension-polyfill";
 
-import { authAPIService } from "@/entities/auth/api";
-import type { LoginResponse } from "@/entities/auth/model/auth.type";
+import { authUnTokenAPIService } from "@/entities/auth/api";
+import { tokenStore } from "@/entities/auth/model/token-store";
 import {
   addBrowserSession,
   clearBrowserSession,
@@ -19,7 +19,6 @@ import {
 import type { StorageSession } from "@/entities/history/model/storage.type";
 import analytics from "@/shared/api/google-analytics/google-analytics.service";
 import { domainStore } from "@/shared/lib/domain-store";
-import { tokenStore } from "@/shared/lib/token-store";
 
 const removedTabIds = new Set<number>();
 
@@ -222,13 +221,13 @@ browser.runtime.onMessage.addListener(
           return;
         }
 
-        void authAPIService
+        authUnTokenAPIService
           .googleOauthLogin({
             oAuthToken: token,
             provider: "GOOGLE",
           })
-          .then(async (data: unknown) => {
-            await tokenStore.set(data as LoginResponse);
+          .then(async (tokens) => {
+            await tokenStore.set(tokens);
             void analytics.fireEvent("login", { method: "google" });
             chrome.runtime.sendMessage({ type: MESSAGE_TYPE.AUTH_CHANGED });
           })

@@ -18,11 +18,10 @@ const LoginButton = ({ className }: { className?: string }) => {
   const queryClient = useQueryClient();
 
   const onLoginSuccess = useCallback(async () => {
-    await refreshAuth();
+    login();
     queryClient.removeQueries({
       queryKey: USER_KEYS.details(),
     });
-    router.refresh();
   }, [queryClient, refreshAuth, router]);
 
   const { ready, login } = useGoogleTokenLogin({

@@ -2,7 +2,7 @@ import { LocalStorageKey } from "./local-storage-key";
 
 const canUseLocalStorage = () => typeof window !== "undefined";
 
-const setItem = <T>(key: LocalStorageKey, items: T): void => {
+export const setItem = <T>(key: LocalStorageKey, items: T): void => {
   if (!canUseLocalStorage()) return;
 
   try {
@@ -12,7 +12,7 @@ const setItem = <T>(key: LocalStorageKey, items: T): void => {
   }
 };
 
-const getItemOrNull = <T>(key: LocalStorageKey): T | null => {
+export const getItemOrNull = <T>(key: LocalStorageKey): T | null => {
   if (!canUseLocalStorage()) return null;
 
   try {
@@ -24,8 +24,7 @@ const getItemOrNull = <T>(key: LocalStorageKey): T | null => {
   }
 };
 
-// eslint-disable-next-line unused-imports/no-unused-vars
-const removeItem = (key: LocalStorageKey): void => {
+export const removeItem = (key: LocalStorageKey): void => {
   if (!canUseLocalStorage()) return;
 
   try {

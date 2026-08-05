@@ -29,7 +29,6 @@ export default function ExtensionAuthPage() {
   const oAuthToken = searchParams?.get("oAuthToken");
 
   const onLoginSuccess = useCallback(async () => {
-    await refreshAuth();
     queryClient.removeQueries({
       queryKey: USER_KEYS.details(),
     });

@@ -2,9 +2,9 @@ import type { RestAPIProtocol } from "@recap/api";
 import { APIError, RestAPI, RestAPIInstance } from "@recap/api";
 
 import { authUnTokenAPIService } from "@/entities/auth/api/auth-un-token-api";
-import { getBackendUrl } from "@/entities/auth/lib/backend-url";
-import type { AuthTokenPair } from "@/entities/auth/lib/refresh-auth-tokens";
-import { clientTokenStore } from "@/entities/auth/model/client-token-store";
+import { tokenStore } from "@/entities/auth/model/token-store";
+
+type AuthTokenPair = { accessToken: string; refreshToken: string };
 
 type CreateAuthedRestAPIOptions = {
   apiBaseURL?: string;
@@ -16,8 +16,12 @@ type CreateAuthedRestAPIOptions = {
  */
 let refreshPromise: Promise<AuthTokenPair> | null = null;
 
+function isRefreshUrl(url: string) {
+  return url.includes("/auth/refresh");
+}
+
 async function requestRefresh(): Promise<AuthTokenPair> {
-  const refreshToken = clientTokenStore.getRefresh();
+  const refreshToken = await tokenStore.getRefresh();
 
   if (!refreshToken) {
     throw new APIError("Failed to refresh tokens", {
@@ -31,7 +35,7 @@ async function requestRefresh(): Promise<AuthTokenPair> {
       refreshToken,
     });
 
-    clientTokenStore.set(res);
+    await tokenStore.set(res);
     return res;
   } catch (error) {
     throw new APIError("Failed to refresh tokens", {
@@ -55,14 +59,14 @@ export function createAuthedRestAPI(
   options?: CreateAuthedRestAPIOptions,
 ): RestAPIProtocol {
   const apiBaseURL = options?.apiBaseURL ?? "v1";
-  const resolvedBaseURL = baseURL || getBackendUrl();
+  const resolvedBaseURL = baseURL || import.meta.env.VITE_BACKEND_URL || "";
 
   const instance = new RestAPIInstance(resolvedBaseURL, {
     withCredentials: false,
     headers: { Accept: "application/json" },
 
     onRequest: async ({ url, init }) => {
-      const accessToken = clientTokenStore.getAccess();
+      const accessToken = await tokenStore.getAccess();
       if (!accessToken) return { url, init };
 
       const headers = new Headers(init.headers);
@@ -73,6 +77,7 @@ export function createAuthedRestAPI(
 
     onResponse: async ({ url, init, res }) => {
       if (res.status !== 401) return res;
+      if (isRefreshUrl(url)) return res;
 
       try {
         const tokens = await refreshAccessToken();

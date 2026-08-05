@@ -15,10 +15,8 @@ import {
   Stepper,
 } from "@recap/ui";
 
-import {
-  clearSession,
-  fetchOAuthToken,
-} from "@/entities/auth/api/auth-session-client";
+import { authAPIService } from "@/entities/auth/api/auth-api";
+import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 import { useAuth } from "@/entities/auth/ui";
 import { USER_KEYS } from "@/features/settings/api/query-keys";
 import { useDeleteUserAccount } from "@/features/settings/api/user-query.client";
@@ -61,12 +59,16 @@ const DeleteAccountButton = () => {
   };
 
   const handleSubmit = async () => {
-    const oAuthToken = await fetchOAuthToken();
+    const oAuthToken = clientTokenStore.getOAuth();
+    if (!oAuthToken) {
+      return;
+    }
     await deleteUserAccount({ oAuthToken });
   };
 
   const handleConfirm = async () => {
-    await clearSession();
+    await authAPIService.logout();
+    clientTokenStore.clear();
     queryClient.removeQueries({
       queryKey: USER_KEYS.details(),
     });

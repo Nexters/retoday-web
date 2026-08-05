@@ -1,49 +1,37 @@
-import { deleteCookie, getCookie, setCookie } from "cookies-next/client";
-
-import {
-  ACCESS_TOKEN_COOKIE,
-  REFRESH_TOKEN_COOKIE,
-} from "@/entities/auth/config/auth-cookie-keys.const";
-import {
-  ACCESS_TOKEN_MAX_AGE,
-  REFRESH_TOKEN_MAX_AGE,
-} from "@/entities/auth/config/auth-cookie-options.const";
+import { getItemOrNull, removeItem, setItem } from "@/shared/lib/local-storage";
+import { LocalStorageKey } from "@/shared/lib/local-storage-key";
 
 type ClientAuthTokens = {
   accessToken: string;
   refreshToken: string;
-};
-
-const clientCookieOptions = {
-  path: "/",
-  sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  oAuthToken?: string;
 };
 
 export const clientTokenStore = {
   getAccess(): string | null {
-    const value = getCookie(ACCESS_TOKEN_COOKIE);
-    return typeof value === "string" ? value : null;
+    return getItemOrNull<string>(LocalStorageKey.AccessToken);
   },
 
   getRefresh(): string | null {
-    const value = getCookie(REFRESH_TOKEN_COOKIE);
-    return typeof value === "string" ? value : null;
+    return getItemOrNull<string>(LocalStorageKey.RefreshToken);
+  },
+
+  getOAuth(): string | null {
+    return getItemOrNull<string>(LocalStorageKey.OAuthToken);
   },
 
   set(next: ClientAuthTokens) {
-    setCookie(ACCESS_TOKEN_COOKIE, next.accessToken, {
-      ...clientCookieOptions,
-      maxAge: ACCESS_TOKEN_MAX_AGE,
-    });
-    setCookie(REFRESH_TOKEN_COOKIE, next.refreshToken, {
-      ...clientCookieOptions,
-      maxAge: REFRESH_TOKEN_MAX_AGE,
-    });
+    setItem(LocalStorageKey.AccessToken, next.accessToken);
+    setItem(LocalStorageKey.RefreshToken, next.refreshToken);
+
+    if (next.oAuthToken) {
+      setItem(LocalStorageKey.OAuthToken, next.oAuthToken);
+    }
   },
 
   clear() {
-    deleteCookie(ACCESS_TOKEN_COOKIE, { path: "/" });
-    deleteCookie(REFRESH_TOKEN_COOKIE, { path: "/" });
+    removeItem(LocalStorageKey.AccessToken);
+    removeItem(LocalStorageKey.RefreshToken);
+    removeItem(LocalStorageKey.OAuthToken);
   },
 };
