@@ -8,11 +8,11 @@ import { useGetUserProfile } from "@/features/setting/api/user-query";
 
 const LanguageProvider = ({ children }: PropsWithChildren) => {
   const { language, setLanguage } = useLanguage();
-  const { isLoggedIn } = useAuth();
+  const { isReady, isLoggedIn } = useAuth();
 
   const { data: profileLanguage } = useGetUserProfile({
     select: (data) => data?.data?.language,
-    enabled: isLoggedIn,
+    enabled: isReady && isLoggedIn,
   });
 
   useEffect(() => {

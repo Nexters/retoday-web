@@ -9,11 +9,8 @@ import { useQueryClient } from "@recap/react-query";
 
 import { tokenStore } from "@/entities/auth/model/token-store";
 import { MESSAGE_TYPE } from "@/entities/history/model/messages.type";
-import { useLanguageStore } from "@/entities/language";
-import { browserTimeZone } from "@/entities/language/lib/browser-time-zone";
-import { USER_KEYS } from "@/features/setting/api/query-keys";
-import { usePatchUserProfile } from "@/features/setting/api/user-query";
-import { LANGUAGE_TO_PROFILE } from "@/features/setting/config/language.const";
+import useLanguage from "@/entities/language/model/use-language";
+import { userProfileQueryOptions } from "@/features/setting/api/user-query";
 import useBrowserMessage from "@/shared/lib/browser/use-browser-message";
 
 import { AuthContext, type AuthValue } from "./auth-context";
@@ -26,21 +23,16 @@ type AuthProviderProps = {
 export const AuthChangedEffects = () => {
   const { refreshAuth } = useAuth();
   const queryClient = useQueryClient();
-  const { mutateAsync: patchUserProfile } = usePatchUserProfile();
+  const { patchLanguage } = useLanguage();
 
   const handleAuthChanged = useCallback(async () => {
-    queryClient.removeQueries({ queryKey: USER_KEYS.details() });
-
-    const language = useLanguageStore.getState().localize;
-    await patchUserProfile(LANGUAGE_TO_PROFILE[language]);
-    void browserTimeZone.set(LANGUAGE_TO_PROFILE[language].timeZone);
-
+    await patchLanguage();
+    await queryClient.fetchQuery(userProfileQueryOptions());
     await refreshAuth();
-    await queryClient.resetQueries({ queryKey: USER_KEYS.details() });
-  }, [patchUserProfile, queryClient, refreshAuth]);
+  }, [patchLanguage, queryClient, refreshAuth]);
 
   const onAuthChanged = useCallback(() => {
-    void handleAuthChanged();
+    handleAuthChanged();
   }, [handleAuthChanged]);
 
   useBrowserMessage(MESSAGE_TYPE.AUTH_CHANGED, onAuthChanged);

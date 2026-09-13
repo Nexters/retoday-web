@@ -4,6 +4,7 @@ export { createQueryKeys } from "./create-query-keys";
 export { ReactQueryProvider } from "./provider";
 export { dehydrateState } from "./ssr";
 export {
+  queryOptions,
   useMutation,
   type UseMutationOptions,
   useQueries,

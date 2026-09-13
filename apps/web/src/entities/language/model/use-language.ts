@@ -11,12 +11,15 @@ const useLanguage = () => {
   const language = useLanguageStore((s) => s.localize);
   const setLanguage = useLanguageStore((s) => s.setLanguage);
 
-  const { mutate } = usePatchUserProfile();
+  const { mutateAsync } = usePatchUserProfile();
 
-  const patchLanguageWith = useCallback((nextLanguage?: LanguageType) => {
-    const target = nextLanguage ?? useLanguageStore.getState().localize;
-    mutate(LANGUAGE_TO_PROFILE[target]);
-  }, []);
+  const patchLanguageWith = useCallback(
+    async (nextLanguage?: LanguageType) => {
+      const target = nextLanguage ?? useLanguageStore.getState().localize;
+      await mutateAsync(LANGUAGE_TO_PROFILE[target]);
+    },
+    [mutateAsync],
+  );
 
   return {
     language,
