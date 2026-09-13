@@ -1,7 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { APIError } from "@recap/api";
+import {
+  type ExcludedDomainFormInput,
+  type ExcludedDomainFormOutput,
+  excludedDomainFormSchema,
+} from "@recap/features/exclude-domain";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import {
@@ -38,10 +44,25 @@ const ExcludedDomainSection = ({
 }: ExcludedDomainSectionProps) => {
   const { t } = useLocale("settings");
   const { showToast } = useToast();
-  const [domain, setDomain] = useState("");
 
   const { refreshAuth } = useAuth();
   const queryClient = useQueryClient();
+
+  const { register, handleSubmit, reset, getFieldState, formState } = useForm<
+    ExcludedDomainFormInput,
+    unknown,
+    ExcludedDomainFormOutput
+  >({
+    resolver: zodResolver(excludedDomainFormSchema),
+    defaultValues: { domain: "" },
+    mode: "onChange",
+  });
+
+  const { isValid } = formState;
+  const { isDirty, error: domainFieldError } = getFieldState(
+    "domain",
+    formState,
+  );
 
   const { mutate: addMutate } = usePostExcludeDomain({
     onSuccess: () => {
@@ -55,15 +76,27 @@ const ExcludedDomainSection = ({
       });
     },
     onError: (error) => {
-      const message =
+      if (error instanceof APIError && error.status === 401) return;
+      if (
         error instanceof APIError &&
         error.code === "EXCLUDED_DOMAIN_ALREADY_EXISTS"
-          ? error.message
-          : t("error.network");
-
+      ) {
+        showToast({
+          type: "error",
+          message: error.message,
+        });
+        return;
+      }
+      if (error instanceof APIError && error.status === 400 && error.message) {
+        showToast({
+          type: "error",
+          message: error.message,
+        });
+        return;
+      }
       showToast({
         type: "error",
-        message,
+        message: t("error.network"),
       });
     },
   });
@@ -78,7 +111,15 @@ const ExcludedDomainSection = ({
         queryKey: USER_KEYS.details(),
       });
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof APIError && error.status === 401) return;
+      if (error instanceof APIError && error.status === 400 && error.message) {
+        showToast({
+          type: "error",
+          message: error.message,
+        });
+        return;
+      }
       showToast({
         type: "error",
         message: t("error.network"),
@@ -86,19 +127,16 @@ const ExcludedDomainSection = ({
     },
   });
 
-  const handleAddDomain = (domain: string) => {
-    addMutate({ domain });
-  };
-
-  const handleDeleteDomain = (domain: string) => {
-    deleteMutate({ domain });
-  };
-
-  const handleAdd = () => {
-    if (!domain) return;
-    handleAddDomain(domain);
-    setDomain("");
-  };
+  const onSubmit = handleSubmit(({ domain }) => {
+    addMutate(
+      { domain },
+      {
+        onSuccess: () => {
+          reset({ domain: "" });
+        },
+      },
+    );
+  });
 
   return (
     <Card
@@ -135,7 +173,7 @@ const ExcludedDomainSection = ({
                   variant="subtle"
                   size="sm"
                   className="text-body-1 h-auto rounded-none border-0 bg-transparent p-0 text-[#ff4242] shadow-none hover:bg-transparent hover:text-[#e03333]"
-                  onClick={() => handleDeleteDomain(excludedDomain)}
+                  onClick={() => deleteMutate({ domain: excludedDomain })}
                 >
                   {t("untrackedDomains.delete")}
                 </Button>
@@ -146,36 +184,48 @@ const ExcludedDomainSection = ({
       )}
 
       <CardContent className="mt-6 flex min-h-0 min-w-0 flex-1 flex-col p-0 pt-0">
-        <Flex
-          direction="column"
-          gap="none"
-          className="w-full gap-3 md:flex-row md:items-center md:gap-4"
-        >
-          <div className="w-full min-w-0 md:flex-1">
-            <Input
-              type="text"
-              value={domain}
-              onChange={(e) => setDomain(e.target.value)}
-              placeholder={t("untrackedDomains.domainInputPlaceholder")}
-              className="px-3 py-4"
-            />
-          </div>
+        <form onSubmit={onSubmit} noValidate>
+          <Flex
+            direction="column"
+            gap="none"
+            className="w-full gap-3 md:flex-row md:items-start md:gap-4"
+          >
+            <div className="w-full min-w-0 md:flex-1">
+              <Input
+                type="text"
+                placeholder={t("untrackedDomains.domainInputPlaceholder")}
+                aria-invalid={isDirty && domainFieldError ? true : undefined}
+                className={cn(
+                  "px-3 py-4",
+                  isDirty &&
+                    domainFieldError &&
+                    "border-[#ff4242] focus-visible:ring-[#ff4242]",
+                )}
+                {...register("domain")}
+              />
+              {isDirty && domainFieldError?.message ? (
+                <p className="text-body-2 mt-1 text-[#ff4242]">
+                  {t(`untrackedDomains.validation.${domainFieldError.message}`)}
+                </p>
+              ) : null}
+            </div>
 
-          <div className="w-full shrink-0 md:w-auto">
-            <Button
-              type="button"
-              variant="default"
-              size="md"
-              className={cn(
-                "px-6 md:w-auto! md:justify-start!",
-                domain.length === 0 && "bg-gray-500 hover:bg-gray-600",
-              )}
-              onClick={handleAdd}
-            >
-              {t("untrackedDomains.add")}
-            </Button>
-          </div>
-        </Flex>
+            <div className="w-full shrink-0 md:w-auto md:pt-0">
+              <Button
+                type="submit"
+                variant="default"
+                size="md"
+                disabled={!isValid}
+                className={cn(
+                  "px-6 md:w-auto! md:justify-start!",
+                  !isValid && "bg-gray-500 hover:bg-gray-600",
+                )}
+              >
+                {t("untrackedDomains.add")}
+              </Button>
+            </div>
+          </Flex>
+        </form>
       </CardContent>
     </Card>
   );
