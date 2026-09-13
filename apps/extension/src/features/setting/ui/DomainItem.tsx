@@ -1,3 +1,4 @@
+import { APIError } from "@recap/api";
 import { useLocale } from "@recap/i18n";
 import { useQueryClient } from "@recap/react-query";
 import { Button, useToast } from "@recap/ui";
@@ -21,7 +22,15 @@ const DomainItem = ({ domain }: { domain: string }) => {
         queryKey: USER_KEYS.details(),
       });
     },
-    onError: () => {
+    onError: (error) => {
+      if (error instanceof APIError && error.status === 401) return;
+      if (error instanceof APIError && error.status === 400 && error.message) {
+        showToast({
+          type: "error",
+          message: error.message,
+        });
+        return;
+      }
       showToast({
         type: "error",
         message: t("error.network"),

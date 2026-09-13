@@ -32,7 +32,6 @@ const userProfileQueryOptions = () =>
   >({
     queryKey: USER_KEYS.details(),
     queryFn: () => userAPIService.getUserProfile(),
-    retry: false,
   });
 
 const useGetUserProfile = <TData = UserProfileResponse>(

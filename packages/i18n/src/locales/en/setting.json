@@ -37,7 +37,20 @@
     "domainInputPlaceholder": "Enter domain (e.g., abc.com sample.kr)",
     "add": "Add",
     "addSuccess": "Untracked domain added.",
-    "deleteSuccess": "Untracked domain deleted."
+    "deleteSuccess": "Untracked domain deleted.",
+    "validation": {
+      "empty": "Please enter a domain.",
+      "whitespace": "Leading or trailing spaces are not allowed.",
+      "tooLong": "Domain must be 255 characters or fewer.",
+      "scheme": "Enter the domain only. http:// or https:// is not allowed.",
+      "path": "Domains cannot include paths or query strings.",
+      "noDot": "Enter a valid domain format. e.g. example.com",
+      "emptyLabel": "Each part of the domain must not be empty.",
+      "labelHyphenStart": "Each part of the domain cannot start or end with a hyphen.",
+      "labelHyphenEnd": "Each part of the domain cannot start or end with a hyphen.",
+      "invalidCharacters": "Domains can only contain letters, numbers, hyphens (-), and dots (.).",
+      "ipAddress": "IP addresses cannot be registered as domains."
+    }
   },
   "error": {
     "network": "Please check your network connection."
