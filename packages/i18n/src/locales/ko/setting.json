@@ -37,7 +37,20 @@
     "domainInputPlaceholder": "도메인 입력 (예 : abc.com sample.kr)",
     "add": "추가하기",
     "addSuccess": "추적금지 도메인을 추가했어요.",
-    "deleteSuccess": "추적금지 도메인을 삭제했어요."
+    "deleteSuccess": "추적금지 도메인을 삭제했어요.",
+    "validation": {
+      "empty": "도메인을 입력해 주세요.",
+      "whitespace": "도메인 앞뒤에 공백을 포함할 수 없습니다.",
+      "tooLong": "도메인은 255자 이하로 입력해주세요.",
+      "scheme": "도메인만 입력해주세요. http:// 또는 https://는 포함할 수 없습니다.",
+      "path": "도메인에는 경로나 쿼리를 포함할 수 없습니다.",
+      "noDot": "올바른 도메인 형식이 아닙니다. 예: example.com",
+      "emptyLabel": "도메인의 각 영역은 비어 있을 수 없습니다.",
+      "labelHyphenStart": "도메인의 각 영역은 -로 시작하거나 끝날 수 없습니다.",
+      "labelHyphenEnd": "도메인의 각 영역은 -로 시작하거나 끝날 수 없습니다.",
+      "invalidCharacters": "도메인에는 영문자, 숫자, -, .만 사용할 수 있습니다.",
+      "ipAddress": "IP 주소는 도메인으로 등록할 수 없습니다."
+    }
   },
   "error": {
     "network": "네트워크를 확인해 주세요."

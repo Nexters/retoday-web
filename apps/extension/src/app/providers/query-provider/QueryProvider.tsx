@@ -10,7 +10,6 @@ const QueryProvider = ({ children }: PropsWithChildren) => {
   return (
     <ReactQueryProvider
       options={{
-        retry: 0,
         onError: (error: unknown) => {
           if (!(error instanceof APIError)) return;
 

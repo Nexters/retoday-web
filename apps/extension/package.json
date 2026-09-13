@@ -15,12 +15,15 @@
     "check-types": "tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.9.1",
     "@recap/api": "workspace:*",
     "@recap/features": "workspace:*",
     "@recap/react-query": "workspace:*",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.88.0",
     "webextension-polyfill": "^0.12.0",
+    "zod": "^4.3.6",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

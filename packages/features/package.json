@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./exclude-domain": "./src/exclude-domain/index.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",
@@ -12,7 +13,8 @@
   },
   "dependencies": {
     "@recap/api": "workspace:*",
-    "@recap/lib": "workspace:*"
+    "@recap/lib": "workspace:*",
+    "zod": "^4.3.6"
   },
   "peerDependencies": {
     "react": "^19.0.0"
