@@ -9,17 +9,15 @@ export const WorkPatternDayEnum = z.enum([
 
 export type WorkPatternDayType = z.infer<typeof WorkPatternDayEnum>;
 
-const WorkPatternCountSchema = z
-  .object({
-    DAWN: z.number(),
-    MORNING: z.number(),
-    DAYTIME: z.number(),
-    EVENING: z.number(),
-  })
-  .partial();
+export const WorkPatternHourCountSchema = z.object({
+  hour: z.number().int().min(0).max(23),
+  count: z.number(),
+});
+
+export type WorkPatternHourCount = z.infer<typeof WorkPatternHourCountSchema>;
 
 export const GetWorkPatternSchema = z.object({
-  counts: WorkPatternCountSchema,
+  counts: z.array(WorkPatternHourCountSchema),
 });
 
 export type AnalysisWorkPatternData = z.infer<typeof GetWorkPatternSchema>;

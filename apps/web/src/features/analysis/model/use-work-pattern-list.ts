@@ -16,10 +16,10 @@ const useWorkPatternList = (date: string) => {
   });
 
   return useMemo(() => {
-    const counts = data?.counts ?? {};
+    const hourlyCounts = data?.counts ?? [];
 
     const ratioByPattern = new Map(
-      toWorkPatternRatioData(counts).map((item) => [
+      toWorkPatternRatioData(hourlyCounts).map((item) => [
         item.pattern,
         item.percentage,
       ]),

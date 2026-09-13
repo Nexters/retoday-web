@@ -14,7 +14,7 @@ export const EMPTY_ANALYSIS_DASHBOARD = {
     websiteAnalyses: [],
   },
   getWorkPatternResponse: {
-    counts: {},
+    counts: [],
   },
   getLongestStayedWebsiteResponse: {
     domain: null,
