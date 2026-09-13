@@ -4,6 +4,7 @@ import type {
   UserProfileType,
 } from "@recap/api";
 import {
+  queryOptions,
   useMutation,
   type UseMutationOptions,
   useQuery,
@@ -22,14 +23,29 @@ type UseGetUserProfileOptions<TData = UserProfileResponse> = Omit<
   "queryKey" | "queryFn" | "retry"
 >;
 
-export const useGetUserProfile = <TData = UserProfileResponse>(
-  options: UseGetUserProfileOptions<TData> = {},
-) => {
-  return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
-    ...options,
+const userProfileQueryOptions = () =>
+  queryOptions<
+    UserProfileResponse,
+    Error,
+    UserProfileResponse,
+    UserProfileQueryKey
+  >({
     queryKey: USER_KEYS.details(),
     queryFn: () => userAPIService.getUserProfile(),
     retry: false,
+  });
+
+const useGetUserProfile = <TData = UserProfileResponse>(
+  options: UseGetUserProfileOptions<TData> = {},
+) => {
+  return useQuery<UserProfileResponse, Error, TData, UserProfileQueryKey>({
+    ...(userProfileQueryOptions() as UseQueryOptions<
+      UserProfileResponse,
+      Error,
+      TData,
+      UserProfileQueryKey
+    >),
+    ...options,
   });
 };
 
@@ -66,4 +82,10 @@ const usePatchUserProfile = (
   });
 };
 
-export { useDeleteExcludeDomain, usePatchUserProfile, usePostExcludeDomain };
+export {
+  useDeleteExcludeDomain,
+  useGetUserProfile,
+  usePatchUserProfile,
+  usePostExcludeDomain,
+  userProfileQueryOptions,
+};

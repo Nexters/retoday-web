@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useQueryClient } from "@recap/react-query";
 
 import { useAuth } from "@/entities/auth/ui";
 import { useGoogleTokenLogin } from "@/entities/login/model/use-google-token-login";
-import { USER_KEYS } from "@/features/settings/api/query-keys";
 
 function buildRedirectPath(redirect: string | null, date: string | null) {
   const path = redirect && redirect.startsWith("/") ? redirect : "/analysis";
@@ -20,8 +18,7 @@ function buildRedirectPath(redirect: string | null, date: string | null) {
 export default function ExtensionAuthPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const queryClient = useQueryClient();
-  const { refreshAuth, unLogin } = useAuth();
+  const { unLogin } = useAuth();
   const startedRef = useRef(false);
 
   const redirect = searchParams?.get("redirect") ?? null;
@@ -29,11 +26,8 @@ export default function ExtensionAuthPage() {
   const oAuthToken = searchParams?.get("oAuthToken");
 
   const onLoginSuccess = useCallback(async () => {
-    queryClient.removeQueries({
-      queryKey: USER_KEYS.details(),
-    });
     router.replace(buildRedirectPath(redirect, date));
-  }, [date, queryClient, redirect, refreshAuth, router]);
+  }, [date, redirect, router]);
 
   const { login } = useGoogleTokenLogin({ onLoginSuccess });
 

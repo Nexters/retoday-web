@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { catchAPIError } from "@recap/api";
+import { useQueryClient } from "@recap/react-query";
 
 import { authUnTokenAPIService } from "@/entities/auth/api/auth-un-token-api";
 import {
@@ -11,6 +12,7 @@ import {
 import { clientTokenStore } from "@/entities/auth/model/client-token-store";
 import { useAuth } from "@/entities/auth/ui";
 import useLanguage from "@/entities/language/model/use-language";
+import { userProfileQueryOptions } from "@/features/settings/api/user-query.client";
 import { useAnalytics } from "@/shared/lib/analytics";
 
 type UseGoogleTokenLoginOptions = {
@@ -19,6 +21,7 @@ type UseGoogleTokenLoginOptions = {
 
 export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
   const { onLoginSuccess } = options ?? {};
+  const queryClient = useQueryClient();
   const { track } = useAnalytics();
   const { login: loginAuth } = useAuth();
   const { patchLanguage } = useLanguage();
@@ -47,9 +50,12 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
         oAuthToken: googleAccessToken,
       });
 
-      patchLanguage();
+      await patchLanguage();
 
       track("login", { method: "google" });
+
+      await queryClient.fetchQuery(userProfileQueryOptions());
+
       await onLoginSuccess?.();
     } catch (e: unknown) {
       catchAPIError(e);
@@ -64,7 +70,7 @@ export function useGoogleTokenLogin(options?: UseGoogleTokenLoginOptions) {
   useEffect(() => {
     if (!clientId) return;
 
-    void ensureGoogleGisLoaded()
+    ensureGoogleGisLoaded()
       .then(() => setReady(true))
       .catch(() => setReady(false));
   }, [clientId]);
