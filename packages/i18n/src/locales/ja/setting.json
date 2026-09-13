@@ -37,7 +37,20 @@
     "domainInputPlaceholder": "ドメイン入力 (例: abc.com sample.kr)",
     "add": "追加",
     "addSuccess": "トラッキング禁止ドメインを追加しました。",
-    "deleteSuccess": "トラッキング禁止ドメインを削除しました。"
+    "deleteSuccess": "トラッキング禁止ドメインを削除しました。",
+    "validation": {
+      "empty": "ドメインを入力してください。",
+      "whitespace": "ドメインの前後に空白を含めることはできません。",
+      "tooLong": "ドメインは255文字以内で入力してください。",
+      "scheme": "ドメインのみ入力してください。http:// や https:// は含められません。",
+      "path": "ドメインにパスやクエリを含めることはできません。",
+      "noDot": "正しいドメイン形式ではありません。例: example.com",
+      "emptyLabel": "ドメインの各セクションを空にすることはできません。",
+      "labelHyphenStart": "ドメインの各セクションは - で始まったり終わったりできません。",
+      "labelHyphenEnd": "ドメインの各セクションは - で始まったり終わったりできません。",
+      "invalidCharacters": "ドメインには英字、数字、-(ハイフン)、.(ドット)のみ使用できます。",
+      "ipAddress": "IPアドレスをドメインとして登録することはできません。"
+    }
   },
   "error": {
     "network": "ネットワークを確認してください。"
