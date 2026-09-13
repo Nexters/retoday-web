@@ -16,12 +16,11 @@ export default function ReactQueryProvider({
   return (
     <ReactQueryProviderComponent
       options={{
-        retry: 0,
         onError: (error: unknown) => {
           if (!(error instanceof APIError)) return;
 
           if (error.code === "REFRESH_TOKEN_NOT_FOUND") {
-            void unLogin();
+            unLogin();
           }
         },
       }}
