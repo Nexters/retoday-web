@@ -5,6 +5,7 @@ import type { RecapData } from "@recap/api";
 import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { AuthConsumer } from "@/entities/auth/ui";
+import { useTimeZone } from "@/entities/language";
 import { aiRecapQueryOptions } from "@/features/ai-recap/api/ai-recap-query.client";
 import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
 import AiTimeline from "@/features/ai-recap/ui/AiTimeline";
@@ -29,9 +30,10 @@ const LoggedInRecap = () => {
   const searchParams = useSearchParams();
   const rawDate = searchParams?.get("date");
   const date = getSafeQueryDate(rawDate);
+  const timeZone = useTimeZone();
 
   const { data: recap } = useSuspenseQuery({
-    ...aiRecapQueryOptions(date),
+    ...aiRecapQueryOptions({ date, timeZone }),
     select: (data): RecapData | null => {
       const recap = data?.data;
       return recap && hasRecapContent(recap) ? recap : null;
