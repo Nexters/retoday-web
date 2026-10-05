@@ -1,4 +1,4 @@
-import type { RecapData } from "@recap/api";
+import type { GetRecapQueryType, RecapData } from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
 
 import { recapAPIService } from "@/features/ai-recap/api";
@@ -12,14 +12,14 @@ type UseGetAiRecapOptions<TData = AiRecapQueryData> = Omit<
 >;
 
 export const useGetAiRecap = <TData = AiRecapQueryData>(
-  date: string,
+  query: GetRecapQueryType,
   options: UseGetAiRecapOptions<TData> = {},
 ) => {
   return useQuery<AiRecapQueryData, Error, TData>({
     ...options,
-    queryKey: AI_RECAP_KEYS.detail([date]),
+    queryKey: AI_RECAP_KEYS.detail([query.date, query.timeZone]),
     queryFn: async () => {
-      const envelope = await recapAPIService.getRecap({ date });
+      const envelope = await recapAPIService.getRecap(query);
       return envelope.data;
     },
   });

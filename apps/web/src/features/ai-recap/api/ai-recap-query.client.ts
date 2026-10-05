@@ -1,4 +1,4 @@
-import type { Envelope, RecapData } from "@recap/api";
+import type { Envelope, GetRecapQueryType, RecapData } from "@recap/api";
 import { useQuery, type UseQueryOptions } from "@recap/react-query";
 import { queryOptions } from "@tanstack/react-query";
 
@@ -13,19 +13,19 @@ type UseGetAiRecapOptions<TData = AiRecapResponse> = Omit<
   "queryKey" | "queryFn" | "retry"
 >;
 
-const aiRecapQueryOptions = (date: string) =>
+const aiRecapQueryOptions = (query: GetRecapQueryType) =>
   queryOptions<AiRecapResponse, Error, AiRecapResponse, AiRecapQueryKey>({
-    queryKey: AI_RECAP_KEYS.detail([date]),
-    queryFn: () => recapAPIService.getRecap({ date }),
+    queryKey: AI_RECAP_KEYS.detail([query.date, query.timeZone]),
+    queryFn: () => recapAPIService.getRecap(query),
     retry: false,
   });
 
 const useGetAiRecap = <TData = AiRecapResponse>(
-  date: string,
+  query: GetRecapQueryType,
   options: UseGetAiRecapOptions<TData> = {},
 ) => {
   return useQuery<AiRecapResponse, Error, TData, AiRecapQueryKey>({
-    ...(aiRecapQueryOptions(date) as UseQueryOptions<
+    ...(aiRecapQueryOptions(query) as UseQueryOptions<
       AiRecapResponse,
       Error,
       TData,

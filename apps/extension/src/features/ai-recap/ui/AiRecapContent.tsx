@@ -1,6 +1,7 @@
 import type { RecapData } from "@recap/api";
 import { formatDate } from "@recap/lib";
 
+import useTimeZone from "@/entities/language/model/use-time-zone";
 import { useGetAiRecap } from "@/features/ai-recap/api/ai-recap-query";
 import { hasRecapContent } from "@/features/ai-recap/lib/recap-mapper";
 import {
@@ -16,16 +17,23 @@ import { useDateSelectorStore } from "@/widgets/date-selector/model";
 
 const AiRecapContent = () => {
   const selectedDate = useDateSelectorStore((state) => state.selectedDate);
+  const timeZone = useTimeZone();
 
   const {
     data: recap,
     isError,
     isLoading,
-  } = useGetAiRecap(formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH), {
-    select: (data): RecapData | null =>
-      data && hasRecapContent(data) ? data : null,
-    retry: false,
-  });
+  } = useGetAiRecap(
+    {
+      date: formatDate(selectedDate, DATE_FORMAT.YYYY_MM_DD_DASH),
+      timeZone,
+    },
+    {
+      select: (data): RecapData | null =>
+        data && hasRecapContent(data) ? data : null,
+      retry: false,
+    },
+  );
 
   if (isLoading) {
     return <AiRecapViewSkeleton />;
