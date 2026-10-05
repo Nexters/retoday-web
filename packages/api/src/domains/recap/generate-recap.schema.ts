@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { CreateResponseSchema, isoDurationStringSchema } from "../../schemas";
+import { TimeZoneSchema } from "../../schemas/enum.schema";
 
 const optionalText = z
   .string()
@@ -89,6 +90,12 @@ export const RecapSchema = z.object({
 
 export const GetRecapResponseSchema = CreateResponseSchema(RecapSchema);
 
+export const GetRecapQuerySchema = z.object({
+  date: z.string(),
+  timeZone: TimeZoneSchema,
+});
+
+export type GetRecapQueryType = z.infer<typeof GetRecapQuerySchema>;
 export type RecapData = z.infer<typeof RecapSchema>;
 
 export type AiRecapSection = z.infer<typeof RecapSectionSchema>;
